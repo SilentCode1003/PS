@@ -1,0 +1,36 @@
+
+.bg-gradient-primary{
+    background-image: linear-gradient(180deg,#212A3E 10%,#212A3E 100%) !important;
+    background-color: #212A3E !important;
+}
+.span-font-size{
+    font-size: 25px !important;
+}
+.green{
+    background-color: #394867;
+}
+.img-fluid{
+    border-radius: 50px !important;
+    height: 60px;
+    width: 60px;
+    margin-left: 8px;
+}
+.fa, .fas{
+    margin-right: 10px !important;
+}
+.form-label{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.bg-custom{
+    background-color: #F1F6F9 !important;
+}
+
+.collapse-header{
+    color: #212A3E !important;
+}
+.text-color{
+    color: #212A3E;
+}

@@ -1,0 +1,155 @@
+<!-- Begin PCreated by Content -->
+<div class="container-fluid">
+
+    <!-- PCreated by Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+        <h1 class="page-title">Employee</h1>
+    </div>
+    <!-- Content Row -->
+    <div class="row mb-2">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label" for="md_departmentname">Firstname</label>
+                            <input id="me_firstname" type="text" class="form-control" placeholder="Enter your firstname" aria-label="fullname" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="md_departmentname">Middlename</label>
+                            <input id="me_middlename" type="text" class="form-control" placeholder="Enter your middlename" aria-label="fullname" aria-describedby="basic-addon1">    
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="md_departmentname">Lastname</label>
+                            <input id="me_lastname" type="text" class="form-control" placeholder="Enter your lastname" aria-label="fullname" aria-describedby="basic-addon1">    
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label" for="md_departmentname">Contact number</label>
+                            <input id="me_contactnumber" type="text" class="form-control" placeholder="Enter your contact number" aria-label="fullname" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="md_departmentname">E-mail address</label>
+                            <input id="me_email" type="text" class="form-control" placeholder="Enter your email add" aria-label="fullname" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <select class="entry-input form-control mb-2" name="rolelist" id="rolelist">
+                                <option value="">Department</option>
+                            <option value="IT SERVICE PROVIDER" id="">
+                                IT SERVICE PROVIDER</option>
+                                <option value="AGENT" id="">AGENT</option>
+                                <option value="ONSITE" id="">ONSITE</option>
+                            </select>        
+                        </div>
+                        <div class="col-md-6">
+                            <select class="entry-input form-control" name="positionlist" id="positionlist">
+                                <option value="">Position</option>
+                            <option value="IT SERVICE ENGINEER" id="">
+                                IT SERVICE ENGINEER</option>
+                                <option value="HELPDESK" id="">HELPDESK</option>
+                                <option value="INSTALLER" id="">INSTALLER</option>
+                                <option value="TECHSUPPORT" id="">TECHSUPPORT</option>
+                                <option value="DEVELOPER" id="">DEVELOPER</option>
+                            </select>       
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-4">
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                            Add
+                        </a>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="10">
+                <thead>
+                    <tr>
+                        <th class = "col-1 text-start">System ID</th>
+                        <th class = "col-3 text-center">Employee ID</th>
+                        <th class = "col-3 text-center">Firstname</th>
+                        <th class = "col-2 text-center">Middlename</th>
+                        <th class = "col-2 text-center">Lastname</th>
+                        <th class = "col-2 text-end">Position</th>  
+                        <th class = "col-2 text-end">Department</th>
+                        <th class = "col-2 text-end">Contact Number</th>
+                        <th class = "col-2 text-end">Email</th>   
+                        <th class = "col-2 text-end">Status</th> 
+                        <th class = "col-2 text-end">Created by</th>  
+                        <th class = "col-2 text-end">Created date</th>  
+                        <th class = "col-2 text-end">Action</th>  
+                    </tr>
+                </thead>
+                    
+                <tbody>
+                    <tr>
+                        <td class="td-hover-color">1000</td>
+                        <td class="td-hover-color">0001</td>
+                        <td class="td-hover-color">Joseph</td>                                        
+                        <td class="td-hover-color">Blanca</td>
+                        <td class="td-hover-color">Orencio</td>
+                        <td class="td-hover-color">IT specialist</td>
+                        <td class="td-hover-color">IT department</td>
+                        <td class="td-hover-color">09236458896</td>
+                        <td class="td-hover-color">asdfagadg@gmail.com</td>
+                        <td class="td-hover-color">Active</td>
+                        <td class="td-hover-color">SOLEDAD</td>
+                        <td class="td-hover-color">2011/04/25</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
+                            <button type="button" class="btn btn-outline-primary">Edit</button>  
+                        </td>                              
+                    </tr>
+                    <tr>
+                        <td class="td-hover-color">1000</td>
+                        <td class="td-hover-color">0001</td>
+                        <td class="td-hover-color">Joseph</td>                                        
+                        <td class="td-hover-color">Blanca</td>
+                        <td class="td-hover-color">Orencio</td>
+                        <td class="td-hover-color">IT specialist</td>
+                        <td class="td-hover-color">IT department</td>
+                        <td class="td-hover-color">09236458896</td>
+                        <td class="td-hover-color">asdfagadg@gmail.com</td>
+                        <td class="td-hover-color">Active</td>
+                        <td class="td-hover-color">SOLEDAD</td>
+                        <td class="td-hover-color">2011/04/25</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
+                            <button type="button" class="btn btn-outline-primary">Edit</button>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-hover-color">1000</td>
+                        <td class="td-hover-color">0001</td>
+                        <td class="td-hover-color">Joseph</td>                                        
+                        <td class="td-hover-color">Blanca</td>
+                        <td class="td-hover-color">Orencio</td>
+                        <td class="td-hover-color">IT specialist</td>
+                        <td class="td-hover-color">IT department</td>
+                        <td class="td-hover-color">09236458896</td>
+                        <td class="td-hover-color">asdfagadg@gmail.com</td>
+                        <td class="td-hover-color">Active</td>
+                        <td class="td-hover-color">SOLEDAD</td>
+                        <td class="td-hover-color">2011/04/25</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
+                            <button type="button" class="btn btn-outline-primary">Edit</button>  
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

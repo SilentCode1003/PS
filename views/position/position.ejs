@@ -15,13 +15,13 @@
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-                            <input id="mp_positionname" type="text" class="form-control" placeholder="Enter your position name" aria-label="Username" aria-describedby="basic-addon1">
+                            <input id="positionname" name="positionname" type="text" class="form-control" placeholder="Enter your position name" aria-label="Username" aria-describedby="basic-addon1">
                         </div>
                         <div class="col-md-4 text-center mt-1">
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
+                            <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
                                 <i class="fa fa-plus" aria-hidden="true"></i>
                                 Add
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>      
@@ -32,18 +32,18 @@
     <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="10">
+            <table class="table table-bordered" id="position-dataTable" width="100%" cellspacing="10">
                 <thead>
                     <tr>
                         <th class = "col-1 text-start">Position Code</th>
                         <th class = "col-3 text-center">Position Name</th>
                         <th class = "col-3 text-center">Created by</th>
                         <th class = "col-2 text-center">Created date</th>
-                        <th class = "col-2 text-center">Status</th>
+                        <th class = "col-1 text-center">Status</th>
                         <th class = "col-2 text-end">Action</th>               
                     </tr>
                 </thead>

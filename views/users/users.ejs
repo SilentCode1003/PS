@@ -5,7 +5,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-3">
         <h1 class="page-title">Users</h1>
     </div>
-    <!-- Content Row -->
+    <!-- Content Row --> 
     <div class="row mb-2">
         <div class="col-lg-12">
             <div class="card">
@@ -13,44 +13,34 @@
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <label class="form-label" for="mu_fullname">Fullname</label>
-                            <input id="mu_fullname" type="text" class="form-control" placeholder="Enter your fullname" aria-label="fullname" aria-describedby="basic-addon1">
+                            <input id="fullname" name="fullname" type="text" class="form-control" placeholder="Enter your fullname" aria-label="fullname" aria-describedby="basic-addon1">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label" for="mu_username">Username</label>
-                            <input id="mu_username" type="text" class="form-control" placeholder="Enter your username" aria-label="fullname" aria-describedby="basic-addon1">    
+                            <input id="username" name="username" type="text" class="form-control" placeholder="Enter your username" aria-label="fullname" aria-describedby="basic-addon1">    
                         </div>
                         <div class="col-md-4">
                             <label class="form-label" for="mu_password">Password</label>
-                            <input id="mu_password" type="text" class="form-control" placeholder="Enter your password" aria-label="fullname" aria-describedby="basic-addon1">    
+                            <input id="password" name="password" type="password" class="form-control" placeholder="Enter your password" aria-label="fullname" aria-describedby="basic-addon1">    
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <select class="entry-input form-control mb-2" name="rolelist" id="rolelist">
-                                <option value="">Role</option>
-                            <option value="IT SERVICE PROVIDER" id="">
-                                IT SERVICE PROVIDER</option>
-                                <option value="AGENT" id="">AGENT</option>
-                                <option value="ONSITE" id="">ONSITE</option>
+                                <option value="">- - - Select Role - - -</option>
                             </select>        
                         </div>
                         <div class="col-md-6">
                             <select class="entry-input form-control" name="positionlist" id="positionlist">
-                                <option value="">Position</option>
-                            <option value="IT SERVICE ENGINEER" id="">
-                                IT SERVICE ENGINEER</option>
-                                <option value="HELPDESK" id="">HELPDESK</option>
-                                <option value="INSTALLER" id="">INSTALLER</option>
-                                <option value="TECHSUPPORT" id="">TECHSUPPORT</option>
-                                <option value="DEVELOPER" id="">DEVELOPER</option>
+                                <option value="">- - - Select Position - - -</option>
                             </select>       
                         </div>
                     </div>
                     <div class="col-md-4 mt-4">
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
+                        <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Add
-                        </a>
+                        </button>
                     </div>
                 </div>      
             </div>
@@ -60,23 +50,23 @@
     <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="10">
+            <table class="table table-bordered" id="users-datatable" width="100%" cellspacing="10">
                 <thead>
                     <tr>
                         <th class = "col-1 text-start">User code</th>
-                        <th class = "col-3 text-center">User fullname</th>
+                        <th class = "col-2 text-center">User fullname</th>
                         <th class = "col-1 text-center">Username</th>
-                        <th class = "col-3 text-center">Password</th>
-                        <th class = "col-2 text-center">Role type</th>
-                        <th class = "col-2 text-end">Access type</th>
-                        <th class = "col-2 text-end">Status</th>
-                        <th class = "col-2 text-end">Created by</th>
-                        <th class = "col-2 text-end">Created date</th>
-                        <th class = "col-2 text-end">Action</th>               
+                        <th class = "col-1 text-center">Password</th>
+                        <th class = "col-1 text-center">Role type</th>
+                        <th class = "col-1 text-center">Access type</th>
+                        <th class = "col-1 text-center">Status</th>
+                        <th class = "col-2 text-center">Created by</th>
+                        <th class = "col-2 text-center">Created date</th>
+                        <th class = "col-3 text-center">Action</th>               
                     </tr>
                 </thead>
                     

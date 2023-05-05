@@ -1,0 +1,176 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+        LoadList();
+
+        $(document).on('click', '#addBtn', function () {
+            let employeeid = $('#employeeid').val();
+            let firstname = $('#firstname').val();
+            let middlename = $('#middlename').val();
+            let lastname = $('#lastname').val();
+            let positionlist = $('#positionlist').val();
+            let departmentlist = $('#departmentlist').val();
+            let contactnumber = $('#contactnumber').val();
+            let email = $('#email').val();
+
+            var message = "";
+            
+            if (employeeid == '') { message += 'Employee ID ' }
+            if (firstname == '') { message += 'First Name ' }
+            if (middlename == '') { message += 'Middle Name ' }
+            if (lastname == '') { message += 'Last Name ' }
+            if (contactnumber == '') { message += 'Contact Number ' }
+            if (departmentlist == '') { message += 'Department ' }
+            if (positionlist == '') { message += 'Position ' }
+            if (email == '') { message += 'Email' }
+
+            
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/employee/save',
+                    data: {
+                        employeeid: employeeid,
+                        firstname: firstname,
+                        middlename: middlename,
+                        lastname: lastname,
+                        positionlist: positionlist,
+                        departmentlist: departmentlist,
+                        contactnumber: contactnumber,
+                        email: email,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/department/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.departmentname, item.departmentname);
+                        $(options).html(item.departmentname);
+                        $('#departmentlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/position/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.positionname, item.positionname);
+                        $(options).html(item.positionname);
+                        $('#positionlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        } 
+
+        function LoadTable() {
+            $('#employee_dataTable').DataTable({
+                'destroy': true,
+                'processing': true,
+                'serverSide': true,
+                'paging': false,
+                'searching': false,
+                'info': false,
+                'scrollY': 400,
+                'scrollCollapse': true,
+                'serverMethod': 'GET',
+                'ajax': {
+                    'url': '/employee/load',
+                    'dataSrc': (json) => {
+                        var finalData = [];
+                        var data = json.data;
+
+                        console.log(data);
+                        $.each(data, (key, item) => {
+                            var action = '';
+                            var status = item.status;
+
+                            if (status == 'ACTIVE') {
+                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
+                            }
+                            if (status == 'INACTIVE') {
+                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
+                            }
+
+                            finalData.push({
+                                systemid: item.systemid,
+                                employeeid: item.employeeid,
+                                firstname: item.firstname,
+                                middlename: item.middlename,
+                                lastname: item.lastname,
+                                position: item.position,
+                                department: item.department,
+                                contactnumber: item.contactnumber,
+                                email: item.email,
+                                status: item.status,
+                                createdby: item.createdby,
+                                createddate: item.createddate,
+                                action: action,
+                            })
+
+                        })
+ 
+                        return finalData;
+                    },
+                },
+                'columnDefs': [{
+                    targets: 1,
+                    className: 'td-indent',
+                }],
+                'columns': [
+                    { data: 'systemid' },
+                    { data: 'employeeid' },
+                    { data: 'firstname' },
+                    { data: 'middlename' },
+                    { data: 'lastname' },
+                    { data: 'position' },
+                    { data: 'department' },
+                    { data: 'contactnumber' },
+                    { data: 'email' },
+                    { data: 'status' },
+                    { data: 'createdby' },
+                    { data: 'createddate' },
+                    { data: 'action' },
+                ],
+                initComplete: function () {
+                    console.log('init complete');
+                }
+            });
+        }
+    })
+</script>

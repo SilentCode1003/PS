@@ -12,11 +12,37 @@ var positionRouter = require('./routes/position');
 var accessRouter = require('./routes/access');
 var employeeRouter = require('./routes/employee');
 
-
-
-
-
 var app = express();
+
+const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoDBSession = require('connect-mongodb-session')(session);
+
+const mysql = require('./routes/repository/payrolldb');
+
+//mongodb
+mongoose.connect('mongodb://localhost:27017/PayRoll')
+  .then((res) => {
+    console.log("MongoDB Connected!");
+  });
+
+const store = new MongoDBSession({
+  uri: 'mongodb://localhost:27017/Ticketing',
+  collection: 'PayRollSessions',
+});
+
+//Session
+app.use(
+  session({
+    secret: "5L Secret Key",
+    resave: false,
+    saveUninitialized: false,
+    store: store
+  })
+);
+
+//Check SQL Connection
+mysql.CheckConnection();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,12 +62,6 @@ app.use('/position', positionRouter);
 app.use('/access', accessRouter);
 app.use('/employee', employeeRouter);
 
-
-
-
-
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -59,3 +79,5 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+

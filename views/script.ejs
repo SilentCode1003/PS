@@ -14,3 +14,37 @@
 
 <!-- PCreated by level custom scripts -->
 <script src="/javascripts/js/demo/datatables-demo.js"></script>
+
+<!-- SWAL-->
+<script src="/javascripts/sweetalert.min.js"></script>
+
+<script>
+    function success(title, text) {
+        swal({
+            title: title,
+            text: text,
+            icon: "success",
+        });
+    }
+    function warning(title, text) {
+        swal({
+            title: title,
+            text: text,
+            icon: "warning",
+        });
+    }
+    function info(title, text) {
+        swal({
+            title: title,
+            text: text,
+            icon: "info",
+        });
+    }
+    function errormsg(err) {
+        swal({
+            title: "Error!",
+            text: err,
+            icon: "error",
+        });
+    }
+</script>

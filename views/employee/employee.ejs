@@ -10,57 +10,53 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-2">
+                            <label class="form-label" for="departmentname">Employee ID</label>
+                            <input id="employeeid" name="employeeid" type="text" class="form-control" placeholder="Enter your employee ID" aria-label="fullname" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
                     <div class="row mb-4">
                         <div class="col-md-4">
-                            <label class="form-label" for="md_departmentname">Firstname</label>
-                            <input id="me_firstname" type="text" class="form-control" placeholder="Enter your firstname" aria-label="fullname" aria-describedby="basic-addon1">
+                            <label class="form-label" for="departmentname">Firstname</label>
+                            <input id="firstname" name="firstname" type="text" class="form-control" placeholder="Enter your firstname" aria-label="fullname" aria-describedby="basic-addon1">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label" for="md_departmentname">Middlename</label>
-                            <input id="me_middlename" type="text" class="form-control" placeholder="Enter your middlename" aria-label="fullname" aria-describedby="basic-addon1">    
+                            <label class="form-label" for="departmentname">Middlename</label>
+                            <input id="middlename" name="middlename" type="text" class="form-control" placeholder="Enter your middlename" aria-label="fullname" aria-describedby="basic-addon1">    
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label" for="md_departmentname">Lastname</label>
-                            <input id="me_lastname" type="text" class="form-control" placeholder="Enter your lastname" aria-label="fullname" aria-describedby="basic-addon1">    
+                            <label class="form-label" for="departmentname">Lastname</label>
+                            <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Enter your lastname" aria-label="fullname" aria-describedby="basic-addon1">    
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label class="form-label" for="md_departmentname">Contact number</label>
-                            <input id="me_contactnumber" type="text" class="form-control" placeholder="Enter your contact number" aria-label="fullname" aria-describedby="basic-addon1">
+                            <label class="form-label" for="departmentname">Contact number</label>
+                            <input id="contactnumber" name="contactnumber" type="tel" class="form-control" placeholder="Enter your contact number" aria-label="fullname" aria-describedby="basic-addon1">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label" for="md_departmentname">E-mail address</label>
-                            <input id="me_email" type="text" class="form-control" placeholder="Enter your email add" aria-label="fullname" aria-describedby="basic-addon1">
+                            <label class="form-label" for="departmentname">E-mail address</label>
+                            <input id="email" name="email" type="email" class="form-control" placeholder="Enter your email add" aria-label="fullname" aria-describedby="basic-addon1">
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <select class="entry-input form-control mb-2" name="rolelist" id="rolelist">
-                                <option value="">Department</option>
-                            <option value="IT SERVICE PROVIDER" id="">
-                                IT SERVICE PROVIDER</option>
-                                <option value="AGENT" id="">AGENT</option>
-                                <option value="ONSITE" id="">ONSITE</option>
+                            <select class="entry-input form-control mb-2" name="departmentlist" id="departmentlist">
+                                <option value="">- - - Select Department - - -</option>
                             </select>        
                         </div>
                         <div class="col-md-6">
                             <select class="entry-input form-control" name="positionlist" id="positionlist">
-                                <option value="">Position</option>
-                            <option value="IT SERVICE ENGINEER" id="">
-                                IT SERVICE ENGINEER</option>
-                                <option value="HELPDESK" id="">HELPDESK</option>
-                                <option value="INSTALLER" id="">INSTALLER</option>
-                                <option value="TECHSUPPORT" id="">TECHSUPPORT</option>
-                                <option value="DEVELOPER" id="">DEVELOPER</option>
+                                <option value="">- - - Select Position - - -</option>
                             </select>       
                         </div>
                     </div>
                     <div class="col-md-4 mt-4">
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
+                        <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Add
-                        </a>
+                        </button> 
                     </div>
                 </div>      
             </div>
@@ -70,11 +66,11 @@
     <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="10">
+            <table class="table table-bordered" id="employee_dataTable" width="100%" cellspacing="10">
                 <thead>
                     <tr>
                         <th class = "col-1 text-start">System ID</th>

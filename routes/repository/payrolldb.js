@@ -95,6 +95,10 @@ exports.Select = (sql, table, callback) => {
                 callback(null, model.MasterEmployee(results));
             }
 
+            if (table == 'TimeRecord') {
+                callback(null, model.TimeRecord(results));
+            }
+
         });
 
     } catch (error) {

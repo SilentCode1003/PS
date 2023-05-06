@@ -71,3 +71,13 @@ button{
     background-color: var(--clr-btn);
     color: var(--clr-white);
 }
+
+table {
+    border-collapse: collapse;
+  }
+  
+  td {
+    border: 1px solid black;
+    padding: 5px;
+    width: auto;
+  }

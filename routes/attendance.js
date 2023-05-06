@@ -18,7 +18,7 @@ router.get('/load', (req, res) => {
   try {
       let sql = `select * from time_record`;
 
-      mysql.Select(sql, 'TimeReocrd', (err, result) => {
+      mysql.Select(sql, 'TimeRecord', (err, result) => {
           if (err) {
               return res.json({
                   msg: err

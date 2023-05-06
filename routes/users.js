@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
     // position: req.session.position
   });
 });
-
+ 
 module.exports = router;
 
 router.get('/load', (req, res) => {

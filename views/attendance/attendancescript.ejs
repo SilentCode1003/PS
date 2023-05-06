@@ -1,7 +1,6 @@
 <script>
     $(document).ready(function () {
             LoadTable();
-            LoadList();
       
             $(document).on('click', '#addBtn', function () {
                 let fullname = $('#fullname').val();
@@ -48,44 +47,6 @@
                     })
                 }
             })
-    
-            function LoadList() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/roles/load',
-                    success: function (result) {
-                        var data = result.data;
-    
-                        $.each(data, function (key, item) {
-                            var options = new Option(item.rolename, item.rolename);
-                            $(options).html(item.rolename);
-                            $('#rolelist').append(options);
-                        });
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-    
-                $.ajax({
-                    type: 'GET',
-                    url: '/position/load',
-                    success: function (result) {
-                        var data = result.data;
-    
-                        $.each(data, function (key, item) {
-                            var options = new Option(item.positionname, item.positionname);
-                            $(options).html(item.positionname);
-                            $('#positionlist').append(options);
-                        });
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            } 
           
         function LoadTable() {
                 $('#attendance-dataTable').DataTable({
@@ -134,15 +95,15 @@
                         className: 'td-indent',
                     }],
                     'columns': [
-                        { data: 'usercode' },
-                        { data: 'fullname' },
-                        { data: 'username' },
-                        { data: 'password' },
-                        { data: 'roletype' },
-                        { data: 'accesstype' },
+                        { data: 'employeeid' },
+                        { data: 'date' },
+                        { data: 'starttime' },
+                        { data: 'starttimelocation' },
+                        { data: 'endtime' },
+                        { data: 'endtimelocation' },
+                        { data: 'startimedevice' },
+                        { data: 'endtimedevice' },
                         { data: 'status' },
-                        { data: 'createdby' },
-                        { data: 'createddate' },
                         { data: 'action' },
                     ],
                     initComplete: function () {

@@ -11,6 +11,11 @@ var rolesRouter = require('./routes/roles');
 var positionRouter = require('./routes/position');
 var accessRouter = require('./routes/access');
 var employeeRouter = require('./routes/employee');
+var attendanceRouter = require('./routes/attendance');
+var governmentidRouter = require('./routes/governmentid');
+var deductionRouter = require('./routes/deduction');
+var allowanceRouter = require('./routes/allowance');
+var payrollRouter = require('./routes/payroll');
 
 var app = express();
 
@@ -61,6 +66,11 @@ app.use('/roles', rolesRouter);
 app.use('/position', positionRouter);
 app.use('/access', accessRouter);
 app.use('/employee', employeeRouter);
+app.use('/attendance', attendanceRouter);
+app.use('/governmentid', governmentidRouter);
+app.use('/deduction', deductionRouter);
+app.use('/allowance', allowanceRouter);
+app.use('/payroll', payrollRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

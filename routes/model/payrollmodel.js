@@ -68,7 +68,7 @@ exports.MasterPosition = (data) => {
     });
 
     return dataResult;
-}
+} 
 
 exports.MasterDepartment = (data) => {
     let dataResult = [];

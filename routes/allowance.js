@@ -13,3 +13,28 @@ router.get('/', function (req, res, next) {
 });
 
 module.exports = router;
+
+router.get('/load', (req, res) => {
+  try {
+      let sql = `select * from employee_allowance`;
+
+      mysql.Select(sql, 'EmployeeAllowance', (err, result) => {
+          if (err) {
+              return res.json({
+                  msg: err
+              })
+          }
+
+          console.log(helper.GetCurrentDatetime());
+
+          res.json({
+              msg: 'success',
+              data: result
+          })
+      });
+  } catch (error) {
+      res.json({
+          msg: error
+      })
+  }
+})

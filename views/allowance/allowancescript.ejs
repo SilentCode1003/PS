@@ -1,0 +1,107 @@
+<script>
+    $(document).ready(function () {
+            LoadTable();
+      
+            $(document).on('click', '#addBtn', function () {
+                let fullname = $('#fullname').val();
+                let username = $('#username').val();
+                let password = $('#password').val();
+                let roletype = $('#rolelist').val();
+                let accesstype = $('#positionlist').val();
+                var message = "";
+    
+                if (fullname == '') { message += 'FULLNAME ' }
+                if (username == '') { message += 'USERNAME ' }
+                if (password == '') { message += 'PASSWORD ' }
+                if (roletype == '') { message += 'ROLE ' }
+                if (accesstype == '') { message += 'POSITION ' }
+    
+                if (message != '') {
+                    warning('Required', `Please fill up ${message}`);
+                }
+                else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/users/save',
+                        data: {
+                            fullname: fullname,
+                            username: username,
+                            password: password,
+                            roletype: roletype,
+                            accesstype: accesstype,
+                        },
+                        success: function (result) {
+                            if (result.msg == 'success') {
+                                LoadTable();
+                                success('Saved', 'Successfully')
+                            }
+    
+                            if (result.msg == 'exist') {
+                                warning('Exist', `${fullname} has already registered!`);
+                            }
+    
+                        },
+                        error: function (err) {
+                            errormsg(err);
+                        }
+                    })
+                }
+            })
+          
+        function LoadTable() {
+                $('#allowance-dataTable').DataTable({
+                    'destroy': true,
+                    'processing': true,
+                    'serverSide': true,
+                    'paging': false,
+                    'searching': false,
+                    'info': false,
+                    'scrollY': 400,
+                    'scrollCollapse': true,
+                    'serverMethod': 'GET',
+                    'ajax': {
+                        'url': '/allowance/load',
+                        'dataSrc': (json) => {
+                            var finalData = [];
+                            var data = json.data;
+    
+                            console.log(data);
+                            $.each(data, (key, item) => {
+                                var action = '';
+                                var status = item.status;
+    
+                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button>'
+    
+                                finalData.push({
+                                    employeeid: item.employeeid,
+                                    allowance: item.allowance,
+                                    status: item.status,
+                                    createdby: item.createdby,
+                                    createddate: createddate,
+                                    action: action,
+                                })
+    
+                            })
+    
+                            return finalData;
+                        },
+                    },
+                    'columnDefs': [{
+                        targets: 1,
+                        className: 'td-indent',
+                    }],
+                    'columns': [
+                        { data: 'employeeid' },
+                        { data: 'allowance' },
+                        { data: 'status' },
+                        { data: 'createdby' },
+                        { data: 'createddate' },
+                        { data: 'action' },
+                    ],
+                    initComplete: function () {
+                        console.log('init complete');
+                    }
+                });
+            }
+        })
+    </script>

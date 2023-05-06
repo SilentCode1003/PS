@@ -64,7 +64,7 @@ exports.Select = (sql, table, callback) => {
     try {
         connection.connect((err) => { return err; })
         connection.query(sql, (error, results, fields) => {
-
+ 
             // console.log(results);
 
             if (error) {

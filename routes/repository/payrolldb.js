@@ -99,6 +99,26 @@ exports.Select = (sql, table, callback) => {
                 callback(null, model.TimeRecord(results));
             }
 
+            if (table == 'EmployeeGovernmentIdDetails') {
+                callback(null, model.EmployeeGovernmentIdDetails(results));
+            }
+
+            if (table == 'EmployeeDeductionDetails') {
+                callback(null, model.EmployeeDeductionDetails(results));
+            }
+
+            if (table == 'EmployeeAllowance') {
+                callback(null, model.EmployeeAllowance(results));
+            }
+
+            if (table == 'EmployeeSalary') {
+                callback(null, model.EmployeeSalary(results));
+            }
+
+            if (table == 'PayrollDetail') {
+                callback(null, model.PayrollDetail(results));
+            }
+
         });
 
     } catch (error) {
@@ -298,6 +318,130 @@ exports.InsertTable = (tablename, data, callback) => {
             me_status,
             me_createdby,
             me_createddate) VALUES ?`;
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'time_record') {
+        let sql = `INSERT INTO time_record(
+            tr_employeeid,
+            tr_date,
+            tr_starttime,
+            tr_starttimelocation,
+            tr_endtime,
+            tr_endtimelocation,
+            tr_starttimedevice,
+            tr_endtimedevice,
+            tr_status) VALUES ?`;
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'employee_government_id_details') {
+        let sql = `INSERT INTO employee_government_id_details(
+            egid_employeeid,
+            egid_sss,
+            egid_ssscontribution,
+            egid_hdmf,
+            egid_hdmfcontribution,
+            egid_philhealth,
+            egid_philhealthcontribution,
+            egid_status,
+            egid_createdby,
+            egid_createddate) VALUES ?`;
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'employee_deduction_details') {
+        let sql = `INSERT INTO employee_deduction_details(
+            egid_employeeid,
+            egid_sss,
+            egid_ssscontribution,
+            egid_hdmf,
+            egid_hdmfcontribution,
+            egid_philhealth,
+            egid_philhealthcontribution,
+            egid_status,
+            egid_createdby,
+            egid_createddate) VALUES ?`;
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'employee_allowance') {
+        let sql = `INSERT INTO employee_allowance(
+            ea_employeeid,
+            ea_allowance,
+            ea_status,
+            ea_createdby,
+            ea_createddate) VALUES ?`;
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'employee_salary') {
+        let sql = `INSERT INTO employee_salary(
+            es_employeeid,
+            es_firstname,
+            es_middlename,
+            es_lastname,
+            es_department,
+            es_position,
+            es_dailyrate,
+            es_monthlysalary,
+            es_updateby,
+            es_updateddate,
+            es_status,
+            es_createdby,
+            es_createddate) VALUES ?`;
+        this.Insert(sql, data, (err, result) => {
+            if (err) {
+                callback(err, null);
+            }
+            callback(null, result)
+        })
+    }
+
+    if (tablename == 'payroll_detail') {
+        let sql = `INSERT INTO payroll_detail(
+            pd_detailid,
+            pd_employeeid,
+            pd_payrolldate,
+            pd_datecovered,
+            pd_absences,
+            pd_late,
+            pd_undertime,
+            pd_allowance,
+            pd_cashadvance,
+            pd_sss,
+            pd_sssloan,
+            pd_philhealth,
+            pd_hmdf,
+            pd_tax,
+            pd_status,
+            pd_createdby,
+            pd_createddate) VALUES ?`;
         this.Insert(sql, data, (err, result) => {
             if (err) {
                 callback(err, null);

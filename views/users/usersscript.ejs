@@ -67,7 +67,7 @@ $(document).ready(function () {
                     errormsg(err);
                 }
             })
-
+ 
             $.ajax({
                 type: 'GET',
                 url: '/position/load',
@@ -89,7 +89,7 @@ $(document).ready(function () {
       
     function LoadTable() {
             $('#users-datatable').DataTable({
-                'destroy': true,
+                'destroy': true, 
                 'processing': true,
                 'serverSide': true,
                 'paging': false,

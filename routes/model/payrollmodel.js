@@ -35,7 +35,7 @@ exports.MasterRoleType = (data) => {
  
     return dataResult;
 }
- 
+  
 exports.MasterAccessType = (data) => {
     let dataResult = [];
 
@@ -149,7 +149,7 @@ exports.EmployeeGovernmentIdDetails = (data) => {
             createdby: key.egid_createdby,
             createddate: key.egid_createddate,
         })
-    });
+    }); 
  
     return dataResult;
 }

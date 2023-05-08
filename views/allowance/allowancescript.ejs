@@ -1,34 +1,27 @@
 <script>
     $(document).ready(function () {
             LoadTable();
+            LoadList();
       
             $(document).on('click', '#addBtn', function () {
-                let fullname = $('#fullname').val();
-                let username = $('#username').val();
-                let password = $('#password').val();
-                let roletype = $('#rolelist').val();
-                let accesstype = $('#positionlist').val();
+                let employeeid = $('#employeeid').val();
+                let allowance = $('#allowance').val();
+ 
                 var message = "";
     
-                if (fullname == '') { message += 'FULLNAME ' }
-                if (username == '') { message += 'USERNAME ' }
-                if (password == '') { message += 'PASSWORD ' }
-                if (roletype == '') { message += 'ROLE ' }
-                if (accesstype == '') { message += 'POSITION ' }
-    
+                if (employeeid == '') { message += 'Employee ID ' }
+                if (allowance == '') { message += 'And Allowance ' }
+
                 if (message != '') {
                     warning('Required', `Please fill up ${message}`);
                 }
                 else {
                     $.ajax({
                         type: 'POST',
-                        url: '/users/save',
+                        url: '/allowance/save',
                         data: {
-                            fullname: fullname,
-                            username: username,
-                            password: password,
-                            roletype: roletype,
-                            accesstype: accesstype,
+                            employeeid: employeeid,
+                            allowance: allowance,
                         },
                         success: function (result) {
                             if (result.msg == 'success') {
@@ -47,6 +40,27 @@
                     })
                 }
             })
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/employee/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.employeeid, item.employeeid);
+                        $(options).html(item.employeeid);
+                        $('#employeeid').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+ 
+        }     
           
         function LoadTable() {
                 $('#allowance-dataTable').DataTable({
@@ -69,15 +83,20 @@
                             $.each(data, (key, item) => {
                                 var action = '';
                                 var status = item.status;
-    
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button>'
-    
+
+                                if (status == 'ACTIVE') {
+                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
+                                }
+                                if (status == 'INACTIVE') {
+                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
+                                }
+
                                 finalData.push({
                                     employeeid: item.employeeid,
                                     allowance: item.allowance,
                                     status: item.status,
                                     createdby: item.createdby,
-                                    createddate: createddate,
+                                    createddate: item.createddate,
                                     action: action,
                                 })
     

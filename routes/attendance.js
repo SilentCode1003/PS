@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+const mysql = require('./repository/payrolldb');
+const helper = require('./repository/customhelper');
+const dictionary = require('./repository/dictionary');
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('attendance', {

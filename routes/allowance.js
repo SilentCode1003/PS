@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
+const mysql = require('./repository/payrolldb');
+const helper = require('./repository/customhelper');
+const dictionary = require('./repository/dictionary');
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('allowance', {
@@ -37,4 +41,38 @@ router.get('/load', (req, res) => {
           msg: error
       })
   }
+})
+
+router.post('/save', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let allowance = req.body.allowance;
+        let status = dictionary.GetValue(dictionary.ACT());
+        let createdby = "Sample Data";
+        let createdate = helper.GetCurrentDatetime();
+        let data = [];
+
+        data.push([
+            employeeid,
+            allowance,
+            status,
+            createdby,
+            createdate
+        ])
+
+        mysql.InsertTable('employee_allowance', data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            console.log(result);
+
+            res.json({
+                msg: 'success',
+            })
+        })
+    }
+    catch (error) {
+        res.json({
+            msg: error
+        })
+    }
 })

@@ -13,13 +13,19 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label class="form-label" for="md_departmentname">Employee ID</label>
-                            <select class="entry-input form-control mb-2" name="rolelist" id="rolelist">
+                            <select class="entry-input form-control mb-2" name="employeeid" id="employeeid">
                                 <option value="">--Select here--</option>
                             </select>                        
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="md_departmentname">Allowance</label>
                             <input id="allowance" name="allowance" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="col-md-4 mt-4">
+                            <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                Add
+                            </button>
                         </div>
                     </div>
                 </div>      
@@ -47,41 +53,7 @@
                 </thead>
                     
                 <tbody>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">42069</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2004/05/15</td>
-                        <td class="text-center">
-                            <button id="" name="" type="button" class="btn btn-outline-primary button-margin ">Inactive</button>
-                            <button id="" name="" type="button" class="btn btn-outline-primary ">Edit</button>  
-                        </td>                                  
-                    </tr>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">42069</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2004/05/15</td>
-                        <td class="text-center">
-                            <button id="" name="" type="button" class="btn btn-outline-primary button-margin ">Inactive</button>
-                            <button id="" name="" type="button" class="btn btn-outline-primary ">Edit</button>  
-                        </td>                                
-                    </tr>                                   
-                    </tr>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">42069</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2004/05/15</td>
-                        <td class="text-center">
-                            <button id="" name="" type="button" class="btn btn-outline-primary button-margin ">Inactive</button>
-                            <button id="" name="" type="button" class="btn btn-outline-primary ">Edit</button>  
-                        </td>                             
-                    </tr>                                  
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>

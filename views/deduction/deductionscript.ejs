@@ -1,20 +1,30 @@
 <script>
     $(document).ready(function () {
             LoadTable();
+            LoadList(); 
       
             $(document).on('click', '#addBtn', function () {
-                let fullname = $('#fullname').val();
-                let username = $('#username').val();
-                let password = $('#password').val();
-                let roletype = $('#rolelist').val();
-                let accesstype = $('#positionlist').val();
+                let employeeid = $('#employeeid').val();
+                let late = $('#late').val();
+                let absent = $('#absent').val();
+                let sss = $('#sss').val();
+                let hdmf = $('#hdmf').val();
+                let philhealth = $('#philhealth').val();
+                let cashadvance = $('#cashadvance').val();
+                let loan = $('#loan').val();
+                let tax = $('#tax').val();
+
                 var message = "";
     
-                if (fullname == '') { message += 'FULLNAME ' }
-                if (username == '') { message += 'USERNAME ' }
-                if (password == '') { message += 'PASSWORD ' }
-                if (roletype == '') { message += 'ROLE ' }
-                if (accesstype == '') { message += 'POSITION ' }
+                if (employeeid == '') { message += 'Employeeid ' }
+                if (late == '') { message += 'Late ' }
+                if (absent == '') { message += 'Absent ' }
+                if (sss == '') { message += 'SSS ' }
+                if (hdmf == '') { message += 'HDMF ' }
+                if (philhealth == '') { message += 'Philhealth ' }
+                if (cashadvance == '') { message += 'Cashadvance ' }
+                if (loan == '') { message += 'Loan ' }
+                if (tax == '') { message += 'Tax ' }
     
                 if (message != '') {
                     warning('Required', `Please fill up ${message}`);
@@ -22,13 +32,17 @@
                 else {
                     $.ajax({
                         type: 'POST',
-                        url: '/users/save',
+                        url: '/deduction/save',
                         data: {
-                            fullname: fullname,
-                            username: username,
-                            password: password,
-                            roletype: roletype,
-                            accesstype: accesstype,
+                            employeeid: employeeid,
+                            late: late,
+                            absent: absent,
+                            sss: sss,
+                            hdmf: hdmf,
+                            philhealth: philhealth,
+                            cashadvance: cashadvance,
+                            loan: loan,
+                            tax: tax,
                         },
                         success: function (result) {
                             if (result.msg == 'success') {
@@ -47,6 +61,27 @@
                     })
                 }
             })
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/employee/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.employeeid, item.employeeid);
+                        $(options).html(item.employeeid);
+                        $('#employeeid').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+        }         
           
         function LoadTable() {
                 $('#deduction-dataTable').DataTable({
@@ -68,14 +103,8 @@
                             console.log(data);
                             $.each(data, (key, item) => {
                                 var action = '';
-                                var status = item.status;
-    
-                                if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
-                                }
-                                if (status == 'INACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
-                                }
+
+                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button>';
     
                                 finalData.push({
                                     employeeid: item.employeeid,

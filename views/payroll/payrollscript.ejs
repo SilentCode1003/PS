@@ -1,0 +1,161 @@
+<script>
+    $(document).ready(function () {
+        LoadTable();
+    
+        $(document).on('click', '#addBtn', function () {
+            let employeeid = $('#employeeid').val();
+            let payrolldate = $('#payrolldate').val();
+            let datecovered = $('#datecovered').val();
+            let absences = $('#absences').val();
+            let late = $('#late').val();
+            let undertime = $('#undertime').val();
+            let allowance = $('#allowance').val();
+            let cashadvance = $('#cashadvance').val();
+            let sss = $('#sss').val();
+            let sssloan = $('#sssloan').val();
+            let philhealth = $('#philhealth').val();
+            let hmdf = $('#hmdf').val();
+            let tax = $('#tax').val();
+
+            var message = "";
+
+            if (employeeid == '') { message += 'USERNAME ' }
+            if (payrolldate == '') { message += 'PASSWORD ' }
+            if (datecovered == '') { message += 'ROLE ' }
+            if (absences == '') { message += 'POSITION ' }
+            if (late == '') { message += 'FULLNAME ' }
+            if (undertime == '') { message += 'USERNAME ' }
+            if (allowance == '') { message += 'PASSWORD ' }
+            if (cashadvance == '') { message += 'ROLE ' }
+            if (sss == '') { message += 'POSITION ' }
+            if (sssloan == '') { message += 'FULLNAME ' }
+            if (philhealth == '') { message += 'USERNAME ' }
+            if (hmdf == '') { message += 'PASSWORD ' }
+            if (tax == '') { message += 'ROLE ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/payroll/save',
+                    data: {
+                        employeeid: employeeid,
+                        payrolldate: payrolldate,
+                        datecovered: datecovered,
+                        absences: absences,
+                        late: late,
+                        undertime: undertime,
+                        allowance: allowance,
+                        cashadvance: cashadvance,
+                        sss: sss,
+                        sssloan: sssloan,
+                        philhealth,
+                        hmdf: hmdf,
+                        tax: tax,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+        
+        function LoadTable() {
+                $('#payroll_dataTable').DataTable({
+                    'destroy': true,
+                    'processing': true,
+                    'serverSide': true,
+                    'paging': false,
+                    'searching': false,
+                    'info': false,
+                    'scrollY': 400,
+                    'scrollCollapse': true,
+                    'serverMethod': 'GET',
+                    'ajax': {
+                        'url': '/payroll/load',
+                        'dataSrc': (json) => {
+                            var finalData = [];
+                            var data = json.data;
+    
+                            console.log(data);
+                            $.each(data, (key, item) => {
+                                var action = '';
+                                var status = item.status;
+    
+                                if (status == 'ACTIVE') {
+                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
+                                }
+                                if (status == 'INACTIVE') {
+                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
+                                }
+    
+                                finalData.push({
+                                    detailid: item.detailid,
+                                    employeeid: item.employeeid,
+                                    payrolldate: item.payrolldate,
+                                    datecovered: item.datecovered,
+                                    absences: item.absences,
+                                    late: item.late,
+                                    undertime: item.undertime,
+                                    allowance: item.allowance,
+                                    cashadvance: item.cashadvance,
+                                    sss: item.sss,
+                                    sssloan: item.sssloan,
+                                    philhealth: item.philhealth,
+                                    hmdf: item.hmdf,
+                                    tax: item.tax,
+                                    status: item.status,
+                                    createdby: item.createdby,
+                                    createddate: item.createddate,
+                                    action: action,
+                                })
+    
+                            })
+    
+                            return finalData;
+                        },
+                    },
+                    'columnDefs': [{
+                        targets: 1,
+                        className: 'td-indent',
+                    }],
+                    'columns': [
+                        { data: 'detailid' },
+                        { data: 'employeeid' },
+                        { data: 'payrolldate' },
+                        { data: 'datecovered' },
+                        { data: 'absences' },
+                        { data: 'late' },
+                        { data: 'undertime' },
+                        { data: 'allowance' },
+                        { data: 'cashadvance' },
+                        { data: 'sss' },
+                        { data: 'sssloan' },
+                        { data: 'philhealth' },
+                        { data: 'hmdf'},
+                        { data: 'tax'},
+                        { data: 'status' },
+                        { data: 'createdby' },
+                        { data: 'createddate' },
+                        { data: 'action' },
+                    ],
+                    initComplete: function () {
+                        console.log('init complete');
+                    }
+                });
+            }
+        })
+    </script>

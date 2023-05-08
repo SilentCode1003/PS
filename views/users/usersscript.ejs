@@ -9,6 +9,7 @@ $(document).ready(function () {
             let password = $('#password').val();
             let roletype = $('#rolelist').val();
             let accesstype = $('#positionlist').val();
+            
             var message = "";
 
             if (fullname == '') { message += 'FULLNAME ' }
@@ -67,7 +68,7 @@ $(document).ready(function () {
                     errormsg(err);
                 }
             })
-
+ 
             $.ajax({
                 type: 'GET',
                 url: '/position/load',
@@ -89,7 +90,7 @@ $(document).ready(function () {
       
     function LoadTable() {
             $('#users-datatable').DataTable({
-                'destroy': true,
+                'destroy': true, 
                 'processing': true,
                 'serverSide': true,
                 'paging': false,
@@ -123,7 +124,7 @@ $(document).ready(function () {
                                 password: item.password,
                                 roletype: item.roletype,
                                 accesstype: item.accesstype,
-                                status: item.accesstype,
+                                status: item.status,
                                 createdby: item.createdby,
                                 createddate: item.createddate,
                                 action: action,

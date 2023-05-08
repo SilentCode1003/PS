@@ -1,52 +1,83 @@
 <script>
     $(document).ready(function () {
-            LoadTable();
-      
-            $(document).on('click', '#addBtn', function () {
-                let fullname = $('#fullname').val();
-                let username = $('#username').val();
-                let password = $('#password').val();
-                let roletype = $('#rolelist').val();
-                let accesstype = $('#positionlist').val();
-                var message = "";
-    
-                if (fullname == '') { message += 'FULLNAME ' }
-                if (username == '') { message += 'USERNAME ' }
-                if (password == '') { message += 'PASSWORD ' }
-                if (roletype == '') { message += 'ROLE ' }
-                if (accesstype == '') { message += 'POSITION ' }
-    
-                if (message != '') {
-                    warning('Required', `Please fill up ${message}`);
-                }
-                else {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/users/save',
-                        data: {
-                            fullname: fullname,
-                            username: username,
-                            password: password,
-                            roletype: roletype,
-                            accesstype: accesstype,
-                        },
-                        success: function (result) {
-                            if (result.msg == 'success') {
-                                LoadTable();
-                                success('Saved', 'Successfully')
-                            }
-    
-                            if (result.msg == 'exist') {
-                                warning('Exist', `${fullname} has already registered!`);
-                            }
-    
-                        },
-                        error: function (err) {
-                            errormsg(err);
+        LoadTable();
+        LoadList();
+
+        $(document).on('click', '#addBtn', function () {
+            let employeeid = $('#employeelist').val();
+            let sss = $('#sss').val();
+            let ssscontribution = $('#ssscontribution').val();
+            let hdmf = $('#hdmf').val();
+            let hdmfcontribution = $('#hdmfcontribution').val();
+            let philhealth = $('#philhealth').val();
+            let philhealthcontribution = $('#philhealthcontribution').val();
+            let status = $('#status').val();
+            let createdby = $('#createdby').val();
+            let createddate = $('#createddate').val();
+            var message = "";
+
+            if (employeeid == '') { message += 'Employee ID ' }
+            if (sss == '') { message += 'SSS ' }
+            if (ssscontribution == '') { message += 'SSS Contribution ' }
+            if (hdmf == '') { message += 'Home Development Mutaul Fund ' }
+            if (hdmfcontribution == '') { message += 'HDMF Contribution ' }
+            if (philhealth == '') { message += 'Philhealth ' }
+            if (philhealthcontribution == '') { message += 'Phil Health Contribution ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/governmentid/save',
+                    data: {
+                        employeeid: employeeid,
+                        sss: sss,
+                        ssscontribution: ssscontribution,
+                        hdmf: hdmf,
+                        hdmfcontribution: hdmfcontribution,
+                        philhealth: philhealth,
+                        philhealthcontribution: philhealthcontribution,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
                         }
-                    })
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/employee/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.employeeid, item.employeeid);
+                        $(options).html(item.employeeid);
+                        $('#employeelist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
                 }
             })
+ 
+        }     
           
         function LoadTable() {
                 $('#governmentID-datatable').DataTable({
@@ -119,4 +150,5 @@
                 });
             }
         })
-    </script>
+
+</script>

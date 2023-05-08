@@ -46,7 +46,7 @@ router.get('/load', (req, res) => {
 
 router.post('/save', (req, res) => {
     try {
-        let fullname = req.body.fullname;
+        let fullname = req.body.fullname; 
         let username = req.body.username;
         let password = req.body.password;
         let roletype = req.body.roletype;
@@ -65,7 +65,7 @@ router.post('/save', (req, res) => {
             status,
             createdby,
             createdate
-        ])
+        ]) 
 
         mysql.InsertTable('master_user', data, (err, result) => {
             if (err) console.error('Error: ', err);

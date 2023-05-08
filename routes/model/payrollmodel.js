@@ -15,7 +15,7 @@ exports.MasterUser = (data) => {
             createddate: key.mu_createddate,
         })
     });
-
+ 
     return dataResult;
 }
  
@@ -35,7 +35,7 @@ exports.MasterRoleType = (data) => {
  
     return dataResult;
 }
- 
+  
 exports.MasterAccessType = (data) => {
     let dataResult = [];
 
@@ -108,6 +108,143 @@ exports.MasterEmployee = (data) => {
         })
     });
 
+    return dataResult;
+}
+
+exports.TimeRecord = (data) => {
+    let dataResult = []; 
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            employeeid: key.tr_employeeid,
+            date: key.tr_date,
+            startime: key.tr_starttime,
+            starttimelocation: key.tr_starttimelocation,
+            endtime: key.tr_endtime,
+            endtimelocation: key.tr_endtimelocation,
+            starttimedevice: key.tr_starttimedevice,
+            endtimedevice: key.tr_endtimedevice,
+            status: key.tr_status,
+        })
+    });
+ 
+    return dataResult;
+}
+
+exports.EmployeeGovernmentIdDetails = (data) => {
+    let dataResult = []; 
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            employeeid: key.egid_employeeid,
+            sss: key.egid_sss,
+            ssscontribution: key.egid_ssscontribution,
+            hdmf: key.egid_hdmf,
+            hdmfcontribution: key.egid_hdmfcontribution,
+            philhealth: key.egid_philhealth,
+            philhealthcontribution: key.egid_philhealthcontribution,
+            status: key.egid_status,
+            createdby: key.egid_createdby,
+            createddate: key.egid_createddate,
+        })
+    }); 
+ 
+    return dataResult;
+}
+
+exports.EmployeeAllowance = (data) => {
+    let dataResult = [];
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            employeeid: key.ea_employeeid,
+            allowance: key.ea_allowance,
+            status: key.ea_status,
+            createdby: key.ea_createdby,
+            createddate: key.ea_createddate, 
+        })
+    });
+
+    return dataResult;
+}
+
+exports.EmployeeDeductionDetails = (data) => {
+    let dataResult = []; 
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            employeeid: key.edd_employeeid,
+            late: key.edd_late,
+            absent: key.edd_absent,
+            sss: key.edd_sss,
+            hdmf: key.edd_hdmf,
+            philhealth: key.edd_philhealth,
+            cashadvance: key.edd_cashadvance,
+            loan: key.edd_loan,
+            tax: key.edd_tax,
+            payrolldate: key.edd_payrolldate,
+            cutoffdate: key.edd_cutoffdate,
+        })
+    });
+ 
+    return dataResult;
+}
+
+exports.EmployeeSalary = (data) => {
+    let dataResult = []; 
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            employeeid: key.es_employeeid,
+            firstname: key.es_firstname,
+            middlename: key.es_middlename,
+            lastname: key.es_lastname,
+            department: key.es_department,
+            position: key.es_position,
+            dailyrate: key.es_dailyrate,
+            monthlysalary: key.es_monthlysalary,
+            updateby: key.es_updateby,
+            status: key.es_status,
+            createdby: key.es_createdby,
+            createddate: key.es_createddate,
+        })
+    });
+ 
+    return dataResult;
+}
+
+exports.PayrollDetail = (data) => {
+    let dataResult = []; 
+
+    data.forEach((key, item) => {
+
+        dataResult.push({
+            detailid: key.pd_detailid,
+            employeeid: key.pd_employeeid,
+            payrolldate: key.pd_payrolldate,
+            datecovered: key.pd_datecovered,
+            absences: key.pd_absences,
+            late: key.pd_late,
+            undertime: key.pd_undertime,
+            allowance: key.pd_allowance,
+            cashadvance: key.pd_cashadvance,
+            sss: key.pd_sss,
+            sssloan: key.pd_sssloan,
+            philhealth: key.pd_philhealth,
+            hmdf: key.pd_hmdf,
+            tax: key.pd_tax,
+            status: key.pd_status,
+            createdby: key.pd_createdby,
+            createddate: key.pd_createddate,
+
+        })
+    });
+ 
     return dataResult;
 }
 

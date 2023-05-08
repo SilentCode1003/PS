@@ -1,92 +1,78 @@
 <script>
     $(document).ready(function () {
-            LoadTable();
-            LoadList();
-      
-            $(document).on('click', '#addBtn', function () {
-                let fullname = $('#fullname').val();
-                let username = $('#username').val();
-                let password = $('#password').val();
-                let roletype = $('#rolelist').val();
-                let accesstype = $('#positionlist').val();
-                var message = "";
+        LoadTable();
     
-                if (fullname == '') { message += 'FULLNAME ' }
-                if (username == '') { message += 'USERNAME ' }
-                if (password == '') { message += 'PASSWORD ' }
-                if (roletype == '') { message += 'ROLE ' }
-                if (accesstype == '') { message += 'POSITION ' }
-    
-                if (message != '') {
-                    warning('Required', `Please fill up ${message}`);
-                }
-                else {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/users/save',
-                        data: {
-                            fullname: fullname,
-                            username: username,
-                            password: password,
-                            roletype: roletype,
-                            accesstype: accesstype,
-                        },
-                        success: function (result) {
-                            if (result.msg == 'success') {
-                                LoadTable();
-                                success('Saved', 'Successfully')
-                            }
-    
-                            if (result.msg == 'exist') {
-                                warning('Exist', `${fullname} has already registered!`);
-                            }
-    
-                        },
-                        error: function (err) {
-                            errormsg(err);
+        $(document).on('click', '#addBtn', function () {
+            let employeeid = $('#employeeid').val();
+            let payrolldate = $('#payrolldate').val();
+            let datecovered = $('#datecovered').val();
+            let absences = $('#absences').val();
+            let late = $('#late').val();
+            let undertime = $('#undertime').val();
+            let allowance = $('#allowance').val();
+            let cashadvance = $('#cashadvance').val();
+            let sss = $('#sss').val();
+            let sssloan = $('#sssloan').val();
+            let philhealth = $('#philhealth').val();
+            let hmdf = $('#hmdf').val();
+            let tax = $('#tax').val();
+
+            var message = "";
+
+            if (employeeid == '') { message += 'USERNAME ' }
+            if (payrolldate == '') { message += 'PASSWORD ' }
+            if (datecovered == '') { message += 'ROLE ' }
+            if (absences == '') { message += 'POSITION ' }
+            if (late == '') { message += 'FULLNAME ' }
+            if (undertime == '') { message += 'USERNAME ' }
+            if (allowance == '') { message += 'PASSWORD ' }
+            if (cashadvance == '') { message += 'ROLE ' }
+            if (sss == '') { message += 'POSITION ' }
+            if (sssloan == '') { message += 'FULLNAME ' }
+            if (philhealth == '') { message += 'USERNAME ' }
+            if (hmdf == '') { message += 'PASSWORD ' }
+            if (tax == '') { message += 'ROLE ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/payroll/save',
+                    data: {
+                        employeeid: employeeid,
+                        payrolldate: payrolldate,
+                        datecovered: datecovered,
+                        absences: absences,
+                        late: late,
+                        undertime: undertime,
+                        allowance: allowance,
+                        cashadvance: cashadvance,
+                        sss: sss,
+                        sssloan: sssloan,
+                        philhealth,
+                        hmdf: hmdf,
+                        tax: tax,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
                         }
-                    })
-                }
-            })
-    
-            function LoadList() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/roles/load',
-                    success: function (result) {
-                        var data = result.data;
-    
-                        $.each(data, function (key, item) {
-                            var options = new Option(item.rolename, item.rolename);
-                            $(options).html(item.rolename);
-                            $('#rolelist').append(options);
-                        });
-    
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} has already registered!`);
+                        }
+
                     },
                     error: function (err) {
                         errormsg(err);
                     }
                 })
-    
-                $.ajax({
-                    type: 'GET',
-                    url: '/position/load',
-                    success: function (result) {
-                        var data = result.data;
-    
-                        $.each(data, function (key, item) {
-                            var options = new Option(item.positionname, item.positionname);
-                            $(options).html(item.positionname);
-                            $('#positionlist').append(options);
-                        });
-    
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            } 
-          
+            }
+        })
+        
         function LoadTable() {
                 $('#payroll_dataTable').DataTable({
                     'destroy': true,
@@ -131,7 +117,7 @@
                                     philhealth: item.philhealth,
                                     hmdf: item.hmdf,
                                     tax: item.tax,
-                                    status: item.accesstype,
+                                    status: item.status,
                                     createdby: item.createdby,
                                     createddate: item.createddate,
                                     action: action,

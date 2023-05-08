@@ -40,5 +40,61 @@ router.get('/load', (req, res) => {
       res.json({
           msg: error
       })
-  }
+  } 
+}) 
+
+router.post('/save', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let payrolldate = req.body.payrolldate;
+        let datecovered = req.body.datecovered;
+        let absences = req.body.absences;
+        let late = req.body.late; 
+        let undertime = req.body.undertime;
+        let allowance = req.body.allowance;
+        let cashadvance = req.body.cashadvance;
+        let sss = req.body.sss;
+        let sssloan = req.body.sssloan; 
+        let philhealth = req.body.philhealth;
+        let hmdf = req.body.hmdf;
+        let tax = req.body.tax;
+        let status = dictionary.GetValue(dictionary.ACT());
+        let createdby = "Sample Data";
+        let createdate = helper.GetCurrentDatetime();
+        let data = [];
+
+        data.push([
+            employeeid,
+            payrolldate,
+            datecovered,
+            absences,
+            late,
+            undertime,
+            allowance,
+            cashadvance,
+            sss,
+            sssloan,
+            philhealth,
+            hmdf,
+            tax,
+            status,
+            createdby,
+            createdate
+        ]) 
+
+        mysql.InsertTable('payroll_detail', data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            console.log(result);
+
+            res.json({
+                msg: 'success',
+            })
+        })
+    }
+    catch (error) {
+        res.json({
+            msg: error
+        })
+    }
 })

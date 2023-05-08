@@ -426,7 +426,6 @@ exports.InsertTable = (tablename, data, callback) => {
 
     if (tablename == 'payroll_detail') {
         let sql = `INSERT INTO payroll_detail(
-            pd_detailid,
             pd_employeeid,
             pd_payrolldate,
             pd_datecovered,

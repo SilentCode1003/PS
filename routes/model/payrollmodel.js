@@ -218,30 +218,6 @@ exports.EmployeeSalary = (data) => {
     return dataResult;
 }
 
-exports.EmployeeSalary = (data) => {
-    let dataResult = []; 
-
-    data.forEach((key, item) => {
-
-        dataResult.push({
-            employeeid: key.es_employeeid,
-            firstname: key.es_firstname,
-            middlename: key.es_middlename,
-            lastname: key.es_lastname,
-            department: key.es_department,
-            position: key.es_position,
-            dailyrate: key.es_dailyrate,
-            monthlysalary: key.es_monthlysalary,
-            updateby: key.es_updateby,
-            status: key.es_status,
-            createdby: key.es_createdby,
-            createddate: key.es_createddate,
-        })
-    });
- 
-    return dataResult;
-}
-
 exports.PayrollDetail = (data) => {
     let dataResult = []; 
 
@@ -250,8 +226,8 @@ exports.PayrollDetail = (data) => {
         dataResult.push({
             detailid: key.pd_detailid,
             employeeid: key.pd_employeeid,
-            payroll: key.pd_payrolldate,
-            discovered: key.pd_datecovered,
+            payrolldate: key.pd_payrolldate,
+            datecovered: key.pd_datecovered,
             absences: key.pd_absences,
             late: key.pd_late,
             undertime: key.pd_undertime,

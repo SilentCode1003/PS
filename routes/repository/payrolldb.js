@@ -367,16 +367,17 @@ exports.InsertTable = (tablename, data, callback) => {
 
     if (tablename == 'employee_deduction_details') {
         let sql = `INSERT INTO employee_deduction_details(
-            egid_employeeid,
-            egid_sss,
-            egid_ssscontribution,
-            egid_hdmf,
-            egid_hdmfcontribution,
-            egid_philhealth,
-            egid_philhealthcontribution,
-            egid_status,
-            egid_createdby,
-            egid_createddate) VALUES ?`;
+            edd_employeeid,
+            edd_late,
+            edd_absent,
+            edd_sss,
+            edd_hdmf,
+            edd_philhealth,
+            edd_cashadvance,
+            edd_loan,
+            edd_tax,
+            edd_payrolldate,
+            edd_cutoffdate) VALUES ?`;
         this.Insert(sql, data, (err, result) => {
             if (err) {
                 callback(err, null);

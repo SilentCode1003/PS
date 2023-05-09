@@ -249,4 +249,3 @@ exports.PayrollDetail = (data) => {
 }
 
 
-

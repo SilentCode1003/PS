@@ -1,7 +1,8 @@
 <script>
     $(document).ready(function () {
         LoadTable();
-    
+        LoadList();
+
         $(document).on('click', '#addBtn', function () {
             let employeeid = $('#employeeid').val();
             let payrolldate = $('#payrolldate').val();
@@ -73,6 +74,27 @@
             }
         })
         
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/employee/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.employeeid, item.employeeid);
+                        $(options).html(item.employeeid);
+                        $('#employeelist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+ 
+        }     
+
         function LoadTable() {
                 $('#payroll_dataTable').DataTable({
                     'destroy': true,

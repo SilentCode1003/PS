@@ -81,3 +81,10 @@ table {
     padding: 5px;
     width: auto;
   }
+
+  .modal-header{
+    background-color: var(--clr-top) !important;
+    color: white;
+  }
+
+  

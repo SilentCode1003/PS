@@ -58,30 +58,40 @@ router.post('/save', (req, res) => {
         let createdate = helper.GetCurrentDatetime();
         let data = [];
 
-        data.push([
-            employeeid,
-            firstname,
-            middlename,
-            lastname,
-            position,
-            department,
-            contactnumber,
-            email,
-            status,
-            createdby,
-            createdate
-        ])
-
-        mysql.InsertTable('master_employee', data, (err, result) => {
+        let sql_check = `select * from master_employee where me_employeeid='${employeeid}'`;
+        mysql.Select(sql_check, 'MasterDepartment', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
-
-            res.json({
-                msg: 'success',
-            })
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                    employeeid,
+                    firstname,
+                    middlename,
+                    lastname,
+                    position,
+                    department,
+                    contactnumber,
+                    email,
+                    status,
+                    createdby,
+                    createdate
+                ])
+                mysql.InsertTable('master_employee', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                })
+            }
         })
-    }
+   }
     catch (error) {
         res.json({
             msg: error

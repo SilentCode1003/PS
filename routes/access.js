@@ -50,27 +50,37 @@ router.post('/save', (req, res) => {
         let createdby = "Sample Data";
         let createdate = helper.GetCurrentDatetime();
         let data = [];
-
-        data.push([
-            accessname,
-            status,
-            createdby,
-            createdate
-        ])
-
-        mysql.InsertTable('master_access_type', data, (err, result) => {
+        let sql_check = `select * from master_access_type where mat_accessname='${accessname}'`;
+        
+        mysql.Select(sql_check, 'MasterAccessType', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
-
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                    accessname,
+                    status,
+                    createdby,
+                    createdate
+                ])
+        
+                mysql.InsertTable('master_access_type', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                });
+            }
+        })
+        }catch (error) {
             res.json({
-                msg: 'success',
+                msg: error
             })
-        })
-    }
-    catch (error) {
-        res.json({
-            msg: error
-        })
-    }
+        }
 })

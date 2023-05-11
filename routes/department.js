@@ -61,18 +61,18 @@ router.post('/save', (req, res) => {
                 })
             }else {
                 data.push([
-                departmentname,
-                status,
-                createdby,
-                createdate
+                    departmentname,
+                    status,
+                    createdby,
+                    createdate
                 ])
 
                 mysql.InsertTable('master_department', data, (err, result) => {
-                if (err) console.error(err);
+                    if (err) console.error(err);
 
-                res.json({
-                    msg: 'success'
-                })
+                    res.json({
+                        msg: 'success'
+                    })
                 });
             }
         })

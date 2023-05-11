@@ -1,151 +1,63 @@
 <script>
-    $(document).ready(function () {
-        LoadTable();
-        LoadList();
+    router.post('/authentication', (req, res) => {
+  try {
+    var username = req.body.username;
+    var password = req.body.password;
+    var message = "";
 
-        $(document).on('click', '#addBtn', function () {
-            let fullname = $('#fullname').val();
-            let username = $('#username').val();
-            let password = $('#password').val();
-            let rolelist = $('#rolelist').val();
-            let positionlist = $('#positionlist').val();
-            var message = "";
+    crypt.Encrypter(password, (err, result) => {
+      if (err) {
+        console.error('Encryption Error: ', err);
+      }
+      console.log(result);
 
-            if (fullname == '') { message += 'FULLNAME ' }
-            if (username == '') { message += 'USERNAME ' }
-            if (password == '') { message += 'PASSWORD ' }
-            if (rolelist == '') { message += 'ROLE ' }
-            if (positionlist == '') { message += 'POSITION ' }
-
-            if (message != '') {
-                warning('Required', `Please fillup ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/users/save',
-                    data: {
-                        fullname: fullname,
-                        username: username,
-                        password: password,
-                        rolelist: rolelist,
-                        positionlist: positionlist,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${fullname} has already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/roles/load',
-                success: function (result) {
-                    var data = result.data;
-
-                    $.each(data, function (key, item) {
-                        var options = new Option(item.rolename, item.rolename);
-                        $(options).html(item.rolename);
-                        $('#rolelist').append(options);
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
+      // console.log(USERNAME: ${username})
+      let sql = select * `from master_user where mu_username='${username}' and mu_password='${result}'`;
+      mysql.Select(sql, 'MasterUser', (err, result) => {
+        if (err) {
+          return res.json
+            ({
+              msg: err
             })
+        }
+        if (result.length != 0) {
+          req.session.isAuth = true;
+          req.session.username = result[0].username;
+          req.session.fullname = result[0].fullname;
+          req.session.role = result[0].role;
+          req.session.position = result[0].position;
+          req.session.title = process.env._TITLE;
 
-            $.ajax({
-                type: 'GET',
-                url: '/position/load',
-                success: function (result) {
-                    var data = result.data;
+          let data = [];
+          data.push({
+            isAuth: true,
+            username: result[0].username,
+            fullname: result[0].fullname,
+            role: result[0].role,
+            position: result[0].position
+          })
 
-                    $.each(data, function (key, item) {
-                        var options = new Option(item.positionname, item.positionname);
-                        $(options).html(item.positionname);
-                        $('#positionlist').append(options);
-                    });
+          console.log(data);
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
+          res.json({
+            msg: 'success',
+            data: data
+          });
+        }
+        else {
+          return res.json
+            ({
+              msg: 'incorrect'
             })
         }
 
-        function LoadTable() {
-            $('#access-table').DataTable({
-                'destroy': true,
-                'processing': true,
-                'serverSide': true,
-                'paging': false,
-                'searching': false,
-                'info': false,
-                'scrollY': 400,
-                'scrollCollapse': true,
-                'serverMethod': 'GET',
-                'ajax': {
-                    'url': '/access/load',
-                    'dataSrc': (json) => {
-                        var finalData = [];
-                        var data = json.data;
-
-                        console.log(data);
-                        $.each(data, (key, item) => {
-                            var action = '';
-                            var status = item.status;
-
-                            if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="inactiveBtn" name="inactiveBtn">INACTIVE</button>'
-                            }
-                            if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" name="editBtn">EDIT</button><button id="activeBtn" name="activeBtn">ACTIVE</button>'
-                            }
-
-                            finalData.push({
-                                accesscode: item.accesscode,
-                                accessname: item.accessname,
-                                status: item.status,
-                                createdby: item.createdby,
-                                createddate: item.createddate,
-                                action: action,
-                            })
-
-                        })
-
-                        return finalData;
-                    },
-                },
-                'columnDefs': [{
-                    targets: 1,
-                    className: 'td-indent',
-                }],
-                'columns': [
-                    { data: 'accesscode' },
-                    { data: 'accessname' },
-                    { data: 'status' },
-                    { data: 'createdby' },
-                    { data: 'createddate' },
-                    { data: 'action' },
-                ],
-                initComplete: function () {
-                    console.log('init complete');
-                }
-            });
-        }
+      })
     })
+
+  } catch (error) {
+    res, json({
+      msg: error
+    })
+  }
+});
 </script>

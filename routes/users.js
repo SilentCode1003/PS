@@ -4,6 +4,7 @@ var router = express.Router();
 const mysql = require('./repository/payrolldb');
 const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
+const crypto = require('./repository/cryptography');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -56,16 +57,19 @@ router.post('/save', (req, res) => {
         let createdate = helper.GetCurrentDatetime();
         let data = [];
 
-        data.push([
-            fullname,
-            username,
-            password,
-            roletype,
-            accesstype,
-            status,
-            createdby,
-            createdate
-        ]) 
+        crypto.Encrypter(password, (err, result)=>{
+            if(err)console.error('error: ', err);
+            data.push([
+                fullname,
+                username,
+                result,
+                roletype,
+                accesstype,
+                status,
+                createdby,
+                createdate
+            ]) 
+        })
 
         mysql.InsertTable('master_user', data, (err, result) => {
             if (err) console.error('Error: ', err);

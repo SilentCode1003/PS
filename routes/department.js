@@ -47,30 +47,38 @@ router.post('/save', (req, res) => {
     try {
         let departmentname = req.body.departmentname;
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
+        let sql_check = `select * from master_department where md_departmentname='${departmentname}'`;
 
-        data.push([
-            departmentname,
-            status,
-            createdby,
-            createdate
-        ])
-
-        mysql.InsertTable('master_department', data, (err, result) => {
+        mysql.Select(sql_check, 'MasterDepartment', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                departmentname,
+                status,
+                createdby,
+                createdate
+                ])
 
+                mysql.InsertTable('master_department', data, (err, result) => {
+                if (err) console.error(err);
+
+                res.json({
+                    msg: 'success'
+                })
+                });
+            }
+        })
+        } catch (error) {
             res.json({
-                msg: 'success',
+                msg: error
             })
-        })
-    }
-    catch (error) {
-        res.json({
-            msg: error
-        })
-    }
-})
+        }
+    })

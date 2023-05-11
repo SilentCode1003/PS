@@ -1,7 +1,8 @@
 <script>
     $(document).ready(function () {
         LoadTable();
-    
+        LoadList();
+
         $(document).on('click', '#addBtn', function () {
             let employeeid = $('#employeeid').val();
             let payrolldate = $('#payrolldate').val();
@@ -73,6 +74,27 @@
             }
         })
         
+        function LoadList() {
+            $.ajax({
+                type: 'GET',
+                url: '/employee/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.employeeid, item.employeeid);
+                        $(options).html(item.employeeid);
+                        $('#employeelist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+ 
+        }     
+
         function LoadTable() {
                 $('#payroll_dataTable').DataTable({
                     'destroy': true,
@@ -96,10 +118,10 @@
                                 var status = item.status;
     
                                 if (status == 'ACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
+                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#payrollModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
                                 }
                                 if (status == 'INACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
+                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#payrollModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
                                 }
     
                                 finalData.push({

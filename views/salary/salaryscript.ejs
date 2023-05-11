@@ -4,14 +4,15 @@
         LoadList();
 
         $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeeid').val();
+            let employeeid = $('#employeelist').val();
             let firstname = $('#firstname').val();
             let middlename = $('#middlename').val();
             let lastname = $('#lastname').val();
-            let positionlist = $('#positionlist').val();
             let departmentlist = $('#departmentlist').val();
-            let contactnumber = $('#contactnumber').val();
-            let email = $('#email').val();
+            let positionlist = $('#positionlist').val();
+            let dailyrate = $('#dailyrate').val();
+            let monthlysalary = $('#monthlysalary').val();
+            
 
             var message = "";
             
@@ -19,10 +20,12 @@
             if (firstname == '') { message += 'First Name ' }
             if (middlename == '') { message += 'Middle Name ' }
             if (lastname == '') { message += 'Last Name ' }
-            if (contactnumber == '') { message += 'Contact Number ' }
+            if (dailyrate == '') { message += 'Daily Rate ' }
             if (departmentlist == '') { message += 'Department ' }
             if (positionlist == '') { message += 'Position ' }
-            if (email == '') { message += 'Email' }
+            if (monthlysalary == '') { message += 'Monthly Salary ' }
+            
+
 
             
             if (message != '') {
@@ -31,7 +34,7 @@
             else {
                 $.ajax({
                     type: 'POST',
-                    url: '/employee/save',
+                    url: '/salary/save',
                     data: {
                         employeeid: employeeid,
                         firstname: firstname,
@@ -39,8 +42,9 @@
                         lastname: lastname,
                         positionlist: positionlist,
                         departmentlist: departmentlist,
-                        contactnumber: contactnumber,
-                        email: email,
+                        dailyrate: dailyrate,
+                        monthlysalary: monthlysalary,
+                        
                     },
                     success: function (result) {
                         if (result.msg == 'success') {
@@ -96,10 +100,28 @@
                     errormsg(err);
                 }
             })
+
+            $.ajax({
+                type: 'GET',
+                url: '/employee/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.employeeid, item.employeeid);
+                        $(options).html(item.employeeid);
+                        $('#employeelist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
         } 
 
         function LoadTable() {
-            $('#employee_dataTable').DataTable({
+            $('#salary_dataTable').DataTable({
                 'destroy': true,
                 'processing': true,
                 'serverSide': true,
@@ -110,7 +132,7 @@
                 'scrollCollapse': true,
                 'serverMethod': 'GET',
                 'ajax': {
-                    'url': '/employee/load',
+                    'url': '/salary/load',
                     'dataSrc': (json) => {
                         var finalData = [];
                         var data = json.data;
@@ -121,22 +143,23 @@
                             var status = item.status;
 
                             if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
+                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#salaryModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
                             }
                             if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
+                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#salaryModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
                             }
 
                             finalData.push({
-                                systemid: item.systemid,
                                 employeeid: item.employeeid,
                                 firstname: item.firstname,
                                 middlename: item.middlename,
                                 lastname: item.lastname,
-                                position: item.position,
                                 department: item.department,
-                                contactnumber: item.contactnumber,
-                                email: item.email,
+                                position: item.position,
+                                dailyrate: item.dailyrate,
+                                monthlysalary: item.monthlysalary,
+                                updateby: item.updateby,
+                                updatedate: item.updatedate,
                                 status: item.status,
                                 createdby: item.createdby,
                                 createddate: item.createddate,
@@ -153,15 +176,16 @@
                     className: 'td-indent',
                 }],
                 'columns': [
-                    { data: 'systemid' },
                     { data: 'employeeid' },
                     { data: 'firstname' },
                     { data: 'middlename' },
                     { data: 'lastname' },
-                    { data: 'position' },
                     { data: 'department' },
-                    { data: 'contactnumber' },
-                    { data: 'email' },
+                    { data: 'position' },
+                    { data: 'dailyrate' },
+                    { data: 'monthlysalary' },
+                    { data: 'updateby' },
+                    { data: 'updatedate' },
                     { data: 'status' },
                     { data: 'createdby' },
                     { data: 'createddate' },

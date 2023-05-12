@@ -1,63 +1,42 @@
 <script>
-    router.post('/authentication', (req, res) => {
-  try {
-    var username = req.body.username;
-    var password = req.body.password;
-    var message = "";
+  $(document).ready(function () {
 
-    crypt.Encrypter(password, (err, result) => {
-      if (err) {
-        console.error('Encryption Error: ', err);
-      }
-      console.log(result);
+        $(document).on('click', '#loginBtn', function () {
+            let username = $('#username').val();
+            let password = $('#password').val();
+            
+            var message = "";
 
-      // console.log(USERNAME: ${username})
-      let sql = select * `from master_user where mu_username='${username}' and mu_password='${result}'`;
-      mysql.Select(sql, 'MasterUser', (err, result) => {
-        if (err) {
-          return res.json
-            ({
-              msg: err
-            })
-        }
-        if (result.length != 0) {
-          req.session.isAuth = true;
-          req.session.username = result[0].username;
-          req.session.fullname = result[0].fullname;
-          req.session.role = result[0].role;
-          req.session.position = result[0].position;
-          req.session.title = process.env._TITLE;
+            if (username == '') { message += 'Username ' }
+            if (password == '') { message += 'Password ' }
 
-          let data = [];
-          data.push({
-            isAuth: true,
-            username: result[0].username,
-            fullname: result[0].fullname,
-            role: result[0].role,
-            position: result[0].position
-          })
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/login/authentication',
+                    data: {
+                        username: username,
+                        password: password,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            success('Logged In', 'Successfully')
+                            location.replace("/");
+                        }
 
-          console.log(data);
+                        if (result.msg == 'incorrect') {
+                            warning('Invalid Credentials.');
+                        }
 
-          res.json({
-            msg: 'success',
-            data: data
-          });
-        }
-        else {
-          return res.json
-            ({
-              msg: 'incorrect'
-            })
-        }
-
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
       })
-    })
-
-  } catch (error) {
-    res, json({
-      msg: error
-    })
-  }
-});
-</script>
+</script> 

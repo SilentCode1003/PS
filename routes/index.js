@@ -2,14 +2,21 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', isAuthAdmin, function (req, res, next) {
   res.render('index', {
-    // title: req.session.title,
-    // username: req.session.username,
-    // fullname: req.session.fullname,
-    // role: req.session.role,
-    // position: req.session.position
+    fullname: req.session.fullname,
+    roletype: req.session.roletype,
   });
 });
+
+function isAuthAdmin(req, res, next) {
+
+  if (req.session.roletype == "Admin" || req.session.roletype == "User") {
+      next();
+  }
+  else {
+      res.redirect('/login');
+  }
+};
 
 module.exports = router;

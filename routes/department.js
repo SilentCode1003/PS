@@ -6,16 +6,24 @@ const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', isAuthAdmin, function (req, res, next) {
   res.render('department', {
-    // title: req.session.title,
-    // username: req.session.username,
-    // fullname: req.session.fullname,
-    // role: req.session.role,
-    // position: req.session.position
+    fullname: req.session.fullname,
+    roletype: req.session.roletype,
+    accesstype: req.session.accesstype,
   });
 });
  
+function isAuthAdmin(req, res, next) {
+
+    if (req.session.isAuth && req.session.roletype == "Admin" && req.session.accesstype == "Administrator") {
+        next();
+    }
+    else {
+        res.redirect('/');
+    }
+};
+
 module.exports = router;
 
 router.get('/load', (req, res) => {

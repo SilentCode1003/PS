@@ -2,14 +2,15 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', isAuthAdmin, function (req, res, next) {
+router.get('/', isAuthAdminUser, function (req, res, next) {
   res.render('index', {
     fullname: req.session.fullname,
     roletype: req.session.roletype,
+    accesstype: req.session.accesstype,
   });
 });
 
-function isAuthAdmin(req, res, next) {
+function isAuthAdminUser(req, res, next) {
 
   if (req.session.roletype == "Admin" || req.session.roletype == "User") {
       next();

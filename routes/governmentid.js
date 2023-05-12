@@ -6,20 +6,22 @@ const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
 
 /* GET home page. */
-router.get('/', isAuthAdmin, function (req, res, next) {
+router.get('/', isAuthUser, function (req, res, next) {
   res.render('governmentid', {
-    fullname: req.session.fullname
-    
+    fullname: req.session.fullname,
+    roletype: req.session.roletype,
+    accesstype: req.session.accesstype,
+
   });
 });
 
-function isAuthAdmin(req, res, next) {
+function isAuthUser(req, res, next) {
 
-    if (req.session.roletype == "Admin") {
+    if (req.session.roletype == "User") {
         next();
     }
     else {
-        res.redirect('/login');
+        res.redirect('/');
     }
 };
 

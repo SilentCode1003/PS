@@ -16,13 +16,14 @@ router.get('/', isAuthUser, function (req, res, next) {
 
 function isAuthUser(req, res, next) {
 
-    if (req.session.roletype == "User") {
+    if (req.session.roletype == "User" || req.session.roletype == "Admin") {
         next();
     }
     else {
         res.redirect('/');
     }
 };
+
 
 module.exports = router;
 
@@ -62,7 +63,7 @@ router.post('/save', (req, res) => {
         let dailyrate = req.body.dailyrate;
         let monthlysalary = req.body.monthlysalary;
         let updateby = "Sample Data";
-        let updateddate = "Sample Data";
+        let updateddate = helper.GetCurrentDatetime();
         let status = dictionary.GetValue(dictionary.ACT());
         let createdby = "Sample Data";
         let createdate = helper.GetCurrentDatetime();

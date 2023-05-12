@@ -16,7 +16,7 @@ router.get('/', isAuthUser, function (req, res, next) {
 
 function isAuthUser(req, res, next) {
 
-    if (req.session.roletype == "User") {
+    if (req.session.roletype == "User" || req.session.roletype == "Admin") {
         next();
     }
     else {

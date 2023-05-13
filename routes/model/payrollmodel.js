@@ -209,6 +209,7 @@ exports.EmployeeSalary = (data) => {
             dailyrate: key.es_dailyrate,
             monthlysalary: key.es_monthlysalary,
             updateby: key.es_updateby,
+            updateddate: key.es_updateddate,
             status: key.es_status,
             createdby: key.es_createdby,
             createddate: key.es_createddate,

@@ -19,7 +19,6 @@ var payrollRouter = require('./routes/payroll');
 var salaryRouter = require('./routes/salary');
 var loginRouter = require('./routes/login');
 
-
 var app = express();
 
 const session = require('express-session');

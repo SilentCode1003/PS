@@ -6,15 +6,23 @@ const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', isAuthAdmin, function (req, res, next) {
   res.render('position', {
-    // title: req.session.title,
-    // username: req.session.username,
-    // fullname: req.session.fullname,
-    // role: req.session.role,
-    // position: req.session.position
+    fullname: req.session.fullname,
+    roletype: req.session.roletype,
+    accesstype: req.session.accesstype,
   });
 }); 
+
+function isAuthAdmin(req, res, next) {
+
+    if (req.session.roletype == "Admin" && req.session.accesstype == "Administrator") {
+        next();
+    }
+    else {
+        res.redirect('/');
+    }
+};
 
 module.exports = router;
 
@@ -50,25 +58,35 @@ router.post('/save', (req, res) => {
         let createdby = "Sample Data";
         let createdate = helper.GetCurrentDatetime();
         let data = [];
+        let sql_check = `select * from master_position where mp_positionname='${positionname}'`;
 
-        data.push([
-            positionname,
-            status,
-            createdby,
-            createdate
-        ])
-
-        mysql.InsertTable('master_position', data, (err, result) => {
+        mysql.Select(sql_check, 'MasterDepartment', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
-
-            res.json({
-                msg: 'success',
-            })
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                    positionname,
+                    status,
+                    createdby,
+                    createdate
+                ])
+        
+                mysql.InsertTable('master_position', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                })
+            }
         })
-    }
-    catch (error) {
+    }catch (error) {
         res.json({
             msg: error
         })

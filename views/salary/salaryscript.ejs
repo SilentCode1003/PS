@@ -13,7 +13,6 @@
             let dailyrate = $('#dailyrate').val();
             let monthlysalary = $('#monthlysalary').val();
             
-
             var message = "";
             
             if (employeeid == '') { message += 'Employee ID ' }
@@ -24,9 +23,6 @@
             if (departmentlist == '') { message += 'Department ' }
             if (positionlist == '') { message += 'Position ' }
             if (monthlysalary == '') { message += 'Monthly Salary ' }
-            
-
-
             
             if (message != '') {
                 warning('Required', `Please fill up ${message}`);
@@ -159,7 +155,7 @@
                                 dailyrate: item.dailyrate,
                                 monthlysalary: item.monthlysalary,
                                 updateby: item.updateby,
-                                updatedate: item.updatedate,
+                                updateddate: item.updateddate,
                                 status: item.status,
                                 createdby: item.createdby,
                                 createddate: item.createddate,
@@ -185,7 +181,7 @@
                     { data: 'dailyrate' },
                     { data: 'monthlysalary' },
                     { data: 'updateby' },
-                    { data: 'updatedate' },
+                    { data: 'updateddate' },
                     { data: 'status' },
                     { data: 'createdby' },
                     { data: 'createddate' },

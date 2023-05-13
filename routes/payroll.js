@@ -6,15 +6,23 @@ const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', isAuthUser, function (req, res, next) {
   res.render('payroll', {
-    // title: req.session.title,
-    // username: req.session.username,
-    // fullname: req.session.fullname,
-    // role: req.session.role,
-    // position: req.session.position
+    fullname: req.session.fullname,
+    roletype: req.session.roletype,
+    accesstype: req.session.accesstype,
   });
 });
+
+function isAuthUser(req, res, next) {
+
+    if (req.session.roletype == "User" || req.session.roletype == "Admin") {
+        next();
+    }
+    else {
+        res.redirect('/');
+    }
+};
 
 module.exports = router;
 

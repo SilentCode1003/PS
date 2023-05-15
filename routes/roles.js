@@ -82,3 +82,71 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let rolenamemodal = req.body.rolenamemodal;
+        let rolecode = req.body.rolecode;
+        
+        let data = [rolenamemodal, rolecode];
+         
+        let sql_Update = `UPDATE master_role_type 
+                       SET mrt_rolename = ?
+                       WHERE mrt_rolecode = ?`;
+        
+        let sql_check = `SELECT * FROM master_role_type WHERE mrt_rolecode='${rolecode}'`;
+
+        console.log(data);
+
+        mysql.Select(sql_check, 'MasterRoleType', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
+
+router.post('/status', (req, res) => {
+    try {
+        let rolecode = req.body.rolecode;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, rolecode];
+
+        let sql_Update = `UPDATE master_role_type 
+                       SET mrt_status = ?
+                       WHERE mrt_rolecode = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

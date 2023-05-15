@@ -1,6 +1,25 @@
 <script>
     $(document).ready(function () {
+        let rolecode = "";
+        let status = "";
+
         LoadTable();
+
+        $('#roles-dataTable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        console.log(dataRow);
+        rolecode = dataRow[0];
+        status = dataRow[2];
+        })
+
+        $(document).on('click', '#editBtn', function(){
+            $('#rolecodemodal').val(rolecode);
+            $('#roleModal').modal('show');
+            console.log(rolecode);
+        })
 
         $(document).on('click', '#addBtn', function () {
             let rolename = $('#rolename').val();
@@ -37,6 +56,97 @@
             }
         })
 
+        $(document).on('click', '#saveBtn', function () {
+            let rolenamemodal = $('#rolenamemodal').val();
+            
+            var message = "";
+
+            if (rolenamemodal == '') { message += 'ROLENAME ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/roles/edit',
+                    data: {
+                        rolenamemodal: rolenamemodal,
+                        rolecode: rolecode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${rolenamemodal} already exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        //Status Update
+        $(document).on('click', '#activeBtn', function(){
+            console.log(rolecode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/roles/status',
+                    data: {
+                        status: status,
+                        rolecode: rolecode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${rolecode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(rolecode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/roles/status',
+                    data: {
+                        status: status,
+                        rolecode: rolecode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${rolecode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
         function LoadTable() {
             $('#roles-dataTable').DataTable({
                 'destroy': true,
@@ -60,10 +170,10 @@
                             var status = item.status;
 
                             if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#roleModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
+                                action = '<button class="edit-btn btn btn-outline-primary" id="editBtn" data-toggle="modal" data-target="#userModal">EDIT</button> <button class="inactive-btn btn btn-outline-primary" id="inactiveBtn">INACTIVE</button>'
                             }
                             if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#roleModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
+                                action = '<button class="edit-btn btn btn-outline-primary" id="editBtn" data-toggle="modal" data-target="#userModal">EDIT</button> <button class="active-btn btn btn-outline-primary" id="activeBtn">ACTIVE</button>'
                             }
 
                             finalData.push({
@@ -93,7 +203,7 @@
                     { data: 'action' },
                 ],
                 initComplete: function () {
-                    console.log('init complete');
+
                 }
             });
         }

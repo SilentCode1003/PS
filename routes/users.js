@@ -52,6 +52,60 @@ router.get('/load', (req, res) => {
   }
 })
 
+router.post('/save', (req, res) => {
+    try {
+        let fullname = req.body.fullname; 
+        let username = req.body.username;
+        let password = req.body.password;
+        let roletype = req.body.roletype;
+        let accesstype = req.body.accesstype;
+        let status = dictionary.GetValue(dictionary.ACT());
+        let createdby = "Sample Data";
+        let createdate = helper.GetCurrentDatetime();
+        let data = [];
+        let sql_check = `select * from master_user where mu_fullname='${fullname}'`;
+
+        mysql.Select(sql_check, 'MasterUser', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                crypto.Encrypter(password, (err, result)=>{
+                    if(err)console.error('error: ', err);
+                    data.push([
+                        fullname,
+                        username,
+                        result,
+                        roletype,
+                        accesstype,
+                        status,
+                        createdby,
+                        createdate
+                    ]) 
+                })
+        
+                mysql.InsertTable('master_user', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                })
+            }
+        })
+    }
+    catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
 router.post('/edit', (req, res) => {
     try {
         let usercode = req.body.usercode;
@@ -110,60 +164,6 @@ router.post('/edit', (req, res) => {
         });
     }
 });
-
-router.post('/save', (req, res) => {
-    try {
-        let fullname = req.body.fullname; 
-        let username = req.body.username;
-        let password = req.body.password;
-        let roletype = req.body.roletype;
-        let accesstype = req.body.accesstype;
-        let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
-        let createdate = helper.GetCurrentDatetime();
-        let data = [];
-        let sql_check = `select * from master_user where mu_fullname='${fullname}'`;
-
-        mysql.Select(sql_check, 'MasterUser', (err, result) => {
-            if (err) console.error('Error: ', err);
-
-            if (result.length != 0) {
-                return res.json({
-                msg: 'exist'
-                })
-            }else {
-                crypto.Encrypter(password, (err, result)=>{
-                    if(err)console.error('error: ', err);
-                    data.push([
-                        fullname,
-                        username,
-                        result,
-                        roletype,
-                        accesstype,
-                        status,
-                        createdby,
-                        createdate
-                    ]) 
-                })
-        
-                mysql.InsertTable('master_user', data, (err, result) => {
-                    if (err) console.error('Error: ', err);
-        
-                    console.log(result);
-        
-                    res.json({
-                        msg: 'success',
-                    })
-                })
-            }
-        })
-    }
-    catch (error) {
-        res.json({
-            msg: error
-        })
-    }
-})
 
 router.post('/status', (req, res) => {
     try {

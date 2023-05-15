@@ -52,6 +52,64 @@ router.get('/load', (req, res) => {
   }
 })
 
+router.post('/edit', (req, res) => {
+    try {
+        let usercode = req.body.usercode;
+        let fullname = req.body.fullname; 
+        let username = req.body.username;
+        let password = req.body.password;
+        let roletype = req.body.roletype;
+        let accesstype = req.body.accesstype;
+        let encryptedPassword;
+
+        crypto.Encrypter(password, (err, result) => {
+        if (err) {
+            console.error('error: ', err);
+        } else {
+            encryptedPassword = result;
+            console.log('Encrypted password:', encryptedPassword);
+        }
+        });
+
+        let data = [fullname, username, encryptedPassword, roletype, accesstype, usercode];
+         
+        let sql_Update = `UPDATE master_user 
+                       SET mu_fullname = ?, 
+                           mu_username = ?, 
+                           mu_password = ?, 
+                           mu_roletype = ?, 
+                           mu_accesstype = ?
+                       WHERE mu_usercode = ?`;
+        
+        let sql_check = `SELECT * FROM master_user WHERE mu_usercode='${usercode}'`;
+
+        console.log(data);
+
+        mysql.Select(sql_check, 'MasterUser', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
 
 router.post('/save', (req, res) => {
     try {
@@ -106,3 +164,30 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/status', (req, res) => {
+    try {
+        let usercode = req.body.usercode;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, usercode];
+
+        let sql_Update = `UPDATE master_user 
+                       SET mu_status = ?
+                       WHERE mu_usercode = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

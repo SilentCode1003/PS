@@ -1,6 +1,25 @@
 <script>
     $(document).ready(function () {
+        let accesscode = "";
+        let status = "";
+
         LoadTable();
+
+        $('#access-table tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        console.log(dataRow);
+        accesscode = dataRow[0];
+        status = dataRow[2];
+        })
+
+        $(document).on('click', '#editBtn', function(){
+            $('#accesscode').val(accesscode);
+            $('#accessModal').modal('show');
+            console.log(accesscode);
+        })
 
         $(document).on('click', '#addBtn', function () {
             let accessname = $('#accessname').val();
@@ -37,43 +56,97 @@
             }
         })
 
-        function LoadList() {
+        //Edit Update
+        $(document).on('click', '#saveBtn', function () {
+            let accessnamemodal = $('#accessnamemodal').val();
+            
+            var message = "";
+
+            if (accessnamemodal == '') { message += 'ROLENAME ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/access/edit',
+                    data: {
+                        accessnamemodal: accessnamemodal,
+                        accesscode: accesscode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${accessnamemodal} already exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        //Status Update
+        $(document).on('click', '#activeBtn', function(){
+            console.log(accesscode);
+            console.log(status);
             $.ajax({
-                type: 'GET',
-                url: '/roles/load',
-                success: function (result) {
-                    var data = result.data;
+                    type: 'POST',
+                    url: '/access/status',
+                    data: {
+                        status: status,
+                        accesscode: accesscode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
 
-                    $.each(data, function (key, item) {
-                        var options = new Option(item.rolename, item.rolename);
-                        $(options).html(item.rolename);
-                        $('#rolelist').append(options);
-                    });
+                        if (result.msg == 'notexist') {
+                            warning(`${accesscode} does not exist!`);
+                        }
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
 
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(accesscode);
+            console.log(status);
             $.ajax({
-                type: 'GET',
-                url: '/position/load',
-                success: function (result) {
-                    var data = result.data;
+                    type: 'POST',
+                    url: '/access/status',
+                    data: {
+                        status: status,
+                        accesscode: accesscode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
 
-                    $.each(data, function (key, item) {
-                        var options = new Option(item.positionname, item.positionname);
-                        $(options).html(item.positionname);
-                        $('#positionlist').append(options);
-                    });
+                        if (result.msg == 'notexist') {
+                            warning(`${accesscode} does not exist!`);
+                        }
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        }
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
 
         function LoadTable() {
             $('#access-table').DataTable({

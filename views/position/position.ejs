@@ -3,16 +3,22 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Positions</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Edit Position</h5>
         </div>
         <div class="modal-body">
             <div class="row mb-2">
                 <div class="col-lg-12">
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-md-12 mb-2">
+                                    <label class="form-label" for="positioncode">Position Code</label>
+                                    <input id="positioncode" name="positioncode" type="text" class="form-control" placeholder="Enter new position" aria-label="fullname" aria-describedby="basic-addon1" disabled>       
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-12">
-                                    <label class="form-label" for="mu_password">Position</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new position" aria-label="fullname" aria-describedby="basic-addon1">       
+                                    <label class="form-label" for="positionnamemodal">Position Name</label>
+                                    <input id="positionnamemodal" name="positionnamemodal" type="text" class="form-control" placeholder="Enter new position" aria-label="fullname" aria-describedby="basic-addon1">       
                                 </div>
                             </div>
                         </div>      
@@ -23,7 +29,7 @@
 
           <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>
             Close</button>
-          <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
+          <button type="button" id="saveBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
             Save</button>
         </div>
       </div>

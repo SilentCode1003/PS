@@ -10,19 +10,25 @@
                 <div class="col-lg-12">
                         <div class="card-body">
                             <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label class="form-label" for="usecode">Usercode</label>
+                                    <input id="usercodemodal" name="usercodemodal" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
                                 <div class="col-md-6">
                                     <label class="form-label" for="mu_fullname">Fullname</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new fullname" aria-label="fullname" aria-describedby="basic-addon1">
+                                    <input id="fullnamemodal" name="fullnamemodal" type="text" class="form-control" placeholder="Enter new fullname" aria-label="fullname" aria-describedby="basic-addon1">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="mu_username">Username</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new username" aria-label="fullname" aria-describedby="basic-addon1">    
+                                    <input id="usernamemodal" name="usernamemodal" type="text" class="form-control" placeholder="Enter new username" aria-label="fullname" aria-describedby="basic-addon1">    
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-12">
                                     <label class="form-label" for="mu_password">Password</label>
-                                    <input id="" name="" minlength="8" type="password" class="form-control" placeholder="Enter new password" aria-label="fullname" aria-describedby="basic-addon1">    
+                                    <input id="passwordmodal" name="passwordmodal" minlength="8" type="password" class="form-control" placeholder="Enter new password" aria-label="fullname" aria-describedby="basic-addon1">    
                                 </div>
                             </div>
                             <div class="row">
@@ -47,7 +53,7 @@
 
           <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>
             Close</button>
-          <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
+          <button type="button" id="saveBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
             Save</button>
         </div>
       </div>

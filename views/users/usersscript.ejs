@@ -1,8 +1,21 @@
 <script>
 $(document).ready(function () {
+        let usercode = "";
+        let status = "";
+
         LoadTable();
         LoadList();
-  
+        LoadListModal();
+
+        $('#users-datatable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        usercode = dataRow[0];
+        status = dataRow[6];
+        })
+
         $(document).on('click', '#addBtn', function () {
             let fullname = $('#fullname').val();
             let username = $('#username').val();
@@ -50,6 +63,117 @@ $(document).ready(function () {
             }
         })
 
+        $(document).on('click', '#saveBtn', function () {
+            let fullname = $('#fullnamemodal').val();
+            let username = $('#usernamemodal').val();
+            let password = $('#passwordmodal').val();
+            let roletype = $('#rolelistmodal').val();
+            let accesstype = $('#positionlistmodal').val();
+            
+            var message = "";
+
+            if (fullname == '') { message += 'FULLNAME ' }
+            if (username == '') { message += 'USERNAME ' }
+            if (password == '') { message += 'PASSWORD ' }
+            if (roletype == '') { message += 'ROLE ' }
+            if (accesstype == '') { message += 'POSITION ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/edit',
+                    data: {
+                        fullname: fullname,
+                        username: username,
+                        password: password,
+                        roletype: roletype,
+                        accesstype: accesstype,
+                        usercode: usercode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${fullname} already exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        //Edit get Row Code
+        $(document).on('click', '#editBtn', function(){
+            $('#usercodemodal').val(usercode);
+            $('#userModal').modal('show');
+            console.log(usercode);
+        })
+
+        //Status Update
+        $(document).on('click', '#activeBtn', function(){
+            console.log(usercode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/users/status',
+                    data: {
+                        status: status,
+                        usercode: usercode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${usercode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(usercode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/users/status',
+                    data: {
+                        status: status,
+                        usercode: usercode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${usercode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        //Load Lists
         function LoadList() {
             $.ajax({
                 type: 'GET',
@@ -61,6 +185,7 @@ $(document).ready(function () {
                         var options = new Option(item.rolename, item.rolename);
                         $(options).html(item.rolename);
                         $('#rolelist').append(options);
+                        
                     });
 
                 },
@@ -79,6 +204,7 @@ $(document).ready(function () {
                         var options = new Option(item.positionname, item.positionname);
                         $(options).html(item.positionname);
                         $('#positionlist').append(options);
+                        
                     });
 
                 },
@@ -87,10 +213,51 @@ $(document).ready(function () {
                 }
             })
         } 
+
+        function LoadListModal() {
+            $.ajax({
+                type: 'GET',
+                url: '/roles/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.rolename, item.rolename);
+                        $(options).html(item.rolename);
+                        
+                        $('#rolelistmodal').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+ 
+            $.ajax({
+                type: 'GET',
+                url: '/position/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.positionname, item.positionname);
+                        $(options).html(item.positionname);
+    
+                        $('#positionlistmodal').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        } 
+
       
-    function LoadTable() {
+        function LoadTable() {
             $('#users-datatable').DataTable({
-                'destroy': true, 
+                'destroy': true,
                 'processing': true,
                 'serverSide': true,
                 'paging': false,
@@ -100,61 +267,80 @@ $(document).ready(function () {
                 'scrollCollapse': true,
                 'serverMethod': 'GET',
                 'ajax': {
-                    'url': '/users/load',
-                    'dataSrc': (json) => {
-                        var finalData = [];
-                        var data = json.data;
+                'url': '/users/load',
+                'dataSrc': (json) => {
+                    var finalData = [];
+                    var data = json.data;
+                    $.each(data, (key, item) => {
+                    var action = '';
+                    var status = item.status;
 
-                        console.log(data);
-                        $.each(data, (key, item) => {
-                            var action = '';
-                            var status = item.status;
+                    if (status == 'ACTIVE') {
+                        action = '<button class="edit-btn btn btn-outline-primary" id="editBtn" data-toggle="modal" data-target="#userModal">EDIT</button> <button class="inactive-btn btn btn-outline-primary" id="inactiveBtn">INACTIVE</button>'
+                    }
+                    if (status == 'INACTIVE') {
+                        action = '<button class="edit-btn btn btn-outline-primary" id="editBtn" data-toggle="modal" data-target="#userModal">EDIT</button> <button class="active-btn btn btn-outline-primary" id="activeBtn">ACTIVE</button>'
+                    }
 
-                            if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#userModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
-                            }
-                            if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#userModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
-                            }
+                    finalData.push({
+                        usercode: item.usercode,
+                        fullname: item.fullname,
+                        username: item.username,
+                        password: item.password,
+                        roletype: item.roletype,
+                        accesstype: item.accesstype,
+                        status: item.status,
+                        createdby: item.createdby,
+                        createddate: item.createddate,
+                        action: action,
+                    });
+                    });
 
-                            finalData.push({
-                                usercode: item.usercode,
-                                fullname: item.fullname,
-                                username: item.username,
-                                password: item.password,
-                                roletype: item.roletype,
-                                accesstype: item.accesstype,
-                                status: item.status,
-                                createdby: item.createdby,
-                                createddate: item.createddate,
-                                action: action,
-                            })
-
-                        })
-
-                        return finalData;
-                    },
+                    return finalData;
+                },
                 },
                 'columnDefs': [{
-                    targets: 1,
-                    className: 'td-indent',
-                }],
-                'columns': [
-                    { data: 'usercode' },
-                    { data: 'fullname' },
-                    { data: 'username' },
-                    { data: 'password' },
-                    { data: 'roletype' },
-                    { data: 'accesstype' },
-                    { data: 'status' },
-                    { data: 'createdby' },
-                    { data: 'createddate' },
-                    { data: 'action' },
+                targets: 1,
+                className: 'td-indent',
+                }, ],
+                'columns': [{
+                        data: 'usercode'
+                    },
+                    {
+                        data: 'fullname'
+                    },
+                    {
+                        data: 'username'
+                    },
+                    {
+                        data: 'password'
+                    },
+                    {
+                        data: 'roletype'
+                    },
+                    {
+                        data: 'accesstype'
+                    },
+                    {
+                        data: 'status'
+                    },
+                    {
+                        data: 'createdby'
+                    },
+                    {
+                        data: 'createddate'
+                    },
+                    {
+                        data: 'action'
+                    },
                 ],
-                initComplete: function () {
-                    console.log('init complete');
+                initComplete: function() {
+
                 }
             });
-        }
+            }
+
     })
+
+   
 </script>

@@ -1,6 +1,25 @@
 <script>
     $(document).ready(function () {
+        let positioncode = "";
+        let status = "";
+
         LoadTable();
+
+        $('#position-dataTable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        console.log(dataRow);
+        positioncode = dataRow[0];
+        status = dataRow[4];
+        })
+
+        $(document).on('click', '#editBtn', function(){
+            $('#positioncode').val(positioncode);
+            $('#positionModal').modal('show');
+            console.log(positioncode);
+        })
 
         $(document).on('click', '#addBtn', function () {
             let positionname = $('#positionname').val();
@@ -35,6 +54,96 @@
                 })
             }
         })
+
+        $(document).on('click', '#saveBtn', function () {
+            let positionnamemodal = $('#positionnamemodal').val();
+            
+            var message = "";
+
+            if (positionnamemodal == '') { message += 'POSITIONNAME ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/position/edit',
+                    data: {
+                        positionnamemodal: positionnamemodal,
+                        positioncode: positioncode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${positionnamemodal} already exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '#activeBtn', function(){
+            console.log(positioncode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/position/status',
+                    data: {
+                        status: status,
+                        positioncode: positioncode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${positioncode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(positioncode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/position/status',
+                    data: {
+                        status: status,
+                        positioncode: positioncode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${positioncode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
 
         function LoadTable() {
             $('#position-dataTable').DataTable({
@@ -92,7 +201,6 @@
                     { data: 'action' },
                 ],
                 initComplete: function () {
-                    console.log('init complete');
                 }
             });
         }

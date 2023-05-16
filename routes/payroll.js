@@ -71,36 +71,47 @@ router.post('/save', (req, res) => {
         let createdate = helper.GetCurrentDatetime();
         let data = [];
 
-        data.push([
-            employeeid,
-            payrolldate,
-            datecovered,
-            absences,
-            late,
-            undertime,
-            allowance,
-            cashadvance,
-            sss,
-            sssloan,
-            philhealth,
-            hmdf,
-            tax,
-            status,
-            createdby,
-            createdate
-        ]) 
+        let sql_check = `select * from payroll_detail where pd_employeeid='${employeeid}'`;
 
-        mysql.InsertTable('payroll_detail', data, (err, result) => {
+        mysql.Select(sql_check, 'PayrollDetail', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
-
-            res.json({
-                msg: 'success',
-            })
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                    employeeid,
+                    payrolldate,
+                    datecovered,
+                    absences,
+                    late,
+                    undertime,
+                    allowance,
+                    cashadvance,
+                    sss,
+                    sssloan,
+                    philhealth,
+                    hmdf,
+                    tax,
+                    status,
+                    createdby,
+                    createdate
+                ]) 
+        
+                mysql.InsertTable('payroll_detail', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                })
+            }
         })
-    }
-    catch (error) {
+    }catch (error) {
         res.json({
             msg: error
         })

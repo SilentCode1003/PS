@@ -67,31 +67,41 @@ router.post('/save', (req, res) => {
         let cutoffdate = "2023-05-08 to 2023-05-23";
         let data = [];
 
-        data.push([
-            employeeid,
-            late, 
-            absent,
-            sss,
-            hdmf,
-            philhealth,
-            cashadvance,
-            loan,
-            tax,
-            payrolldate,
-            cutoffdate
-        ])
+        let sql_check = `select * from employee_deduction_details where edd_employeeid='${employeeid}'`;
 
-        mysql.InsertTable('employee_deduction_details', data, (err, result) => {
+        mysql.Select(sql_check, 'EmployeeDeductionDetails', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
-
-            res.json({
-                msg: 'success',
-            })
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                    employeeid,
+                    late, 
+                    absent,
+                    sss,
+                    hdmf,
+                    philhealth,
+                    cashadvance,
+                    loan,
+                    tax,
+                    payrolldate,
+                    cutoffdate
+                ])
+                mysql.InsertTable('employee_deduction_details', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                })
+            }
         })
-    }
-    catch (error) {
+    }catch (error) {
         res.json({
             msg: error
         })

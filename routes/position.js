@@ -74,7 +74,6 @@ router.post('/save', (req, res) => {
                     createdby,
                     createdate
                 ])
-        
                 mysql.InsertTable('master_position', data, (err, result) => {
                     if (err) console.error('Error: ', err);
         

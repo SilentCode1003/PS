@@ -106,3 +106,85 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let systemid = req.body.systemid;
+        let employeeid = req.body.employeeid;
+        let firstname = req.body.firstname;
+        let middlename = req.body.middlename;
+        let lastname = req.body.lastname;
+        let contactnumber = req.body.contactnumber;
+        let email = req.body.email;
+        let position = req.body.positionlist;
+        let department = req.body.departmentlist;
+
+        let data = [employeeid, firstname, middlename, lastname, position, department, contactnumber, email, systemid];
+         
+        let sql_Update = `UPDATE master_employee 
+                        SET me_employeeid = ?,
+                            me_firstname = ?,
+                            me_middlename = ?,
+                            me_lastname = ?,
+                            me_position = ?,
+                            me_department = ?,
+                            me_contactnumber = ?,
+                            me_email = ?
+                        WHERE me_systemid = ?`;
+        
+        let sql_check = `SELECT * FROM master_employee WHERE me_systemid='${systemid}'`;
+
+        console.log(data);
+
+        mysql.Select(sql_check, 'MasterEmployee', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
+
+router.post('/status', (req, res) => {
+    try {
+        let systemid = req.body.systemid;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, systemid];
+
+        let sql_Update = `UPDATE master_employee 
+                       SET me_status = ?
+                       WHERE me_systemid = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

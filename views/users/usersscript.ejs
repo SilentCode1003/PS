@@ -12,6 +12,7 @@ $(document).ready(function () {
         $(this).closest('tr').find('td').each(function () {
             dataRow.push($(this).text());
         });
+        console.log(dataRow);
         usercode = dataRow[0];
         status = dataRow[6];
         })
@@ -111,7 +112,7 @@ $(document).ready(function () {
             }
         })
 
-        //Edit get Row Code
+        //Edit get Row Details
         $(document).on('click', '#editBtn', function(){
             $('#usercodemodal').val(usercode);
             $('#userModal').modal('show');

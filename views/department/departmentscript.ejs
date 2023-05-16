@@ -1,6 +1,25 @@
 <script>
     $(document).ready(function () {
+        let departmentcode = "";
+        let status = "";
+
         LoadTable();
+
+        $('#department-dataTable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        console.log(dataRow);
+        departmentcode = dataRow[0];
+        status = dataRow[2];
+        })
+
+        $(document).on('click', '#editBtn', function(){
+            $('#departmentcode').val(departmentcode);
+            $('#departmentModal').modal('show');
+            console.log(departmentcode);
+        })
  
         $(document).on('click', '#addBtn', function () {
             let departmentname = $('#departmentname').val();
@@ -36,6 +55,98 @@
                 })
             }
         })
+
+        //Edit Update
+        $(document).on('click', '#saveBtn', function () {
+            let departmentnamemodal = $('#departmentnamemodal').val();
+            
+            var message = "";
+
+            if (departmentnamemodal == '') { message += 'ROLENAME ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/department/edit',
+                    data: {
+                        departmentnamemodal: departmentnamemodal,
+                        departmentcode: departmentcode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${departmentnamemodal} already exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
+        //Status Update
+        $(document).on('click', '#activeBtn', function(){
+            console.log(departmentcode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/department/status',
+                    data: {
+                        status: status,
+                        departmentcode: departmentcode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${departmentcode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(departmentcode);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/department/status',
+                    data: {
+                        status: status,
+                        departmentcode: departmentcode,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${departmentcode} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
 
         function LoadTable() {
             $('#department-dataTable').DataTable({
@@ -93,7 +204,6 @@
                     { data: 'action' },
                 ],
                 initComplete: function () {
-                    console.log('init complete');
                 }
             });
         }

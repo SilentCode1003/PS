@@ -90,3 +90,71 @@ router.post('/save', (req, res) => {
             })
         }
     })
+
+router.post('/edit', (req, res) => {
+    try {
+        let departmentnamemodal = req.body.departmentnamemodal;
+        let departmentcode = req.body.departmentcode;
+        
+        let data = [departmentnamemodal, departmentcode];
+         
+        let sql_Update = `UPDATE master_department 
+                       SET md_departmentname = ?
+                       WHERE md_departmentcode = ?`;
+        
+        let sql_check = `SELECT * FROM master_department WHERE md_departmentcode='${departmentcode}'`;
+
+        console.log(data);
+
+        mysql.Select(sql_check, 'MasterDepartment', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
+
+router.post('/status', (req, res) => {
+    try {
+        let departmentcode = req.body.departmentcode;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, departmentcode];
+
+        let sql_Update = `UPDATE master_department 
+                       SET md_status = ?
+                       WHERE md_departmentcode = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

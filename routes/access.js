@@ -93,3 +93,71 @@ router.post('/save', (req, res) => {
             })
         }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let accessnamemodal = req.body.accessnamemodal;
+        let accesscode = req.body.accesscode;
+        
+        let data = [accessnamemodal, accesscode];
+         
+        let sql_Update = `UPDATE master_access_type 
+                       SET mat_accessname = ?
+                       WHERE mat_accesscode = ?`;
+        
+        let sql_check = `SELECT * FROM master_access_type WHERE mat_accesscode='${accesscode}'`;
+
+        console.log(data);
+
+        mysql.Select(sql_check, 'MasterRoleType', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
+
+router.post('/status', (req, res) => {
+    try {
+        let accesscode = req.body.accesscode;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, accesscode];
+
+        let sql_Update = `UPDATE master_access_type 
+                       SET mat_status = ?
+                       WHERE mat_accesscode = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

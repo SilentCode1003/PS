@@ -4,7 +4,7 @@
         LoadList();
 
         $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeeid').val();
+            let employeeid = $('#employeelist').val();
             let payrolldate = $('#payrolldate').val();
             let datecovered = $('#datecovered').val();
             let absences = $('#absences').val();
@@ -20,19 +20,19 @@
 
             var message = "";
 
-            if (employeeid == '') { message += 'USERNAME ' }
-            if (payrolldate == '') { message += 'PASSWORD ' }
-            if (datecovered == '') { message += 'ROLE ' }
-            if (absences == '') { message += 'POSITION ' }
-            if (late == '') { message += 'FULLNAME ' }
-            if (undertime == '') { message += 'USERNAME ' }
-            if (allowance == '') { message += 'PASSWORD ' }
-            if (cashadvance == '') { message += 'ROLE ' }
-            if (sss == '') { message += 'POSITION ' }
-            if (sssloan == '') { message += 'FULLNAME ' }
-            if (philhealth == '') { message += 'USERNAME ' }
-            if (hmdf == '') { message += 'PASSWORD ' }
-            if (tax == '') { message += 'ROLE ' }
+            if (employeeid == '') { message += 'EMPLOYEE ID ' }
+            if (payrolldate == '') { message += 'PAYROLLDATE ' }
+            if (datecovered == '') { message += 'DATECOVERED ' }
+            if (absences == '') { message += 'ABSENCES ' }
+            if (late == '') { message += 'LATE ' }
+            if (undertime == '') { message += 'UNDERTIME ' }
+            if (allowance == '') { message += 'ALLOWANCE ' }
+            if (cashadvance == '') { message += 'CASHADVANCE ' }
+            if (sss == '') { message += 'SSS ' }
+            if (sssloan == '') { message += 'SSSLOAN ' }
+            if (philhealth == '') { message += 'PHILHEALTH ' }
+            if (hmdf == '') { message += 'HDMF ' }
+            if (tax == '') { message += 'TAX ' }
 
             if (message != '') {
                 warning('Required', `Please fill up ${message}`);
@@ -63,7 +63,7 @@
                         }
 
                         if (result.msg == 'exist') {
-                            warning('Exist', `${fullname} has already registered!`);
+                            warning('Exist', `${employeeid} has already registered!`);
                         }
 
                     },

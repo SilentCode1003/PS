@@ -70,33 +70,44 @@ router.post('/save', (req, res) => {
 
         let data = [];
 
-        data.push([
-            employeeid,
-            firstname,
-            middlename,
-            lastname,
-            department,
-            position,
-            dailyrate,
-            monthlysalary,
-            updateby,
-            updateddate,
-            status,
-            createdby,
-            createdate
-        ])
+        let sql_check = `select * from employee_salary where es_employeeid='${employeeid}'`;
 
-        mysql.InsertTable('employee_salary', data, (err, result) => {
+        mysql.Select(sql_check, 'EmployeeSalary', (err, result) => {
             if (err) console.error('Error: ', err);
 
-            console.log(result);
-
-            res.json({
-                msg: 'success',
-            })
+            if (result.length != 0) {
+                return res.json({
+                msg: 'exist'
+                })
+            }else {
+                data.push([
+                    employeeid,
+                    firstname,
+                    middlename,
+                    lastname,
+                    department,
+                    position,
+                    dailyrate,
+                    monthlysalary,
+                    updateby,
+                    updateddate,
+                    status,
+                    createdby,
+                    createdate
+                ])
+        
+                mysql.InsertTable('employee_salary', data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+        
+                    console.log(result);
+        
+                    res.json({
+                        msg: 'success',
+                    })
+                })
+            }
         })
-    }
-    catch (error) {
+    }catch (error) {
         res.json({
             msg: error
         })

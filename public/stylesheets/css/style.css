@@ -67,19 +67,14 @@ button{
     color: var(--clr-btn);
 }
 
-.td-hover-color:hover{
-    background-color: var(--clr-btn);
-    color: var(--clr-white);
-}
 
-table {
-    border-collapse: collapse;
+
+  th{
+    text-align: center !important;
   }
   
   td {
-    border: 1px solid black;
-    padding: 5px;
-    width: auto;
+    text-align: center !important;
   }
 
   .modal-header{

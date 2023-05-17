@@ -181,7 +181,6 @@ router.post('/status', (req, res) => {
                 msg: 'success',
             });
         });
-        
     } catch (error) {
         res.json({
             msg: error

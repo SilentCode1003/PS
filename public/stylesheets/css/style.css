@@ -110,8 +110,8 @@ button{
     color: black !important;
   }
 
-  .btn-info {
-    background-color: white !important;
-    border-color: white !important;
-}
+  .container{
+    height: 100%;
+    align-content: center !important;
+    }
   

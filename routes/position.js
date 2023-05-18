@@ -16,7 +16,7 @@ router.get('/', isAuthAdmin, function (req, res, next) {
 
 function isAuthAdmin(req, res, next) {
 
-    if (req.session.roletype == "Admin" && req.session.accesstype == "Administrator") {
+    if (req.session.roletype == "Admin") {
         next();
     }
     else {
@@ -55,7 +55,7 @@ router.post('/save', (req, res) => {
     try {
         let positionname = req.body.positionname;
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
         let sql_check = `select * from master_position where mp_positionname='${positionname}'`;

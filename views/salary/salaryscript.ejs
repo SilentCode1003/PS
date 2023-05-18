@@ -4,7 +4,7 @@
         let status = "";
 
         LoadTable();
-        LoadList();
+        LoadList(); 
         LoadListModal();
 
         $('#salary_dataTable tbody').on('click', 'tr', function () {
@@ -199,9 +199,11 @@
                     var data = result.data;
 
                     $.each(data, function (key, item) {
-                        var options = new Option(item.departmentname, item.departmentname);
-                        $(options).html(item.departmentname);
-                        $('#departmentlist').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.departmentname, item.departmentname);
+                            $(options).html(item.departmentname);
+                            $('#departmentlist').append(options);
+                        }
                     });
 
                 },
@@ -217,9 +219,11 @@
                     var data = result.data;
 
                     $.each(data, function (key, item) {
-                        var options = new Option(item.positionname, item.positionname);
-                        $(options).html(item.positionname);
-                        $('#positionlist').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.positionname, item.positionname);
+                            $(options).html(item.positionname);
+                            $('#positionlist').append(options);
+                        }
                     });
 
                 },
@@ -235,9 +239,11 @@
                     var data = result.data;
 
                     $.each(data, function (key, item) {
-                        var options = new Option(item.employeeid, item.employeeid);
-                        $(options).html(item.employeeid);
-                        $('#employeelist').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.employeeid, item.employeeid);
+                            $(options).html(item.employeeid);
+                            $('#employeelist').append(options);
+                        }
                     });
 
                 },
@@ -255,9 +261,11 @@
                     var data = result.data;
 
                     $.each(data, function (key, item) {
-                        var options = new Option(item.departmentname, item.departmentname);
-                        $(options).html(item.departmentname);
-                        $('#departmentlistmodal').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.departmentname, item.departmentname);
+                            $(options).html(item.departmentname);
+                            $('#departmentlistmodal').append(options);
+                        }
                     });
 
                 },
@@ -273,9 +281,11 @@
                     var data = result.data;
 
                     $.each(data, function (key, item) {
-                        var options = new Option(item.positionname, item.positionname);
-                        $(options).html(item.positionname);
-                        $('#positionlistmodal').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.positionname, item.positionname);
+                            $(options).html(item.positionname);
+                            $('#positionlistmodal').append(options);
+                        }
                     });
 
                 },

@@ -56,7 +56,7 @@ router.post('/save', (req, res) => {
         let employeeid = req.body.employeeid;
         let allowance = req.body.allowance;
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
 

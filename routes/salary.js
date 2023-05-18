@@ -124,7 +124,7 @@ router.post('/edit', (req, res) => {
         let department = req.body.department;
         let dailyrate = req.body.dailyrate;
         let monthlysalary = req.body.monthlysalary;
-        let updateby = "Sample Data";
+        let updateby = req.session.fullname;
         let updateddate = helper.GetCurrentDatetime();
 
         let data = [firstname, middlename, lastname, position, department, dailyrate, monthlysalary, updateby, updateddate, employeeid];

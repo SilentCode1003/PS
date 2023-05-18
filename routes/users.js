@@ -6,6 +6,8 @@ const helper = require('./repository/customhelper');
 const dictionary = require('./repository/dictionary');
 const crypto = require('./repository/cryptography');
 
+let creatorname = "";
+
 /* GET home page. */
 router.get('/', isAuthAdmin, function (req, res, next) {
   res.render('users', {
@@ -60,7 +62,7 @@ router.post('/save', (req, res) => {
         let roletype = req.body.roletype;
         let accesstype = req.body.accesstype;
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
         let sql_check = `select * from master_user where mu_fullname='${fullname}'`;

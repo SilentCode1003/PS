@@ -56,7 +56,7 @@ router.post('/save', (req, res) => {
     try {
         let accessname = req.body.accessname;
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
         let sql_check = `select * from master_access_type where mat_accessname='${accessname}'`;

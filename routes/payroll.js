@@ -67,7 +67,7 @@ router.post('/save', (req, res) => {
         let hmdf = req.body.hmdf;
         let tax = req.body.tax;
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
         let data = [];
 

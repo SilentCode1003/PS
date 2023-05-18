@@ -1,26 +1,56 @@
-
-    <div id="login"  style="background-color: #700b12;">
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12 mt-5 mb-5">
-                        <form id="login-form" class="form" action="" method="post">
-                            <h3 class="text-center logintext">Login</h3>
-                            <div class="form-group">
-                                <label for="username" class="logintext">Username:</label><br>
-                                <input type="text" name="username" id="username" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="logintext">Password:</label><br>
-                                <input type="password" name="password" id="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <button type="button" name="loginBtn" id="loginBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+  <div class="d-flex justify-content-center h-100">
+    <div class="cardlogin">
+      <div class="card-header loginheader mt-4">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Sign In</h3>
+          </div>
         </div>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row">
+            <label class="form-label" for="mu_username">Username</label>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <input
+                type="text"
+                name="username"
+                id="username"
+                class="form-control mr-2"
+              />
+            </div>
+          </div>
+          <div class="row mb-2">
+            <label class="form-label" for="mu_username">Passcode</label>
+            <div class="input-group form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+              </div>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control mr-2"
+              />
+            </div>
+          </div>
+          <div class="form-group btlogin">
+            <button
+              name="loginBtn"
+              id="loginBtn"
+              class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+            >
+              Log in
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-
+  </div>
+</div>

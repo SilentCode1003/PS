@@ -3,14 +3,127 @@
 
 <head>
 <!-- HEADER -->
+<style>
+  :root{
+    --clr-base: #700b12;
+    --clr-top: #911F27;
+    --clr-btn: #DD5353;
+    --clr-default: #eb1c23;
+    --clr-white: #fff;
+    --clr-bg-table: #ff6459;
+}
+  @import url('https://fonts.googleapis.com/css?family=Numans');
+
+html,body{
+background-color: #852027 !important;
+background-size: cover;
+background-repeat: no-repeat;
+height: 100%;
+font-family: 'Numans', sans-serif;
+}
+
+.container{
+height: 100%;
+align-content: center;
+}
+
+.cardlogin{
+height: 370px;
+margin-top: auto;
+margin-bottom: auto;
+width: 400px;
+background-color: white !important;
+color: #700b12 !important;
+border-radius: 25px;
+}
+
+.social_icon img:hover{
+color: white;
+cursor: pointer;
+}
+
+.social_icon img{
+font-size: 60px;
+margin-left: 10px;
+
+}
+
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
+
+.card-header{
+color: #700b12 !important;
+background-color: white !important;
+}
+
+.loginheader h3{
+color: #700b12 !important;
+background-color: white !important;
+
+}
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
+
+.input-group-prepend span{
+width: 50px;
+background-color: white
+;
+color: black;
+border:0 !important;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.links{
+color: #700b12;
+}
+
+.links a{
+margin-left: 4px;
+}
+
+.fas{
+  color: #0E8388 !important;
+}
+
+.btlogin{
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.logopad{
+  margin-left: 75px;
+}
+</style>
   <%- include("header.ejs")%>
+  <title>Login Page</title>
 </head>
 
-<body>
+<body id="pCreated by-top">
 
     <%- include("./login/login.ejs")%>
-    <%- include("footer.ejs")%>
-
     <%- include("script.ejs")%>
     <%- include("./login/loginscript.ejs")%>
     

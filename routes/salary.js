@@ -113,3 +113,84 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let firstname = req.body.firstname;
+        let middlename = req.body.middlename;
+        let lastname = req.body.lastname;
+        let position = req.body.position;
+        let department = req.body.department;
+        let dailyrate = req.body.dailyrate;
+        let monthlysalary = req.body.monthlysalary;
+        let updateby = "Sample Data";
+        let updateddate = helper.GetCurrentDatetime();
+
+        let data = [firstname, middlename, lastname, position, department, dailyrate, monthlysalary, updateby, updateddate, employeeid];
+
+        let sql_Update = `UPDATE employee_salary 
+                        SET es_firstname = ?,
+                            es_middlename = ?,
+                            es_lastname = ?,
+                            es_position = ?,
+                            es_department = ?,
+                            es_dailyrate = ?,
+                            es_monthlysalary = ?,
+                            es_updateby = ?,
+                            es_updateddate = ?
+                        WHERE es_employeeid = ?`;
+
+        let sql_check = `select * from employee_salary where es_employeeid='${employeeid}'`;
+
+        mysql.Select(sql_check, 'EmployeeSalary', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        })
+    }catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
+router.post('/status', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, employeeid];
+
+        let sql_Update = `UPDATE employee_salary 
+                       SET es_status = ?
+                       WHERE es_employeeid = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

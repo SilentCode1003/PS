@@ -1,7 +1,27 @@
 <script>
     $(document).ready(function () {
+        let employeeid = "";
+        let status = "";
+
         LoadTable();
         LoadList();
+
+        $('#governmentID-datatable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        employeeid = dataRow[0];
+        status = dataRow[7];
+        console.log(dataRow);
+        })
+
+        //Edit get Row Details
+        $(document).on('click', '#editBtn', function(){
+            $('#employeeid').val(employeeid);
+            $('#governmentidModal').modal('show');
+            console.log(employeeid);
+        })
 
         $(document).on('click', '#addBtn', function () {
             let employeeid = $('#employeelist').val();
@@ -58,6 +78,58 @@
             }
         })
 
+        $(document).on('click', '#saveBtn', function () {
+            let employeeid = $('#employeeid').val();
+            let sss = $('#sssmodal').val();
+            let ssscontribution = $('#ssscontributionmodal').val();
+            let hdmf = $('#hdmfmodal').val();
+            let hdmfcontribution = $('#hdmfcontributionmodal').val();
+            let philhealth = $('#philhealthmodal').val();
+            let philhealthcontribution = $('#philhealthcontributionmodal').val();
+            var message = "";
+
+            if (employeeid == '') { message += 'Employee ID ' }
+            if (sss == '') { message += 'SSS ' }
+            if (ssscontribution == '') { message += 'SSS Contribution ' }
+            if (hdmf == '') { message += 'Home Development Mutaul Fund ' }
+            if (hdmfcontribution == '') { message += 'HDMF Contribution ' }
+            if (philhealth == '') { message += 'Philhealth ' }
+            if (philhealthcontribution == '') { message += 'Phil Health Contribution ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/governmentid/edit',
+                    data: {
+                        employeeid: employeeid,
+                        sss: sss,
+                        ssscontribution: ssscontribution,
+                        hdmf: hdmf,
+                        hdmfcontribution: hdmfcontribution,
+                        philhealth: philhealth,
+                        philhealthcontribution: philhealthcontribution,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${employeeid} already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+
         function LoadList() {
             $.ajax({
                 type: 'GET',
@@ -78,6 +150,60 @@
             })
  
         }     
+
+        //Status Update
+        $(document).on('click', '#activeBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/governmentid/status',
+                    data: {
+                        status: status,
+                        employeeid: employeeid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${employeeid} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/governmentid/status',
+                    data: {
+                        status: status,
+                        employeeid: employeeid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${employeeid} does not exist!`);
+                        }
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
           
         function LoadTable() {
                 $('#governmentID-datatable').DataTable({

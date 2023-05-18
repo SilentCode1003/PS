@@ -11,32 +11,38 @@
                         <div class="card-body">
                             <div class="row mb-2">
                                 <div class="col-md-12">
+                                    <label class="form-label" for="mu_password">System ID</label>
+                                    <input id="systemid" name="systemid" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1" disabled>        
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-12">
                                     <label class="form-label" for="mu_password">Employee ID</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1">        
+                                    <input id="employeeidmodal" name="employeeidmodal" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1">        
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-4">
                                     <label class="form-label" for="mu_fullname">First name</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new first name" aria-label="fullname" aria-describedby="basic-addon1">
+                                    <input id="firstnamemodal" name="firstnamemodal" type="text" class="form-control" placeholder="Enter new first name" aria-label="fullname" aria-describedby="basic-addon1">
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label" for="mu_username">Middle name</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new middle name" aria-label="fullname" aria-describedby="basic-addon1">    
+                                    <input id="middlenamemodal" name="middlenamemodal" type="text" class="form-control" placeholder="Enter new middle name" aria-label="fullname" aria-describedby="basic-addon1">    
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label" for="mu_password">Last name</label>
-                                    <input id="" name="" type="password" class="form-control" placeholder="Enter new last name" aria-label="fullname" aria-describedby="basic-addon1">    
+                                    <input id="lastnamemodal" name="lastnamemodal" type="text" class="form-control" placeholder="Enter new last name" aria-label="fullname" aria-describedby="basic-addon1">    
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-md-6">
                                     <label class="form-label" for="mu_password">Contact number</label>
-                                    <input id="" name="" type="text" class="form-control" placeholder="Enter new contact number" aria-label="fullname" aria-describedby="basic-addon1">       
+                                    <input id="contactnumbermodal" name="contactnumbermodal" type="text" class="form-control" placeholder="Enter new contact number" aria-label="fullname" aria-describedby="basic-addon1">       
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="mu_password">E-mail address</label>
-                                    <input id="" name="" class="form-control" type="email" placeholder="Enter new email address" aria-label="fullname" aria-describedby="basic-addon1">       
+                                    <input id="emailmodal" name="emailmodal" class="form-control" type="email" placeholder="Enter new email address" aria-label="fullname" aria-describedby="basic-addon1">       
                                 </div>
                             </div>
                             <div class="row">
@@ -61,7 +67,7 @@
 
           <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>
             Close</button>
-          <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
+          <button type="button" id="saveBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
             Save</button>
         </div>
       </div>
@@ -139,7 +145,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-responsive" id="employee_dataTable" width="100%" cellspacing="10">
+            <table class="table table-bordered" id="employee_dataTable" width="100%" cellspacing="10">
                 <thead>
                     <tr>
                         <th class = "col-1 text-start">System ID</th>

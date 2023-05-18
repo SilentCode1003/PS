@@ -107,3 +107,56 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let late = req.body.late;
+        let absent = req.body.absent;
+        let sss = req.body.sss;
+        let hdmf = req.body.hdmf;
+        let philhealth = req.body.philhealth;
+        let cashadvance = req.body.cashadvance;
+        let loan = req.body.loan;
+        let tax = req.body.tax;
+        
+        let data = [late, absent, sss, hdmf, philhealth, cashadvance, loan, tax, employeeid];
+        
+        let sql_Update = `UPDATE employee_deduction_details 
+                        SET edd_late = ?,
+                            edd_absent = ?,
+                            edd_sss = ?,
+                            edd_hdmf = ?,
+                            edd_philhealth = ?,
+                            edd_cashadvance = ?,
+                            edd_loan = ?,
+                            edd_tax = ?
+                        WHERE edd_employeeid = ?`;
+
+        let sql_check = `select * from employee_deduction_details where edd_employeeid='${employeeid}'`;
+
+        mysql.Select(sql_check, 'EmployeeDeductionDetails', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    }catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})

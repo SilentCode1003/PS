@@ -52,7 +52,6 @@ router.get('/load', (req, res) => {
   }
 })
 
-
 router.post('/save', (req, res) => {
     try {
         let employeeid = req.body.employeeid;
@@ -106,3 +105,82 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let sss = req.body.sss;
+        let ssscontribution = req.body.ssscontribution;
+        let hdmf = req.body.hdmf;
+        let hdmfcontribution = req.body.hdmfcontribution;
+        let philhealth = req.body.philhealth;
+        let philhealthcontribution = req.body.philhealthcontribution;
+
+        let data = [sss, ssscontribution, hdmf, hdmfcontribution, philhealth, philhealthcontribution, employeeid];
+         
+        let sql_Update = `UPDATE employee_government_id_details 
+                        SET egid_sss = ?,
+                            egid_ssscontribution = ?,
+                            egid_hdmf = ?,
+                            egid_hdmfcontribution = ?,
+                            egid_philhealth = ?,
+                            egid_philhealthcontribution = ?
+                        WHERE egid_employeeid = ?`;
+        
+        let sql_check = `SELECT * FROM employee_government_id_details WHERE egid_employeeid='${employeeid}'`;
+
+        console.log(data);
+
+        mysql.Select(sql_check, 'EmployeeGovernmentIdDetails', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        });
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
+
+router.post('/status', (req, res) => {
+    try {
+        let employeeid = req.body.employeeid;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, employeeid];
+
+        let sql_Update = `UPDATE employee_government_id_details 
+                       SET egid_status = ?
+                       WHERE egid_employeeid = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});
+

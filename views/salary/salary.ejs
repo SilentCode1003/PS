@@ -10,27 +10,33 @@
                 <div class="col-lg-12">
                     <div class="card-body">
                         <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label class="form-label" for="departmentname">Employee ID</label>
+                                <input id="employeeid" name="employeeid" type="text" class="form-control" placeholder="Enter new firstname" aria-label="fullname" aria-describedby="basic-addon1" disabled>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
                             <div class="col-md-4">
                                 <label class="form-label" for="departmentname">Firstname</label>
-                                <input id="" name="" type="text" class="form-control" placeholder="Enter new firstname" aria-label="fullname" aria-describedby="basic-addon1">
+                                <input id="firstnamemodal" name="firstnamemodal" type="text" class="form-control" placeholder="Enter new firstname" aria-label="fullname" aria-describedby="basic-addon1">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label" for="departmentname">Middlename</label>
-                                <input id="" name="" type="text" class="form-control" placeholder="Enter new middlename" aria-label="fullname" aria-describedby="basic-addon1">    
+                                <input id="middlenamemodal" name="middlenamemodal" type="text" class="form-control" placeholder="Enter new middlename" aria-label="fullname" aria-describedby="basic-addon1">    
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label" for="departmentname">Lastname</label>
-                                <input id="" name="" type="text" class="form-control" placeholder="Enter new lastname" aria-label="fullname" aria-describedby="basic-addon1">    
+                                <input id="lastnamemodal" name="lastnamemodal" type="text" class="form-control" placeholder="Enter new lastname" aria-label="fullname" aria-describedby="basic-addon1">    
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-6">
                                 <label class="form-label" for="departmentname">Daily Rate</label>
-                                <input id="" name="" type="tel" class="form-control" placeholder="Enter new daily rate" aria-label="fullname" aria-describedby="basic-addon1">
+                                <input id="dailyratemodal" name="dailyratemodal" type="tel" class="form-control" placeholder="Enter new daily rate" aria-label="fullname" aria-describedby="basic-addon1">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="departmentname">Monthly Salary</label>
-                                <input id="" name="" type="email" class="form-control" placeholder="Enter new monthly salary" aria-label="fullname" aria-describedby="basic-addon1">
+                                <input id="monthlysalarymodal" name="monthlysalarymodal" type="email" class="form-control" placeholder="Enter new monthly salary" aria-label="fullname" aria-describedby="basic-addon1">
                             </div>
                         </div>
                         <div class="row">
@@ -55,7 +61,7 @@
 
           <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>
             Close</button>
-          <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
+          <button type="button" id="saveBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
             Save</button>
         </div>
       </div>
@@ -135,83 +141,26 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-responsive" id="salary_dataTable" width="100%" cellspacing="10">
+            <table class="table table-bordered" id="salary_dataTable" width="100%" cellspacing="10">
                 <thead>
                     <tr>
-                        <th class = "col-3 text-center">Employee ID</th>
-                        <th class = "col-3 text-center">Firstname</th>
-                        <th class = "col-2 text-center">Middlename</th>
-                        <th class = "col-2 text-center">Lastname</th>
-                        <th class = "col-2 text-end">Position</th>  
-                        <th class = "col-2 text-end">Department</th>
-                        <th class = "col-2 text-end">Daily Rate</th>
-                        <th class = "col-2 text-end">Monthly Salary</th> 
-                        <th class = "col-2 text-end">Update by</th>
-                        <th class = "col-2 text-end">Update Date</th>
-                        <th class = "col-2 text-end">Status</th> 
-                        <th class = "col-2 text-end">Created by</th>  
-                        <th class = "col-2 text-end">Created date</th>  
-                        <th class = "col-2 text-end">Action</th>  
+                        <th>Employee ID</th>
+                        <th>Firstname</th>
+                        <th>Middlename</th>
+                        <th>Lastname</th>
+                        <th>Position</th>  
+                        <th>Department</th>
+                        <th>Daily Rate</th>
+                        <th>Monthly Salary</th> 
+                        <th>Update by</th>
+                        <th>Update Date</th>
+                        <th>Status</th> 
+                        <th>Created by</th>  
+                        <th>Created date</th>  
+                        <th>Action</th>  
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">0001</td>
-                        <td class="td-hover-color">Joseph</td>                                        
-                        <td class="td-hover-color">Blanca</td>
-                        <td class="td-hover-color">Orencio</td>
-                        <td class="td-hover-color">IT specialist</td>
-                        <td class="td-hover-color">IT department</td>
-                        <td class="td-hover-color">09236458896</td>
-                        <td class="td-hover-color">asdfagadg@gmail.com</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
-                            <button type="button" class="btn btn-outline-primary">Edit</button>  
-                        </td>                              
-                    </tr>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">0001</td>
-                        <td class="td-hover-color">Joseph</td>                                        
-                        <td class="td-hover-color">Blanca</td>
-                        <td class="td-hover-color">Orencio</td>
-                        <td class="td-hover-color">IT specialist</td>
-                        <td class="td-hover-color">IT department</td>
-                        <td class="td-hover-color">09236458896</td>
-                        <td class="td-hover-color">asdfagadg@gmail.com</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
-                            <button type="button" class="btn btn-outline-primary">Edit</button>  
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">0001</td>
-                        <td class="td-hover-color">Joseph</td>                                        
-                        <td class="td-hover-color">Blanca</td>
-                        <td class="td-hover-color">Orencio</td>
-                        <td class="td-hover-color">IT specialist</td>
-                        <td class="td-hover-color">IT department</td>
-                        <td class="td-hover-color">09236458896</td>
-                        <td class="td-hover-color">asdfagadg@gmail.com</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
-                            <button type="button" class="btn btn-outline-primary">Edit</button>  
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>

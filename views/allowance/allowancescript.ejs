@@ -1,45 +1,156 @@
 <script>
     $(document).ready(function () {
-            LoadTable();
-            LoadList();
-      
-            $(document).on('click', '#addBtn', function () {
-                let employeeid = $('#employeeid').val();
-                let allowance = $('#allowance').val();
- 
-                var message = "";
-    
-                if (employeeid == '') { message += 'Employee ID ' }
-                if (allowance == '') { message += 'And Allowance ' }
+        let employeeid = "";
+        let status = "";
 
-                if (message != '') {
-                    warning('Required', `Please fill up ${message}`);
-                }
-                else {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/allowance/save',
-                        data: {
-                            employeeid: employeeid,
-                            allowance: allowance,
-                        },
-                        success: function (result) {
-                            if (result.msg == 'success') {
-                                LoadTable();
-                                success('Saved', 'Successfully')
-                            }
-    
-                            if (result.msg == 'exist') {
-                                warning('Exist', `${employeeid} has already registered!`);
-                            }
-    
-                        },
-                        error: function (err) {
-                            errormsg(err);
+        LoadTable();
+        LoadList();
+
+        $('#allowance-dataTable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        console.log(dataRow);
+        employeeid = dataRow[0];
+        status = dataRow[2];
+        })
+
+        $(document).on('click', '#editBtn', function(){
+            $('#employeeidmodal').val(employeeid);
+            $('#allowanceModal').modal('show');
+            console.log(employeeid);
+        })
+      
+        $(document).on('click', '#addBtn', function () {
+            let employeeid = $('#employeeid').val();
+            let allowance = $('#allowance').val();
+
+            var message = "";
+
+            if (employeeid == '') { message += 'Employee ID ' }
+            if (allowance == '') { message += 'Allowance ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/allowance/save',
+                    data: {
+                        employeeid: employeeid,
+                        allowance: allowance,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
                         }
-                    })
-                }
-            })
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${employeeid} has already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })   
+
+        $(document).on('click', '#saveBtn', function () {
+            let employeeid = $('#employeeidmodal').val();
+            let allowance = $('#allowancemodal').val();
+
+            var message = "";
+
+            if (employeeid == '') { message += 'Employee ID ' }
+            if (allowance == '') { message += 'Allowance ' }
+
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/allowance/edit',
+                    data: {
+                        employeeid: employeeid,
+                        allowance: allowance,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `${employeeid} already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })  
+
+        $(document).on('click', '#activeBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/allowance/status',
+                    data: {
+                        status: status,
+                        employeeid: employeeid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${employeeid} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(employeeid);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/allowance/status',
+                    data: {
+                        status: status,
+                        employeeid: employeeid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${employeeid} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
 
         function LoadList() {
             $.ajax({
@@ -59,8 +170,8 @@
                     errormsg(err);
                 }
             })
- 
-        }     
+
+        }    
           
         function LoadTable() {
                 $('#allowance-dataTable').DataTable({

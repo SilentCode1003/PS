@@ -117,3 +117,91 @@ router.post('/save', (req, res) => {
         })
     }
 })
+
+router.post('/edit', (req, res) => {
+    try {
+        let detailid = req.body.detailid;
+        let payrolldate = req.body.payrolldate;
+        let datecovered = req.body.datecovered;
+        let absences = req.body.absences;
+        let late = req.body.late; 
+        let undertime = req.body.undertime;
+        let allowance = req.body.allowance;
+        let cashadvance = req.body.cashadvance;
+        let sss = req.body.sss;
+        let sssloan = req.body.sssloan; 
+        let philhealth = req.body.philhealth;
+        let hmdf = req.body.hmdf;
+        let tax = req.body.tax;
+
+        let data = [payrolldate, datecovered, absences, late, undertime, allowance, cashadvance, sss, sssloan, philhealth, hmdf, tax, detailid];
+        
+        let sql_Update = `UPDATE payroll_detail 
+                        SET pd_payrolldate = ?,
+                            pd_datecovered = ?,
+                            pd_absences = ?,
+                            pd_late = ?,
+                            pd_undertime = ?,
+                            pd_allowance = ?,
+                            pd_cashadvance = ?,
+                            pd_sss = ?,
+                            pd_sssloan = ?,
+                            pd_philhealth = ?,
+                            pd_hmdf = ?,
+                            pd_tax = ?
+                        WHERE pd_detailid = ?`;
+
+        let sql_check = `select * from payroll_detail where pd_detailid='${detailid}'`;
+
+        mysql.Select(sql_check, 'PayrollDetail', (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            if (result.length != 1) {
+                return res.json({
+                    msg: 'notexist'
+                });
+            } else {
+                mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+                    if (err) console.error('Error: ', err);
+
+                    console.log(result);
+
+                    res.json({
+                        msg: 'success',
+                    });
+                });
+            }
+        })
+    }catch (error) {
+        res.json({
+            msg: error
+        })
+    }
+})
+
+router.post('/status', (req, res) => {
+    try {
+        let detailid = req.body.detailid;
+        let status = req.body.status == dictionary.GetValue(dictionary.ACT()) ? dictionary.GetValue(dictionary.INACT()): dictionary.GetValue(dictionary.ACT());
+        let data = [status, detailid];
+
+        let sql_Update = `UPDATE payroll_detail 
+                       SET pd_status = ?
+                       WHERE pd_detailid = ?`;
+
+        console.log(data);
+
+        mysql.UpdateMultiple(sql_Update, data, (err, result) => {
+            if (err) console.error('Error: ', err);
+
+            res.json({
+                msg: 'success',
+            });
+        });
+        
+    } catch (error) {
+        res.json({
+            msg: error
+        });
+    }
+});

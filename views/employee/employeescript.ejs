@@ -1,7 +1,28 @@
 <script>
     $(document).ready(function () {
+        let systemid = "";
+        let status = "";
+
         LoadTable();
         LoadList();
+        LoadListModal();
+
+        $('#employee_dataTable tbody').on('click', 'tr', function () {
+        var dataRow = [];
+        $(this).closest('tr').find('td').each(function () {
+            dataRow.push($(this).text());
+        });
+        systemid = dataRow[0];
+        status = dataRow[9];
+        console.log(dataRow);
+        })
+
+        //Edit get Row Details
+        $(document).on('click', '#editBtn', function(){
+            $('#systemid').val(systemid);
+            $('#employeeModal').modal('show');
+            console.log(systemid);
+        })
 
         $(document).on('click', '#addBtn', function () {
             let employeeid = $('#employeeid').val();
@@ -60,6 +81,119 @@
             }
         })
 
+        $(document).on('click', '#saveBtn', function () {
+            let systemid = $('#systemid').val();
+            let employeeid = $('#employeeidmodal').val();
+            let firstname = $('#firstnamemodal').val();
+            let middlename = $('#middlenamemodal').val();
+            let lastname = $('#lastnamemodal').val();
+            let positionlist = $('#positionlistmodal').val();
+            let departmentlist = $('#departmentlistmodal').val();
+            let contactnumber = $('#contactnumbermodal').val();
+            let email = $('#emailmodal').val();
+
+            var message = "";
+            
+            if (employeeid == '') { message += 'Employee ID ' }
+            if (firstname == '') { message += 'First Name ' }
+            if (middlename == '') { message += 'Middle Name ' }
+            if (lastname == '') { message += 'Last Name ' }
+            if (contactnumber == '') { message += 'Contact Number ' }
+            if (departmentlist == '') { message += 'Department ' }
+            if (positionlist == '') { message += 'Position ' }
+            if (email == '') { message += 'Email' }
+
+            
+            if (message != '') {
+                warning('Required', `Please fill up ${message}`);
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/employee/edit',
+                    data: {
+                        systemid: systemid,
+                        employeeid: employeeid,
+                        firstname: firstname,
+                        middlename: middlename,
+                        lastname: lastname,
+                        positionlist: positionlist,
+                        departmentlist: departmentlist,
+                        contactnumber: contactnumber,
+                        email: email,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'exist') {
+                            warning('Exist', `Employee ID: ${employeeid} is already registered!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+            }
+        })
+        
+        //Status Update
+        $(document).on('click', '#activeBtn', function(){
+            console.log(systemid);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/employee/status',
+                    data: {
+                        status: status,
+                        systemid: systemid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${systemid} does not exist!`);
+                        }
+
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
+        $(document).on('click', '#inactiveBtn', function(){
+            console.log(systemid);
+            console.log(status);
+            $.ajax({
+                    type: 'POST',
+                    url: '/employee/status',
+                    data: {
+                        status: status,
+                        systemid: systemid,
+                    },
+                    success: function (result) {
+                        if (result.msg == 'success') {
+                            LoadTable();
+                            success('Saved', 'Successfully')
+                        }
+
+                        if (result.msg == 'notexist') {
+                            warning(`${systemid} does not exist!`);
+                        }
+                    },
+                    error: function (err) {
+                        errormsg(err);
+                    }
+                })
+        });
+
         function LoadList() {
             $.ajax({
                 type: 'GET',
@@ -89,6 +223,44 @@
                         var options = new Option(item.positionname, item.positionname);
                         $(options).html(item.positionname);
                         $('#positionlist').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+        } 
+
+        function LoadListModal() {
+            $.ajax({
+                type: 'GET',
+                url: '/department/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.departmentname, item.departmentname);
+                        $(options).html(item.departmentname);
+                        $('#departmentlistmodal').append(options);
+                    });
+
+                },
+                error: function (err) {
+                    errormsg(err);
+                }
+            })
+
+            $.ajax({
+                type: 'GET',
+                url: '/position/load',
+                success: function (result) {
+                    var data = result.data;
+
+                    $.each(data, function (key, item) {
+                        var options = new Option(item.positionname, item.positionname);
+                        $(options).html(item.positionname);
+                        $('#positionlistmodal').append(options);
                     });
 
                 },

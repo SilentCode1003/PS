@@ -136,11 +136,13 @@
                 url: '/employee/load',
                 success: function (result) {
                     var data = result.data;
-
+                    console.log(data);
                     $.each(data, function (key, item) {
-                        var options = new Option(item.employeeid, item.employeeid);
-                        $(options).html(item.employeeid);
-                        $('#employeelist').append(options);
+                        if (item.status == 'ACTIVE'){
+                            var options = new Option(item.employeeid, item.employeeid);
+                            $(options).html(item.employeeid);
+                            $('#employeelist').append(options);
+                        }
                     });
 
                 },

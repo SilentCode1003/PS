@@ -17,7 +17,7 @@ router.get('/', isAuthAdmin, function (req, res, next) {
  
 function isAuthAdmin(req, res, next) {
 
-    if (req.session.roletype == "Admin" && req.session.accesstype == "Administrator") {
+    if (req.session.roletype == "Admin") {
         next();
     }
     else {

@@ -183,10 +183,11 @@ $(document).ready(function () {
                     var data = result.data;
 
                     $.each(data, function (key, item) {
-                        var options = new Option(item.rolename, item.rolename);
-                        $(options).html(item.rolename);
-                        $('#rolelist').append(options);
-                        
+                        if(item.status == "ACTIVE"){
+                            var options = new Option(item.rolename, item.rolename);
+                            $(options).html(item.rolename);
+                            $('#rolelist').append(options);
+                        }
                     });
 
                 },
@@ -200,12 +201,12 @@ $(document).ready(function () {
                 url: '/position/load',
                 success: function (result) {
                     var data = result.data;
-
                     $.each(data, function (key, item) {
-                        var options = new Option(item.positionname, item.positionname);
-                        $(options).html(item.positionname);
-                        $('#positionlist').append(options);
-                        
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.positionname, item.positionname);
+                            $(options).html(item.positionname);
+                            $('#positionlist').append(options);
+                        }
                     });
 
                 },
@@ -221,12 +222,12 @@ $(document).ready(function () {
                 url: '/roles/load',
                 success: function (result) {
                     var data = result.data;
-
                     $.each(data, function (key, item) {
-                        var options = new Option(item.rolename, item.rolename);
-                        $(options).html(item.rolename);
-                        
-                        $('#rolelistmodal').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.rolename, item.rolename);
+                            $(options).html(item.rolename);
+                            $('#rolelistmodal').append(options);
+                        }
                     });
 
                 },
@@ -240,21 +241,19 @@ $(document).ready(function () {
                 url: '/position/load',
                 success: function (result) {
                     var data = result.data;
-
                     $.each(data, function (key, item) {
-                        var options = new Option(item.positionname, item.positionname);
-                        $(options).html(item.positionname);
-    
-                        $('#positionlistmodal').append(options);
+                        if (item.status == "ACTIVE"){
+                            var options = new Option(item.positionname, item.positionname);
+                            $(options).html(item.positionname);
+                            $('#positionlistmodal').append(options);
+                        }
                     });
-
                 },
                 error: function (err) {
                     errormsg(err);
                 }
             })
         } 
-
       
         function LoadTable() {
             $('#users-datatable').DataTable({

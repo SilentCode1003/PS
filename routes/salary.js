@@ -62,10 +62,10 @@ router.post('/save', (req, res) => {
         let position = req.body.positionlist;
         let dailyrate = req.body.dailyrate;
         let monthlysalary = req.body.monthlysalary;
-        let updateby = "Sample Data";
+        let updateby = req.session.fullname;
         let updateddate = helper.GetCurrentDatetime();
         let status = dictionary.GetValue(dictionary.ACT());
-        let createdby = "Sample Data";
+        let createdby = req.session.fullname;
         let createdate = helper.GetCurrentDatetime();
 
         let data = [];

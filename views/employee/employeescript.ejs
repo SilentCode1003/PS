@@ -353,4 +353,109 @@
             });
         }
     })
+
+
+
+    const contactinputmodal = document.getElementById('contactnumbermodal');
+    const contacterrormodal = document.getElementById('ContacterrorMessage');
+
+    contactinputmodal.addEventListener('keypress', function(event) {
+        const key = event.key;
+        const inputLength = this.value.length;
+
+        if (inputLength >= 11 || (inputLength === 0 && key !== '0') || (inputLength === 1 && key !== '9') || !/^\d$/.test(key)) {
+        event.preventDefault();
+        contacterrormodal.style.display = 'block';
+        } else {
+        contacterrormodal.style.display = 'none';
+        }
+    });
+
+    const emailInput = document.getElementById('emailmodal');
+    const emailErrorMessage = document.getElementById('emailErrorMessageModal');
+
+    emailInput.addEventListener('input', function() {
+        const email = this.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+        emailErrorMessage.style.display = 'block';
+        } else {
+        emailErrorMessage.style.display = 'none';
+        }
+    });
+
+    //EmployeeID
+        function validateEmployeeInput(inputElement, errorElement, buttonElement) {
+        const inputValue = inputElement.value;
+        const numericRegex = /^[0-9]+$/;
+
+        if (inputValue.length !== 6 || !numericRegex.test(inputValue)) {
+            errorElement.style.display = 'block';
+            buttonElement.disabled = true;
+        } else {
+            errorElement.style.display = 'none';
+            buttonElement.disabled = false;
+        }
+        }
+
+        // Attach event listeners for input validation (Modal)
+        const employeeInputModal = document.getElementById('employeeidmodal');
+        const errorModal = document.getElementById('errorMessagemodal');
+        const addButtonModal = document.getElementById('saveBtn');
+
+        employeeInputModal.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        validateEmployeeInput(employeeInputModal, errorModal, addButtonModal);
+        });
+        employeeInputModal.addEventListener('blur', function () {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        validateEmployeeInput(employeeInputModal, errorModal, addButtonModal);
+        });
+
+        // Attach event listeners for input validation
+        const employeeInput = document.getElementById('employeeid');
+        const errorElement = document.getElementById('employeeError');
+        const addButton = document.getElementById('addBtn');
+
+        employeeInput.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        validateEmployeeInput(employeeInput, errorElement, addButton);
+        });
+        employeeInput.addEventListener('blur', function () {
+        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        validateEmployeeInput(employeeInput, errorElement, addButton);
+        });
+
+    //contact number
+    const contactnumberinput = document.getElementById('contactnumber');
+    const contactnumbererror = document.getElementById('contactnumbererror');
+
+    contactnumberinput.addEventListener('keypress', function(event) {
+        const key = event.key;
+        const inputLength = this.value.length;
+
+        if (inputLength >= 11 || (inputLength === 0 && key !== '0') || (inputLength === 1 && key !== '9') || !/^\d$/.test(key)) {
+        event.preventDefault();
+        contactnumbererror.style.display = 'block';
+        } else {
+        contactnumbererror.style.display = 'none';
+        }
+    });
+
+    //email
+    const email = document.getElementById('email');
+    const emailError = document.getElementById('emailerror');
+
+    email.addEventListener('input', function() {
+        const email = this.value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+        emailError.style.display = 'block';
+        } else {
+        emailError.style.display = 'none';
+        }
+    });
+
 </script>

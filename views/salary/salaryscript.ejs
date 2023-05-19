@@ -357,8 +357,18 @@
                     { data: 'lastname' },
                     { data: 'department' },
                     { data: 'position' },
-                    { data: 'dailyrate' },
-                    { data: 'monthlysalary' },
+                    { 
+                        data: 'dailyrate',
+                        render: function (data) {
+                            return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                    },
+                    { 
+                        data: 'monthlysalary',
+                        render: function (data) {
+                            return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                    },
                     { data: 'updateby' },
                     { data: 'updateddate' },
                     { data: 'status' },
@@ -372,4 +382,5 @@
             });
         }
     })
+
 </script>

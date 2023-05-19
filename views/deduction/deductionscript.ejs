@@ -213,12 +213,36 @@
                         { data: 'employeeid' },
                         { data: 'late' },
                         { data: 'absent' },
-                        { data: 'sss' },
-                        { data: 'hdmf' },
-                        { data: 'philhealth' },
-                        { data: 'cashadvance' },
-                        { data: 'loan' },
-                        { data: 'tax' },
+                        { data: 'sss', 
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'hdmf', 
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'philhealth', 
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'cashadvance', 
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'loan', 
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'tax', 
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
                         { data: 'payrolldate' },
                         { data: 'cutoffdate' },
                         { data: 'action' },

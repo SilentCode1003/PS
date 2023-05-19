@@ -18,7 +18,10 @@
                             <div class="row mb-2">
                                 <div class="col-md-12">
                                     <label class="form-label" for="mu_password">Employee ID</label>
-                                    <input id="employeeidmodal" name="employeeidmodal" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1">        
+                                    <input id="employeeidmodal" name="employeeidmodal" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1" maxlength="6">        
+                                    <div class="alert alert-danger mt-2" id="errorMessagemodal" style="display: none;">
+                                        Please enter numbers only and exactly 6 characters.
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
@@ -39,10 +42,16 @@
                                 <div class="col-md-6">
                                     <label class="form-label" for="mu_password">Contact number</label>
                                     <input id="contactnumbermodal" name="contactnumbermodal" type="text" class="form-control" placeholder="Enter new contact number" aria-label="fullname" aria-describedby="basic-addon1">       
+                                    <div class="alert alert-danger mt-2" id="ContacterrorMessage" style="display: none;">
+                                        Please enter a valid Contact Number.
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="mu_password">E-mail address</label>
                                     <input id="emailmodal" name="emailmodal" class="form-control" type="email" placeholder="Enter new email address" aria-label="fullname" aria-describedby="basic-addon1">       
+                                    <div class="alert alert-danger mt-2" id="emailErrorMessageModal" style="display: none;">
+                                        Please enter a valid email address.
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -86,7 +95,10 @@
                     <div class="row">
                         <div class="col-md-12 mb-2">
                             <label class="form-label" for="departmentname">Employee ID</label>
-                            <input id="employeeid" name="employeeid" type="text" class="form-control" placeholder="Enter your employee ID" aria-label="fullname" aria-describedby="basic-addon1">
+                            <input id="employeeid" name="employeeid" type="text" class="form-control" placeholder="Enter your employee ID" aria-label="fullname" aria-describedby="basic-addon1" maxlength="6">
+                            <div class="alert alert-danger mt-2" id="employeeError" style="display: none;">
+                                Please enter numbers only and exactly 6 characters.
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -105,12 +117,18 @@
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label class="form-label" for="departmentname">Contact number</label>
+                            <label class="form-label" for="contactnumber">Contact number</label>
                             <input id="contactnumber" name="contactnumber" type="tel" class="form-control" placeholder="Enter your contact number" aria-label="fullname" aria-describedby="basic-addon1">
+                            <div class="alert alert-danger mt-2" id="contactnumbererror" style="display: none;">
+                                Please enter a valid Contact Number.
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" for="departmentname">E-mail address</label>
                             <input id="email" name="email" type="email" class="form-control" placeholder="Enter your email add" aria-label="fullname" aria-describedby="basic-addon1">
+                            <div class="alert alert-danger mt-2" id="emailerror" style="display: none;">
+                                Please enter a valid email address.
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-4">
@@ -126,7 +144,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 mt-4">
-                        <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50">
+                        <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50" disabled>
                             <i class="fa fa-plus" aria-hidden="true"></i>
                             Add
                         </button> 

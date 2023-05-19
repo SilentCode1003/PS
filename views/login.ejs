@@ -15,11 +15,12 @@
   @import url('https://fonts.googleapis.com/css?family=Numans');
 
 html,body{
-background-color: #852027 !important;
 background-size: cover;
 background-repeat: no-repeat;
 height: 100%;
 font-family: 'Numans', sans-serif;
+background-image: url('/images/img/pxfuel.jpg') !important;
+background-attachment: fixed !important;
 }
 
 .container{
@@ -32,13 +33,13 @@ height: 370px;
 margin-top: auto;
 margin-bottom: auto;
 width: 400px;
-background-color: white !important;
+background-color: #852027 !important;
 color: #700b12 !important;
 border-radius: 25px;
 }
 
 .social_icon img:hover{
-color: white;
+color: #852027;
 cursor: pointer;
 }
 
@@ -56,12 +57,12 @@ top: -45px;
 
 .card-header{
 color: #700b12 !important;
-background-color: white !important;
+background-color: #852027 !important;
 }
 
 .loginheader h3{
-color: #700b12 !important;
-background-color: white !important;
+color: white !important;
+background-color: #852027 !important;
 
 }
 .social_icon{
@@ -108,6 +109,8 @@ margin-left: 4px;
   color: #0E8388 !important;
 }
 
+
+
 .btlogin{
   justify-content: center !important;
   align-items: center !important;
@@ -115,6 +118,10 @@ margin-left: 4px;
 
 .logopad{
   margin-left: 75px;
+}
+
+.card-body{
+  color: white !important;
 }
 </style>
   <%- include("header.ejs")%>

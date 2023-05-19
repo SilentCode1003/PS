@@ -50,6 +50,10 @@ button{
     width: 100px;
 }
 
+.btnclr{
+  color: #fff !important;
+}
+
 .btn{
     margin-bottom: 1px !important;
 }
@@ -115,3 +119,21 @@ button{
     align-content: center !important;
     }
   
+.loginImg{
+  height: 350px;
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.top-icon{
+  color: var(--clr-btn);
+}
+
+.btn-link{
+  color: var(--clr-btn) !important;
+}
+
+.btn-link:hover {
+  color: var(--clr-btn) !important;
+}

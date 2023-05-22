@@ -308,13 +308,41 @@
                         { data: 'absences' },
                         { data: 'late' },
                         { data: 'undertime' },
-                        { data: 'allowance' },
-                        { data: 'cashadvance' },
-                        { data: 'sss' },
-                        { data: 'sssloan' },
-                        { data: 'philhealth' },
-                        { data: 'hmdf'},
-                        { data: 'tax'},
+                        { data: 'allowance',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'cashadvance',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'sss',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'sssloan',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'philhealth',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'hmdf',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
+                        { data: 'tax',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            }
+                        },
                         { data: 'status' },
                         { data: 'createdby' },
                         { data: 'createddate' },

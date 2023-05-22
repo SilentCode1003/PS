@@ -224,7 +224,11 @@
                     }],
                     'columns': [
                         { data: 'employeeid' },
-                        { data: 'allowance' },
+                        { data: 'allowance',
+                            render: function (data) {
+                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                            } 
+                        },
                         { data: 'status' },
                         { data: 'createdby' },
                         { data: 'createddate' },

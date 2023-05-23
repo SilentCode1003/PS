@@ -241,7 +241,7 @@
                     $.each(data, function (key, item) {
                         if (item.status == "ACTIVE"){
                             var options = new Option(item.employeeid, item.employeeid);
-                            $(options).html(item.employeeid);
+                            $(options).html(`${item.firstname} ${item.middlename} ${item.lastname}`);
                             $('#employeelist').append(options);
                         }
                     });
@@ -296,6 +296,7 @@
         } 
 
         function LoadTable() {
+            showspinner();
             $('#salary_dataTable').DataTable({
                 'destroy': true,
                 'processing': true,
@@ -378,6 +379,7 @@
                 ],
                 initComplete: function () {
                     console.log('init complete');
+                    hidespinner();
                 }
             });
         }

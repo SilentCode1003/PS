@@ -162,7 +162,7 @@
                     $.each(data, function (key, item) {
                         if (item.status == "ACTIVE"){
                             var options = new Option(item.employeeid, item.employeeid);
-                            $(options).html(item.employeeid);
+                            $(options).html(`${item.firstname} ${item.middlename} ${item.lastname}`);
                             $('#employeeid').append(options);
                         }
                     });

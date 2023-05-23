@@ -1,461 +1,625 @@
 <script>
-    $(document).ready(function () {
-        let systemid = "";
-        let status = "";
+  $(document).ready(function () {
+    let systemid = "";
+    let status = "";
 
-        LoadTable();
-        LoadList();
-        LoadListModal();
+    LoadTable();
+    LoadList();
+    LoadListModal();
 
-        $('#employee_dataTable tbody').on('click', 'tr', function () {
-        var dataRow = [];
-        $(this).closest('tr').find('td').each(function () {
-            dataRow.push($(this).text());
+    $("#employee_dataTable tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
         });
-        systemid = dataRow[0];
-        status = dataRow[9];
-        console.log(dataRow);
-        })
-
-        //Edit get Row Details
-        $(document).on('click', '#editBtn', function(){
-            $('#systemid').val(systemid);
-            $('#employeeModal').modal('show');
-            console.log(systemid);
-        })
-
-        $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeeid').val();
-            let firstname = $('#firstname').val();
-            let middlename = $('#middlename').val();
-            let lastname = $('#lastname').val();
-            let positionlist = $('#positionlist').val();
-            let departmentlist = $('#departmentlist').val();
-            let contactnumber = $('#contactnumber').val();
-            let email = $('#email').val();
-
-            var message = "";
-            
-            if (employeeid == '') { message += 'Employee ID ' }
-            if (firstname == '') { message += 'First Name ' }
-            if (middlename == '') { message += 'Middle Name ' }
-            if (lastname == '') { message += 'Last Name ' }
-            if (contactnumber == '') { message += 'Contact Number ' }
-            if (departmentlist == '') { message += 'Department ' }
-            if (positionlist == '') { message += 'Position ' }
-            if (email == '') { message += 'Email' }
-
-            
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/employee/save',
-                    data: {
-                        employeeid: employeeid,
-                        firstname: firstname,
-                        middlename: middlename,
-                        lastname: lastname,
-                        positionlist: positionlist,
-                        departmentlist: departmentlist,
-                        contactnumber: contactnumber,
-                        email: email,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'exist') {
-                            warning('Exist', `Employee ID: ${employeeid} is already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-
-        $(document).on('click', '#saveBtn', function () {
-            let systemid = $('#systemid').val();
-            let employeeid = $('#employeeidmodal').val();
-            let firstname = $('#firstnamemodal').val();
-            let middlename = $('#middlenamemodal').val();
-            let lastname = $('#lastnamemodal').val();
-            let positionlist = $('#positionlistmodal').val();
-            let departmentlist = $('#departmentlistmodal').val();
-            let contactnumber = $('#contactnumbermodal').val();
-            let email = $('#emailmodal').val();
-
-            var message = "";
-            
-            if (employeeid == '') { message += 'Employee ID ' }
-            if (firstname == '') { message += 'First Name ' }
-            if (middlename == '') { message += 'Middle Name ' }
-            if (lastname == '') { message += 'Last Name ' }
-            if (contactnumber == '') { message += 'Contact Number ' }
-            if (departmentlist == '') { message += 'Department ' }
-            if (positionlist == '') { message += 'Position ' }
-            if (email == '') { message += 'Email' }
-
-            
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/employee/edit',
-                    data: {
-                        systemid: systemid,
-                        employeeid: employeeid,
-                        firstname: firstname,
-                        middlename: middlename,
-                        lastname: lastname,
-                        positionlist: positionlist,
-                        departmentlist: departmentlist,
-                        contactnumber: contactnumber,
-                        email: email,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'exist') {
-                            warning('Exist', `Employee ID: ${employeeid} is already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-        
-        //Status Update
-        $(document).on('click', '#activeBtn', function(){
-            console.log(systemid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/employee/status',
-                    data: {
-                        status: status,
-                        systemid: systemid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'notexist') {
-                            warning(`${systemid} does not exist!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-        });
-
-        $(document).on('click', '#inactiveBtn', function(){
-            console.log(systemid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/employee/status',
-                    data: {
-                        status: status,
-                        systemid: systemid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'notexist') {
-                            warning(`${systemid} does not exist!`);
-                        }
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-        });
-
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/department/load',
-                success: function (result) {
-                    var data = result.data;
-
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.departmentname, item.departmentname);
-                            $(options).html(item.departmentname);
-                            $('#departmentlist').append(options);
-                        }
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-
-            $.ajax({
-                type: 'GET',
-                url: '/position/load',
-                success: function (result) {
-                    var data = result.data;
-
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.positionname, item.positionname);
-                            $(options).html(item.positionname);
-                            $('#positionlist').append(options);
-                        }
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        } 
-
-        function LoadListModal() {
-            $.ajax({
-                type: 'GET',
-                url: '/department/load',
-                success: function (result) {
-                    var data = result.data;
-
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.departmentname, item.departmentname);
-                            $(options).html(item.departmentname);
-                            $('#departmentlistmodal').append(options);
-                            }
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-
-            $.ajax({
-                type: 'GET',
-                url: '/position/load',
-                success: function (result) {
-                    var data = result.data;
-
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.positionname, item.positionname);
-                            $(options).html(item.positionname);
-                            $('#positionlistmodal').append(options);
-                        }
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        } 
-
-        function LoadTable() {
-            $('#employee_dataTable').DataTable({
-                'destroy': true,
-                'processing': true,
-                'serverSide': true,
-                'paging': false,
-                'searching': false,
-                'info': false,
-                'scrollY': 400,
-                'scrollCollapse': true,
-                'serverMethod': 'GET',
-                'ajax': {
-                    'url': '/employee/load',
-                    'dataSrc': (json) => {
-                        var finalData = [];
-                        var data = json.data;
-
-                        console.log(data);
-                        $.each(data, (key, item) => {
-                            var action = '';
-                            var status = item.status;
-
-                            if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
-                            }
-                            if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
-                            }
-
-                            finalData.push({
-                                systemid: item.systemid,
-                                employeeid: item.employeeid,
-                                firstname: item.firstname,
-                                middlename: item.middlename,
-                                lastname: item.lastname,
-                                position: item.position,
-                                department: item.department,
-                                contactnumber: item.contactnumber,
-                                email: item.email,
-                                status: item.status,
-                                createdby: item.createdby,
-                                createddate: item.createddate,
-                                action: action,
-                            })
-
-                        })
- 
-                        return finalData;
-                    },
-                },
-                'columnDefs': [{
-                    targets: 1,
-                    className: 'td-indent',
-                }],
-                'columns': [
-                    { data: 'systemid' },
-                    { data: 'employeeid' },
-                    { data: 'firstname' },
-                    { data: 'middlename' },
-                    { data: 'lastname' },
-                    { data: 'position' },
-                    { data: 'department' },
-                    { data: 'contactnumber' },
-                    { data: 'email' },
-                    { data: 'status' },
-                    { data: 'createdby' },
-                    { data: 'createddate' },
-                    { data: 'action' },
-                ],
-                initComplete: function () {
-                    console.log('init complete');
-                }
-            });
-        }
-    })
-
-
-
-    const contactinputmodal = document.getElementById('contactnumbermodal');
-    const contacterrormodal = document.getElementById('ContacterrorMessage');
-
-    contactinputmodal.addEventListener('keypress', function(event) {
-        const key = event.key;
-        const inputLength = this.value.length;
-
-        if (inputLength >= 11 || (inputLength === 0 && key !== '0') || (inputLength === 1 && key !== '9') || !/^\d$/.test(key)) {
-        event.preventDefault();
-        contacterrormodal.style.display = 'block';
-        } else {
-        contacterrormodal.style.display = 'none';
-        }
+      systemid = dataRow[0];
+      status = dataRow[9];
+      console.log(dataRow);
     });
 
-    const emailInput = document.getElementById('emailmodal');
-    const emailErrorMessage = document.getElementById('emailErrorMessageModal');
+    //Edit get Row Details
+    $(document).on("click", "#editBtn", function () {
+      $("#systemid").val(systemid);
+      $("#employeeModal").modal("show");
+      console.log(systemid);
+    });
 
-    emailInput.addEventListener('input', function() {
-        const email = this.value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    $(document).on("click", "#addBtn", function () {
+      let employeeid = $("#employeeid").val();
+      let firstname = $("#firstname").val();
+      let middlename = $("#middlename").val();
+      let lastname = $("#lastname").val();
+      let positionlist = $("#positionlist").val();
+      let departmentlist = $("#departmentlist").val();
+      let contactnumber = $("#contactnumber").val();
+      let email = $("#email").val();
 
-        if (!emailRegex.test(email)) {
-        emailErrorMessage.style.display = 'block';
+      var message = "";
+
+      if (employeeid == "") {
+        message += "Employee ID ";
+      }
+      if (firstname == "") {
+        message += "First Name ";
+      }
+      if (middlename == "") {
+        message += "Middle Name ";
+      }
+      if (lastname == "") {
+        message += "Last Name ";
+      }
+      if (contactnumber == "") {
+        message += "Contact Number ";
+      }
+      if (departmentlist == "") {
+        message += "Department ";
+      }
+      if (positionlist == "") {
+        message += "Position ";
+      }
+      if (email == "") {
+        message += "Email";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/employee/save",
+          data: {
+            employeeid: employeeid,
+            firstname: firstname,
+            middlename: middlename,
+            lastname: lastname,
+            positionlist: positionlist,
+            departmentlist: departmentlist,
+            contactnumber: contactnumber,
+            email: email,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning(
+                "Exist",
+                `Employee ID: ${employeeid} is already registered!`
+              );
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    $(document).on("click", "#saveBtn", function () {
+      let systemid = $("#systemid").val();
+      let employeeid = $("#employeeidmodal").val();
+      let firstname = $("#firstnamemodal").val();
+      let middlename = $("#middlenamemodal").val();
+      let lastname = $("#lastnamemodal").val();
+      let positionlist = $("#positionlistmodal").val();
+      let departmentlist = $("#departmentlistmodal").val();
+      let contactnumber = $("#contactnumbermodal").val();
+      let email = $("#emailmodal").val();
+
+      var message = "";
+
+      if (employeeid == "") {
+        message += "Employee ID ";
+      }
+      if (firstname == "") {
+        message += "First Name ";
+      }
+      if (middlename == "") {
+        message += "Middle Name ";
+      }
+      if (lastname == "") {
+        message += "Last Name ";
+      }
+      if (contactnumber == "") {
+        message += "Contact Number ";
+      }
+      if (departmentlist == "") {
+        message += "Department ";
+      }
+      if (positionlist == "") {
+        message += "Position ";
+      }
+      if (email == "") {
+        message += "Email";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/employee/edit",
+          data: {
+            systemid: systemid,
+            employeeid: employeeid,
+            firstname: firstname,
+            middlename: middlename,
+            lastname: lastname,
+            positionlist: positionlist,
+            departmentlist: departmentlist,
+            contactnumber: contactnumber,
+            email: email,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning(
+                "Exist",
+                `Employee ID: ${employeeid} is already registered!`
+              );
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    //Status Update
+    $(document).on("click", "#activeBtn", function () {
+      console.log(systemid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/employee/status",
+        data: {
+          status: status,
+          systemid: systemid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${systemid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#inactiveBtn", function () {
+      console.log(systemid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/employee/status",
+        data: {
+          status: status,
+          systemid: systemid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${systemid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#uploadBtn", function () {
+      //   console.log("clicked!");
+      showspinner();
+      UploadProcess();
+    });
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/department/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(
+                item.departmentname,
+                item.departmentname
+              );
+              $(options).html(item.departmentname);
+              $("#departmentlist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+
+      $.ajax({
+        type: "GET",
+        url: "/position/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.positionname, item.positionname);
+              $(options).html(item.positionname);
+              $("#positionlist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+
+    function LoadListModal() {
+      $.ajax({
+        type: "GET",
+        url: "/department/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(
+                item.departmentname,
+                item.departmentname
+              );
+              $(options).html(item.departmentname);
+              $("#departmentlistmodal").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+
+      $.ajax({
+        type: "GET",
+        url: "/position/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.positionname, item.positionname);
+              $(options).html(item.positionname);
+              $("#positionlistmodal").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+
+    function LoadTable() {
+      showspinner();
+      $("#employee_dataTable").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/employee/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
+
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#employeeModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>';
+              }
+
+              finalData.push({
+                systemid: item.systemid,
+                employeeid: item.employeeid,
+                firstname: item.firstname,
+                middlename: item.middlename,
+                lastname: item.lastname,
+                position: item.position,
+                department: item.department,
+                contactnumber: item.contactnumber,
+                email: item.email,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "systemid" },
+          { data: "employeeid" },
+          { data: "firstname" },
+          { data: "middlename" },
+          { data: "lastname" },
+          { data: "position" },
+          { data: "department" },
+          { data: "contactnumber" },
+          { data: "email" },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          hidespinner();
+          console.log("init complete");
+        },
+      });
+    }
+
+    function UploadProcess() {
+      //Reference the FileUpload element.
+      var fileUpload = document.getElementById("excel");
+
+      //Validate whether File is valid Excel file.
+      var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx|.csv|.ods)$/;
+      if (regex.test(fileUpload.value.toLowerCase())) {
+        if (typeof FileReader != "undefined") {
+          var reader = new FileReader();
+
+          //For Browsers other than IE.
+          if (reader.readAsBinaryString) {
+            reader.onload = function (e) {
+              GetTableFromExcel(e.target.result);
+            };
+            reader.readAsBinaryString(fileUpload.files[0]);
+          } else {
+            //For IE Browser.
+            reader.onload = function (e) {
+              var data = "";
+              var bytes = new Uint8Array(e.target.result);
+              for (var i = 0; i < bytes.byteLength; i++) {
+                data += String.fromCharCode(bytes[i]);
+              }
+              GetTableFromExcel(data);
+            };
+            reader.readAsArrayBuffer(fileUpload.files[0]);
+          }
         } else {
-        emailErrorMessage.style.display = 'none';
+          warning("Upload", "This browser does not support HTML5.");
         }
+      } else {
+        warning("Upload", "Please upload a valid Excel file.");
+      }
+    }
+
+    function GetTableFromExcel(data) {
+      //Read the Excel File data in binary
+      var workbook = XLSX.read(data, {
+        type: "binary",
+      });
+
+      //get the name of First Sheet.
+      var Sheet = workbook.SheetNames[0];
+
+      //Read all rows from First Sheet into an JSON array.
+      var excelRows = XLSX.utils.sheet_to_row_object_array(
+        workbook.Sheets[Sheet]
+      );
+      var columns = Object.keys(excelRows[0]);
+
+      //Create a HTML Table element.
+      var myTable = document.createElement("table");
+      myTable.border = "1";
+
+      //Add the header row.
+      var row = myTable.insertRow(-1);
+
+      var dataExcelArr = [];
+      //Add the data rows from Excel file.
+      for (var i = 0; i < excelRows.length; i++) {
+        //Add the data row.
+        var data = [];
+        var row = myTable.insertRow(-1);
+        for (var j = 0; j < columns.length; j++) {
+          var cell = row.insertCell(-1);
+          cell.innerHTML = excelRows[i][columns[j]];
+          data.push({
+            item: excelRows[i][columns[j]],
+          });
+        }
+        dataExcelArr.push({
+          employeeid: data[0].item,
+          firstname: data[1].item,
+          middlename: data[2].item,
+          lastname: data[3].item,
+          department: data[4].item,
+          position: data[5].item,
+          contactno: data[6] == null ? "" : data[6].item,
+          email: data[7] == null ? "" : data[7].item,
+        });
+      }
+      excelDataSave(dataExcelArr);
+    }
+
+    function excelDataSave(data) {
+      var dataraw = JSON.stringify(data, null, 2);
+      $.ajax({
+        type: "POST",
+        url: "/employee/excelsave",
+        data: {
+          data: dataraw,
+        },
+        success: function (result) {
+          LoadTable();
+          if (result.msg != "success") {
+            warning("Duplicate", `Some data already exist on the database`);
+          } else {
+            success("Saved!", "Data saved!");
+          }
+
+          // $('#item-tbl').DataTable().ajax.reload();
+        },
+        error: function (result) {
+          error(result.data);
+        },
+      });
+      hidespinner();
+    }
+
+    const contactinputmodal = document.getElementById("contactnumbermodal");
+    const contacterrormodal = document.getElementById("ContacterrorMessage");
+
+    contactinputmodal.addEventListener("keypress", function (event) {
+      const key = event.key;
+      const inputLength = this.value.length;
+
+      if (
+        inputLength >= 11 ||
+        (inputLength === 0 && key !== "0") ||
+        (inputLength === 1 && key !== "9") ||
+        !/^\d$/.test(key)
+      ) {
+        event.preventDefault();
+        contacterrormodal.style.display = "block";
+      } else {
+        contacterrormodal.style.display = "none";
+      }
+    });
+
+    const emailInput = document.getElementById("emailmodal");
+    const emailErrorMessage = document.getElementById("emailErrorMessageModal");
+
+    emailInput.addEventListener("input", function () {
+      const email = this.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(email)) {
+        emailErrorMessage.style.display = "block";
+      } else {
+        emailErrorMessage.style.display = "none";
+      }
     });
 
     //EmployeeID
-        function validateEmployeeInput(inputElement, errorElement, buttonElement) {
-        const inputValue = inputElement.value;
-        const numericRegex = /^[0-9]+$/;
+    function validateEmployeeInput(inputElement, errorElement, buttonElement) {
+      const inputValue = inputElement.value;
+      const numericRegex = /^[0-9]+$/;
 
-        if (inputValue.length !== 6 || !numericRegex.test(inputValue)) {
-            errorElement.style.display = 'block';
-            buttonElement.disabled = true;
-        } else {
-            errorElement.style.display = 'none';
-            buttonElement.disabled = false;
-        }
-        }
+      if (inputValue.length !== 6 || !numericRegex.test(inputValue)) {
+        errorElement.style.display = "block";
+        buttonElement.disabled = true;
+      } else {
+        errorElement.style.display = "none";
+        buttonElement.disabled = false;
+      }
+    }
 
-        // Attach event listeners for input validation (Modal)
-        const employeeInputModal = document.getElementById('employeeidmodal');
-        const errorModal = document.getElementById('errorMessagemodal');
-        const addButtonModal = document.getElementById('saveBtn');
+    // Attach event listeners for input validation (Modal)
+    const employeeInputModal = document.getElementById("employeeidmodal");
+    const errorModal = document.getElementById("errorMessagemodal");
+    const addButtonModal = document.getElementById("saveBtn");
 
-        employeeInputModal.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-        validateEmployeeInput(employeeInputModal, errorModal, addButtonModal);
-        });
-        employeeInputModal.addEventListener('blur', function () {
-        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-        validateEmployeeInput(employeeInputModal, errorModal, addButtonModal);
-        });
+    employeeInputModal.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      validateEmployeeInput(employeeInputModal, errorModal, addButtonModal);
+    });
+    employeeInputModal.addEventListener("blur", function () {
+      this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      validateEmployeeInput(employeeInputModal, errorModal, addButtonModal);
+    });
 
-        // Attach event listeners for input validation
-        const employeeInput = document.getElementById('employeeid');
-        const errorElement = document.getElementById('employeeError');
-        const addButton = document.getElementById('addBtn');
+    // Attach event listeners for input validation
+    const employeeInput = document.getElementById("employeeid");
+    const errorElement = document.getElementById("employeeError");
+    const addButton = document.getElementById("addBtn");
 
-        employeeInput.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-        validateEmployeeInput(employeeInput, errorElement, addButton);
-        });
-        employeeInput.addEventListener('blur', function () {
-        this.value = this.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-        validateEmployeeInput(employeeInput, errorElement, addButton);
-        });
+    employeeInput.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      validateEmployeeInput(employeeInput, errorElement, addButton);
+    });
+    employeeInput.addEventListener("blur", function () {
+      this.value = this.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+      validateEmployeeInput(employeeInput, errorElement, addButton);
+    });
 
     //contact number
-    const contactnumberinput = document.getElementById('contactnumber');
-    const contactnumbererror = document.getElementById('contactnumbererror');
+    const contactnumberinput = document.getElementById("contactnumber");
+    const contactnumbererror = document.getElementById("contactnumbererror");
 
-    contactnumberinput.addEventListener('keypress', function(event) {
-        const key = event.key;
-        const inputLength = this.value.length;
+    contactnumberinput.addEventListener("keypress", function (event) {
+      const key = event.key;
+      const inputLength = this.value.length;
 
-        if (inputLength >= 11 || (inputLength === 0 && key !== '0') || (inputLength === 1 && key !== '9') || !/^\d$/.test(key)) {
+      if (
+        inputLength >= 11 ||
+        (inputLength === 0 && key !== "0") ||
+        (inputLength === 1 && key !== "9") ||
+        !/^\d$/.test(key)
+      ) {
         event.preventDefault();
-        contactnumbererror.style.display = 'block';
-        } else {
-        contactnumbererror.style.display = 'none';
-        }
+        contactnumbererror.style.display = "block";
+      } else {
+        contactnumbererror.style.display = "none";
+      }
     });
 
     //email
-    const email = document.getElementById('email');
-    const emailError = document.getElementById('emailerror');
+    const email = document.getElementById("email");
+    const emailError = document.getElementById("emailerror");
 
-    email.addEventListener('input', function() {
-        const email = this.value;
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    email.addEventListener("input", function () {
+      const email = this.value;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (!emailRegex.test(email)) {
-        emailError.style.display = 'block';
-        } else {
-        emailError.style.display = 'none';
-        }
+      if (!emailRegex.test(email)) {
+        emailError.style.display = "block";
+      } else {
+        emailError.style.display = "none";
+      }
     });
-
+  });
 </script>

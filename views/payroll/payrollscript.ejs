@@ -1,357 +1,459 @@
 <script>
-    $(document).ready(function () {
-        let detailid = "";
-        let status = "";
+  $(document).ready(function () {
+    let detailid = "";
+    let status = "";
 
-        LoadTable();
-        LoadList();
+    LoadTable();
+    LoadList();
 
-        $('#payroll_dataTable tbody').on('click', 'tr', function () {
-        var dataRow = [];
-        $(this).closest('tr').find('td').each(function () {
-            dataRow.push($(this).text());
+    $("#payroll_dataTable tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
         });
-        detailid = dataRow[0];
-        status = dataRow[14];
-        console.log(dataRow);
-        })
+      detailid = dataRow[0];
+      status = dataRow[14];
+      console.log(dataRow);
+    });
 
-        //Edit get Row Details
-        $(document).on('click', '#editBtn', function(){
-            $('#detailid').val(detailid);
-            $('#payrollModal').modal('show');
-            console.log(detailid);
-        })
+    //Edit get Row Details
+    $(document).on("click", "#editBtn", function () {
+      $("#detailid").val(detailid);
+      $("#payrollModal").modal("show");
+      console.log(detailid);
+    });
 
-        $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeelist').val();
-            let payrolldate = $('#payrolldate').val();
-            let datecovered = $('#datecovered').val();
-            let absences = $('#absences').val();
-            let late = $('#late').val();
-            let undertime = $('#undertime').val();
-            let allowance = $('#allowance').val();
-            let cashadvance = $('#cashadvance').val();
-            let sss = $('#sss').val();
-            let sssloan = $('#sssloan').val();
-            let philhealth = $('#philhealth').val();
-            let hmdf = $('#hmdf').val();
-            let tax = $('#tax').val();
+    $(document).on("click", "#addBtn", function () {
+      let employeeid = $("#employeelist").val();
+      let payrolldate = $("#payrolldate").val();
+      let datecovered = $("#datecovered").val();
+      let absences = $("#absences").val();
+      let late = $("#late").val();
+      let undertime = $("#undertime").val();
+      let allowance = $("#allowance").val();
+      let cashadvance = $("#cashadvance").val();
+      let sss = $("#sss").val();
+      let sssloan = $("#sssloan").val();
+      let philhealth = $("#philhealth").val();
+      let hmdf = $("#hmdf").val();
+      let tax = $("#tax").val();
 
-            var message = "";
+      var message = "";
 
-            if (employeeid == '') { message += 'EMPLOYEE ID ' }
-            if (payrolldate == '') { message += 'PAYROLLDATE ' }
-            if (datecovered == '') { message += 'DATECOVERED ' }
-            if (absences == '') { message += 'ABSENCES ' }
-            if (late == '') { message += 'LATE ' }
-            if (undertime == '') { message += 'UNDERTIME ' }
-            if (allowance == '') { message += 'ALLOWANCE ' }
-            if (cashadvance == '') { message += 'CASHADVANCE ' }
-            if (sss == '') { message += 'SSS ' }
-            if (sssloan == '') { message += 'SSSLOAN ' }
-            if (philhealth == '') { message += 'PHILHEALTH ' }
-            if (hmdf == '') { message += 'HDMF ' }
-            if (tax == '') { message += 'TAX ' }
+      if (employeeid == "") {
+        message += "EMPLOYEE ID ";
+      }
+      if (payrolldate == "") {
+        message += "PAYROLLDATE ";
+      }
+      if (datecovered == "") {
+        message += "DATECOVERED ";
+      }
+      if (absences == "") {
+        message += "ABSENCES ";
+      }
+      if (late == "") {
+        message += "LATE ";
+      }
+      if (undertime == "") {
+        message += "UNDERTIME ";
+      }
+      if (allowance == "") {
+        message += "ALLOWANCE ";
+      }
+      if (cashadvance == "") {
+        message += "CASHADVANCE ";
+      }
+      if (sss == "") {
+        message += "SSS ";
+      }
+      if (sssloan == "") {
+        message += "SSSLOAN ";
+      }
+      if (philhealth == "") {
+        message += "PHILHEALTH ";
+      }
+      if (hmdf == "") {
+        message += "HDMF ";
+      }
+      if (tax == "") {
+        message += "TAX ";
+      }
 
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/payroll/save",
+          data: {
+            employeeid: employeeid,
+            payrolldate: payrolldate,
+            datecovered: datecovered,
+            absences: absences,
+            late: late,
+            undertime: undertime,
+            allowance: allowance,
+            cashadvance: cashadvance,
+            sss: sss,
+            sssloan: sssloan,
+            philhealth,
+            hmdf: hmdf,
+            tax: tax,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/payroll/save',
-                    data: {
-                        employeeid: employeeid,
-                        payrolldate: payrolldate,
-                        datecovered: datecovered,
-                        absences: absences,
-                        late: late,
-                        undertime: undertime,
-                        allowance: allowance,
-                        cashadvance: cashadvance,
-                        sss: sss,
-                        sssloan: sssloan,
-                        philhealth,
-                        hmdf: hmdf,
-                        tax: tax,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
 
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} has already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+            if (result.msg == "exist") {
+              warning("Exist", `${employeeid} has already registered!`);
             }
-        })
-
-        $(document).on('click', '#saveBtn', function () {
-            let detailid = $('#detailid').val();
-            let payrolldate = $('#payrolldatemodal').val();
-            let datecovered = $('#datecoveredmodal').val();
-            let absences = $('#absencesmodal').val();
-            let late = $('#latemodal').val();
-            let undertime = $('#undertimemodal').val();
-            let allowance = $('#allowancemodal').val();
-            let cashadvance = $('#cashadvancemodal').val();
-            let sss = $('#sssmodal').val();
-            let sssloan = $('#sssloanmodal').val();
-            let philhealth = $('#philhealthmodal').val();
-            let hmdf = $('#hmdfmodal').val();
-            let tax = $('#taxmodal').val();
-
-            var message = "";
-
-            if (payrolldate == '') { message += 'PAYROLLDATE ' }
-            if (datecovered == '') { message += 'DATECOVERED ' }
-            if (absences == '') { message += 'ABSENCES ' }
-            if (late == '') { message += 'LATE ' }
-            if (undertime == '') { message += 'UNDERTIME ' }
-            if (allowance == '') { message += 'ALLOWANCE ' }
-            if (cashadvance == '') { message += 'CASHADVANCE ' }
-            if (sss == '') { message += 'SSS ' }
-            if (sssloan == '') { message += 'SSSLOAN ' }
-            if (philhealth == '') { message += 'PHILHEALTH ' }
-            if (hmdf == '') { message += 'HDMF ' }
-            if (tax == '') { message += 'TAX ' }
-
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/payroll/edit',
-                    data: {
-                        detailid: detailid,
-                        payrolldate: payrolldate,
-                        datecovered: datecovered,
-                        absences: absences,
-                        late: late,
-                        undertime: undertime,
-                        allowance: allowance,
-                        cashadvance: cashadvance,
-                        sss: sss,
-                        sssloan: sssloan,
-                        philhealth,
-                        hmdf: hmdf,
-                        tax: tax,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${detailid} has already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-
-        //Status Update
-        $(document).on('click', '#activeBtn', function(){
-            console.log(detailid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/payroll/status',
-                    data: {
-                        status: status,
-                        detailid: detailid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'notexist') {
-                            warning(`${detailid} does not exist!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+          },
+          error: function (err) {
+            errormsg(err);
+          },
         });
+      }
+    });
 
-        $(document).on('click', '#inactiveBtn', function(){
-            console.log(detailid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/payroll/status',
-                    data: {
-                        status: status,
-                        detailid: detailid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
+    $(document).on("click", "#saveBtn", function () {
+      let detailid = $("#detailid").val();
+      let payrolldate = $("#payrolldatemodal").val();
+      let datecovered = $("#datecoveredmodal").val();
+      let absences = $("#absencesmodal").val();
+      let late = $("#latemodal").val();
+      let undertime = $("#undertimemodal").val();
+      let allowance = $("#allowancemodal").val();
+      let cashadvance = $("#cashadvancemodal").val();
+      let sss = $("#sssmodal").val();
+      let sssloan = $("#sssloanmodal").val();
+      let philhealth = $("#philhealthmodal").val();
+      let hmdf = $("#hmdfmodal").val();
+      let tax = $("#taxmodal").val();
 
-                        if (result.msg == 'notexist') {
-                            warning(`${detailid} does not exist!`);
-                        }
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-        });
-        
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/employee/load',
-                success: function (result) {
-                    var data = result.data;
+      var message = "";
 
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.employeeid, item.employeeid);
-                            $(options).html(item.employeeid);
-                            $('#employeelist').append(options);
-                        }
-                    });
+      if (payrolldate == "") {
+        message += "PAYROLLDATE ";
+      }
+      if (datecovered == "") {
+        message += "DATECOVERED ";
+      }
+      if (absences == "") {
+        message += "ABSENCES ";
+      }
+      if (late == "") {
+        message += "LATE ";
+      }
+      if (undertime == "") {
+        message += "UNDERTIME ";
+      }
+      if (allowance == "") {
+        message += "ALLOWANCE ";
+      }
+      if (cashadvance == "") {
+        message += "CASHADVANCE ";
+      }
+      if (sss == "") {
+        message += "SSS ";
+      }
+      if (sssloan == "") {
+        message += "SSSLOAN ";
+      }
+      if (philhealth == "") {
+        message += "PHILHEALTH ";
+      }
+      if (hmdf == "") {
+        message += "HDMF ";
+      }
+      if (tax == "") {
+        message += "TAX ";
+      }
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
- 
-        }     
-
-        function LoadTable() {
-                $('#payroll_dataTable').DataTable({
-                    'destroy': true,
-                    'processing': true,
-                    'serverSide': true,
-                    'paging': false,
-                    'searching': false,
-                    'info': false,
-                    'scrollY': 400,
-                    'scrollCollapse': true,
-                    'serverMethod': 'GET',
-                    'ajax': {
-                        'url': '/payroll/load',
-                        'dataSrc': (json) => {
-                            var finalData = [];
-                            var data = json.data;
-    
-                            console.log(data);
-                            $.each(data, (key, item) => {
-                                var action = '';
-                                var status = item.status;
-    
-                                if (status == 'ACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#payrollModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
-                                }
-                                if (status == 'INACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#payrollModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
-                                }
-    
-                                finalData.push({
-                                    detailid: item.detailid,
-                                    employeeid: item.employeeid,
-                                    payrolldate: item.payrolldate,
-                                    datecovered: item.datecovered,
-                                    absences: item.absences,
-                                    late: item.late,
-                                    undertime: item.undertime,
-                                    allowance: item.allowance,
-                                    cashadvance: item.cashadvance,
-                                    sss: item.sss,
-                                    sssloan: item.sssloan,
-                                    philhealth: item.philhealth,
-                                    hmdf: item.hmdf,
-                                    tax: item.tax,
-                                    status: item.status,
-                                    createdby: item.createdby,
-                                    createddate: item.createddate,
-                                    action: action,
-                                })
-    
-                            })
-    
-                            return finalData;
-                        },
-                    },
-                    'columnDefs': [{
-                        targets: 1,
-                        className: 'td-indent',
-                    }],
-                    'columns': [
-                        { data: 'detailid' },
-                        { data: 'employeeid' },
-                        { data: 'payrolldate' },
-                        { data: 'datecovered' },
-                        { data: 'absences' },
-                        { data: 'late' },
-                        { data: 'undertime' },
-                        { data: 'allowance',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'cashadvance',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'sss',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'sssloan',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'philhealth',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'hmdf',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'tax',
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'status' },
-                        { data: 'createdby' },
-                        { data: 'createddate' },
-                        { data: 'action' },
-                    ],
-                    initComplete: function () {
-                        console.log('init complete');
-                    }
-                });
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/payroll/edit",
+          data: {
+            detailid: detailid,
+            payrolldate: payrolldate,
+            datecovered: datecovered,
+            absences: absences,
+            late: late,
+            undertime: undertime,
+            allowance: allowance,
+            cashadvance: cashadvance,
+            sss: sss,
+            sssloan: sssloan,
+            philhealth,
+            hmdf: hmdf,
+            tax: tax,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-        })
-    </script>
+
+            if (result.msg == "exist") {
+              warning("Exist", `${detailid} has already registered!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    //Status Update
+    $(document).on("click", "#activeBtn", function () {
+      console.log(detailid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/payroll/status",
+        data: {
+          status: status,
+          detailid: detailid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${detailid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#inactiveBtn", function () {
+      console.log(detailid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/payroll/status",
+        data: {
+          status: status,
+          detailid: detailid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${detailid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/employee/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.employeeid, item.employeeid);
+              $(options).html(
+                `${item.firstname} ${item.middlename} ${item.lastname}`
+              );
+              $("#employeelist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+
+    function LoadTable() {
+      showspinner();
+      $("#payroll_dataTable").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/payroll/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
+
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#payrollModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#payrollModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>';
+              }
+
+              finalData.push({
+                detailid: item.detailid,
+                employeeid: item.employeeid,
+                payrolldate: item.payrolldate,
+                datecovered: item.datecovered,
+                absences: item.absences,
+                late: item.late,
+                undertime: item.undertime,
+                allowance: item.allowance,
+                cashadvance: item.cashadvance,
+                sss: item.sss,
+                sssloan: item.sssloan,
+                philhealth: item.philhealth,
+                hmdf: item.hmdf,
+                tax: item.tax,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "detailid" },
+          { data: "employeeid" },
+          { data: "payrolldate" },
+          { data: "datecovered" },
+          { data: "absences" },
+          { data: "late" },
+          { data: "undertime" },
+          {
+            data: "allowance",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "cashadvance",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "sss",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "sssloan",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "philhealth",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "hmdf",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "tax",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+          hidespinner();
+        },
+      });
+    }
+  });
+</script>

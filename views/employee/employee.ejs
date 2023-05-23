@@ -1,241 +1,477 @@
 <!-- Modal -->
-<div class="modal fade bd-example-modal-lg" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
-        </div>
-        <div class="modal-body">
-            <div class="row mb-2">
-                <div class="col-lg-12">
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label" for="mu_password">System ID</label>
-                                    <input id="systemid" name="systemid" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1" disabled>        
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <label class="form-label" for="mu_password">Employee ID</label>
-                                    <input id="employeeidmodal" name="employeeidmodal" type="text" class="form-control" placeholder="Enter new Employee ID" aria-label="fullname" aria-describedby="basic-addon1" maxlength="6">        
-                                    <div class="alert alert-danger mt-2" id="errorMessagemodal" style="display: none;">
-                                        Please enter numbers only and exactly 6 characters.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-4">
-                                    <label class="form-label" for="mu_fullname">First name</label>
-                                    <input id="firstnamemodal" name="firstnamemodal" type="text" class="form-control" placeholder="Enter new first name" aria-label="fullname" aria-describedby="basic-addon1">
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label" for="mu_username">Middle name</label>
-                                    <input id="middlenamemodal" name="middlenamemodal" type="text" class="form-control" placeholder="Enter new middle name" aria-label="fullname" aria-describedby="basic-addon1">    
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label" for="mu_password">Last name</label>
-                                    <input id="lastnamemodal" name="lastnamemodal" type="text" class="form-control" placeholder="Enter new last name" aria-label="fullname" aria-describedby="basic-addon1">    
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="mu_password">Contact number</label>
-                                    <input id="contactnumbermodal" name="contactnumbermodal" type="text" class="form-control" placeholder="Enter new contact number" aria-label="fullname" aria-describedby="basic-addon1">       
-                                    <div class="alert alert-danger mt-2" id="ContacterrorMessage" style="display: none;">
-                                        Please enter a valid Contact Number.
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="mu_password">E-mail address</label>
-                                    <input id="emailmodal" name="emailmodal" class="form-control" type="email" placeholder="Enter new email address" aria-label="fullname" aria-describedby="basic-addon1">       
-                                    <div class="alert alert-danger mt-2" id="emailErrorMessageModal" style="display: none;">
-                                        Please enter a valid email address.
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select class="entry-input form-control mb-2" name="departmentlistmodal" id="departmentlistmodal">
-                                        <option value="">- - - Select Role - - -</option>
-                                    </select>        
-                                </div>
-                                <div class="col-md-6">
-                                    <select class="entry-input form-control" name="positionlistmodal" id="positionlistmodal">
-                                        <option value="">- - - Select Position - - -</option>
-                                    </select>       
-                                </div>
-                            </div>
-                        </div>      
+<div
+  class="modal fade bd-example-modal-lg"
+  id="employeeModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+  data-keyboard="false"
+  data-backdrop="static"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Employee</h5>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-2">
+          <div class="col-lg-12">
+            <div class="card-body">
+              <div class="row mb-2">
+                <div class="col-md-12">
+                  <label class="form-label" for="mu_password">System ID</label>
+                  <input
+                    id="systemid"
+                    name="systemid"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter new Employee ID"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                    disabled
+                  />
                 </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-12">
+                  <label class="form-label" for="mu_password"
+                    >Employee ID</label
+                  >
+                  <input
+                    id="employeeidmodal"
+                    name="employeeidmodal"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter new Employee ID"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                    maxlength="6"
+                  />
+                  <div
+                    class="alert alert-danger mt-2"
+                    id="errorMessagemodal"
+                    style="display: none"
+                  >
+                    Please enter numbers only and exactly 6 characters.
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-4">
+                  <label class="form-label" for="mu_fullname">First name</label>
+                  <input
+                    id="firstnamemodal"
+                    name="firstnamemodal"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter new first name"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="mu_username"
+                    >Middle name</label
+                  >
+                  <input
+                    id="middlenamemodal"
+                    name="middlenamemodal"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter new middle name"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label" for="mu_password">Last name</label>
+                  <input
+                    id="lastnamemodal"
+                    name="lastnamemodal"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter new last name"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                  />
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-md-6">
+                  <label class="form-label" for="mu_password"
+                    >Contact number</label
+                  >
+                  <input
+                    id="contactnumbermodal"
+                    name="contactnumbermodal"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter new contact number"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                  />
+                  <div
+                    class="alert alert-danger mt-2"
+                    id="ContacterrorMessage"
+                    style="display: none"
+                  >
+                    Please enter a valid Contact Number.
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="mu_password"
+                    >E-mail address</label
+                  >
+                  <input
+                    id="emailmodal"
+                    name="emailmodal"
+                    class="form-control"
+                    type="email"
+                    placeholder="Enter new email address"
+                    aria-label="fullname"
+                    aria-describedby="basic-addon1"
+                  />
+                  <div
+                    class="alert alert-danger mt-2"
+                    id="emailErrorMessageModal"
+                    style="display: none"
+                  >
+                    Please enter a valid email address.
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <select
+                    class="entry-input form-control mb-2"
+                    name="departmentlistmodal"
+                    id="departmentlistmodal"
+                  >
+                    <option value="">- - - Select Role - - -</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <select
+                    class="entry-input form-control"
+                    name="positionlistmodal"
+                    id="positionlistmodal"
+                  >
+                    <option value="">- - - Select Position - - -</option>
+                  </select>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        <div class="modal-footer">
-
-          <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i>
-            Close</button>
-          <button type="button" id="saveBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"><i class="fa fa-check" aria-hidden="true"></i>
-            Save</button>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"
+          data-dismiss="modal"
+        >
+          <i class="fa fa-times" aria-hidden="true"></i> Close
+        </button>
+        <button
+          type="button"
+          id="saveBtn"
+          class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm"
+        >
+          <i class="fa fa-check" aria-hidden="true"></i> Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Begin PCreated by Content -->
+<div class="container-fluid">
+  <!-- PCreated by Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-3">
+    <h1 class="page-title">Employee</h1>
+  </div>
+  <!-- Content Row -->
+  <div class="row mb-2">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12 mb-2">
+              <label class="form-label" for="departmentname">Employee ID</label>
+              <input
+                id="employeeid"
+                name="employeeid"
+                type="text"
+                class="form-control"
+                placeholder="Enter your employee ID"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+                maxlength="6"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="employeeError"
+                style="display: none"
+              >
+                Please enter numbers only and exactly 6 characters.
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <label class="form-label" for="departmentname">Firstname</label>
+              <input
+                id="firstname"
+                name="firstname"
+                type="text"
+                class="form-control"
+                placeholder="Enter your firstname"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="departmentname">Middlename</label>
+              <input
+                id="middlename"
+                name="middlename"
+                type="text"
+                class="form-control"
+                placeholder="Enter your middlename"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label" for="departmentname">Lastname</label>
+              <input
+                id="lastname"
+                name="lastname"
+                type="text"
+                class="form-control"
+                placeholder="Enter your lastname"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+              />
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label class="form-label" for="contactnumber"
+                >Contact number</label
+              >
+              <input
+                id="contactnumber"
+                name="contactnumber"
+                type="tel"
+                class="form-control"
+                placeholder="Enter your contact number"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="contactnumbererror"
+                style="display: none"
+              >
+                Please enter a valid Contact Number.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="departmentname"
+                >E-mail address</label
+              >
+              <input
+                id="email"
+                name="email"
+                type="email"
+                class="form-control"
+                placeholder="Enter your email add"
+                aria-label="fullname"
+                aria-describedby="basic-addon1"
+              />
+              <div
+                class="alert alert-danger mt-2"
+                id="emailerror"
+                style="display: none"
+              >
+                Please enter a valid email address.
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <select
+                class="entry-input form-control mb-2"
+                name="departmentlist"
+                id="departmentlist"
+              >
+                <option value="">- - - Select Department - - -</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select
+                class="entry-input form-control"
+                name="positionlist"
+                id="positionlist"
+              >
+                <option value="">- - - Select Position - - -</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4 mt-4">
+            <button
+              id="addBtn"
+              name="addBtn"
+              class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i>
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-<!-- Begin PCreated by Content -->
-<div class="container-fluid">
 
-    <!-- PCreated by Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-3">
-        <h1 class="page-title">Employee</h1>
-    </div>
-    <!-- Content Row -->
-    <div class="row mb-2">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 mb-2">
-                            <label class="form-label" for="departmentname">Employee ID</label>
-                            <input id="employeeid" name="employeeid" type="text" class="form-control" placeholder="Enter your employee ID" aria-label="fullname" aria-describedby="basic-addon1" maxlength="6">
-                            <div class="alert alert-danger mt-2" id="employeeError" style="display: none;">
-                                Please enter numbers only and exactly 6 characters.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <label class="form-label" for="departmentname">Firstname</label>
-                            <input id="firstname" name="firstname" type="text" class="form-control" placeholder="Enter your firstname" aria-label="fullname" aria-describedby="basic-addon1">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label" for="departmentname">Middlename</label>
-                            <input id="middlename" name="middlename" type="text" class="form-control" placeholder="Enter your middlename" aria-label="fullname" aria-describedby="basic-addon1">    
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label" for="departmentname">Lastname</label>
-                            <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Enter your lastname" aria-label="fullname" aria-describedby="basic-addon1">    
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label" for="contactnumber">Contact number</label>
-                            <input id="contactnumber" name="contactnumber" type="tel" class="form-control" placeholder="Enter your contact number" aria-label="fullname" aria-describedby="basic-addon1">
-                            <div class="alert alert-danger mt-2" id="contactnumbererror" style="display: none;">
-                                Please enter a valid Contact Number.
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label" for="departmentname">E-mail address</label>
-                            <input id="email" name="email" type="email" class="form-control" placeholder="Enter your email add" aria-label="fullname" aria-describedby="basic-addon1">
-                            <div class="alert alert-danger mt-2" id="emailerror" style="display: none;">
-                                Please enter a valid email address.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <select class="entry-input form-control mb-2" name="departmentlist" id="departmentlist">
-                                <option value="">- - - Select Department - - -</option>
-                            </select>        
-                        </div>
-                        <div class="col-md-6">
-                            <select class="entry-input form-control" name="positionlist" id="positionlist">
-                                <option value="">- - - Select Position - - -</option>
-                            </select>       
-                        </div>
-                    </div>
-                    <div class="col-md-4 mt-4">
-                        <button id="addBtn" name="addBtn" class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50" disabled>
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Add
-                        </button> 
-                    </div>
-                </div>      
+  <div class="row mb-2">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row md-4">
+            <div class="col-md-4">
+              <input
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+                type="file"
+                name="excel"
+                id="excel"
+              />
             </div>
+            <div class="col-md-4">
+              <button
+                id="uploadBtn"
+                name="uploadBtn"
+                class="d-none d-sm-inline-block btn btn-sm btn-outline-primary shadow-sm w-50"
+              >
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                Upload
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- DataTales Example -->
-<div class="card shadow mb-4">
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
+      <h6 class="m-0 font-weight-bold table-title">DataTables Example</h6>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="employee_dataTable" width="100%" cellspacing="10">
-                <thead>
-                    <tr>
-                        <th class = "col-1 text-start">System ID</th>
-                        <th class = "col-3 text-center">Employee ID</th>
-                        <th class = "col-3 text-center">Firstname</th>
-                        <th class = "col-2 text-center">Middlename</th>
-                        <th class = "col-2 text-center">Lastname</th>
-                        <th class = "col-2 text-end">Position</th>  
-                        <th class = "col-2 text-end">Department</th>
-                        <th class = "col-2 text-end">Contact Number</th>
-                        <th class = "col-2 text-end">Email</th>   
-                        <th class = "col-2 text-end">Status</th> 
-                        <th class = "col-2 text-end">Created by</th>  
-                        <th class = "col-2 text-end">Created date</th>  
-                        <th class = "col-2 text-end">Action</th>  
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">0001</td>
-                        <td class="td-hover-color">Joseph</td>                                        
-                        <td class="td-hover-color">Blanca</td>
-                        <td class="td-hover-color">Orencio</td>
-                        <td class="td-hover-color">IT specialist</td>
-                        <td class="td-hover-color">IT department</td>
-                        <td class="td-hover-color">09236458896</td>
-                        <td class="td-hover-color">asdfagadg@gmail.com</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
-                            <button type="button" class="btn btn-outline-primary">Edit</button>  
-                        </td>                              
-                    </tr>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">0001</td>
-                        <td class="td-hover-color">Joseph</td>                                        
-                        <td class="td-hover-color">Blanca</td>
-                        <td class="td-hover-color">Orencio</td>
-                        <td class="td-hover-color">IT specialist</td>
-                        <td class="td-hover-color">IT department</td>
-                        <td class="td-hover-color">09236458896</td>
-                        <td class="td-hover-color">asdfagadg@gmail.com</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
-                            <button type="button" class="btn btn-outline-primary">Edit</button>  
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="td-hover-color">1000</td>
-                        <td class="td-hover-color">0001</td>
-                        <td class="td-hover-color">Joseph</td>                                        
-                        <td class="td-hover-color">Blanca</td>
-                        <td class="td-hover-color">Orencio</td>
-                        <td class="td-hover-color">IT specialist</td>
-                        <td class="td-hover-color">IT department</td>
-                        <td class="td-hover-color">09236458896</td>
-                        <td class="td-hover-color">asdfagadg@gmail.com</td>
-                        <td class="td-hover-color">Active</td>
-                        <td class="td-hover-color">SOLEDAD</td>
-                        <td class="td-hover-color">2011/04/25</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-outline-primary button-margin">Inactive</button>
-                            <button type="button" class="btn btn-outline-primary">Edit</button>  
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <div class="table-responsive-sm">
+        <table
+          class="table table-bordered table-sm"
+          id="employee_dataTable"
+          width="100%"
+          cellspacing="10"
+        >
+          <thead>
+            <tr>
+              <th class="col-1 text-start">System ID</th>
+              <th class="col-3 text-center">Employee ID</th>
+              <th class="col-3 text-center">Firstname</th>
+              <th class="col-2 text-center">Middlename</th>
+              <th class="col-2 text-center">Lastname</th>
+              <th class="col-2 text-end">Position</th>
+              <th class="col-2 text-end">Department</th>
+              <th class="col-2 text-end">Contact Number</th>
+              <th class="col-2 text-end">Email</th>
+              <th class="col-2 text-end">Status</th>
+              <th class="col-2 text-end">Created by</th>
+              <th class="col-2 text-end">Created date</th>
+              <th class="col-2 text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-hover-color">1000</td>
+              <td class="td-hover-color">0001</td>
+              <td class="td-hover-color">Joseph</td>
+              <td class="td-hover-color">Blanca</td>
+              <td class="td-hover-color">Orencio</td>
+              <td class="td-hover-color">IT specialist</td>
+              <td class="td-hover-color">IT department</td>
+              <td class="td-hover-color">09236458896</td>
+              <td class="td-hover-color">asdfagadg@gmail.com</td>
+              <td class="td-hover-color">Active</td>
+              <td class="td-hover-color">SOLEDAD</td>
+              <td class="td-hover-color">2011/04/25</td>
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary button-margin"
+                >
+                  Inactive
+                </button>
+                <button type="button" class="btn btn-outline-primary">
+                  Edit
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td class="td-hover-color">1000</td>
+              <td class="td-hover-color">0001</td>
+              <td class="td-hover-color">Joseph</td>
+              <td class="td-hover-color">Blanca</td>
+              <td class="td-hover-color">Orencio</td>
+              <td class="td-hover-color">IT specialist</td>
+              <td class="td-hover-color">IT department</td>
+              <td class="td-hover-color">09236458896</td>
+              <td class="td-hover-color">asdfagadg@gmail.com</td>
+              <td class="td-hover-color">Active</td>
+              <td class="td-hover-color">SOLEDAD</td>
+              <td class="td-hover-color">2011/04/25</td>
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary button-margin"
+                >
+                  Inactive
+                </button>
+                <button type="button" class="btn btn-outline-primary">
+                  Edit
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td class="td-hover-color">1000</td>
+              <td class="td-hover-color">0001</td>
+              <td class="td-hover-color">Joseph</td>
+              <td class="td-hover-color">Blanca</td>
+              <td class="td-hover-color">Orencio</td>
+              <td class="td-hover-color">IT specialist</td>
+              <td class="td-hover-color">IT department</td>
+              <td class="td-hover-color">09236458896</td>
+              <td class="td-hover-color">asdfagadg@gmail.com</td>
+              <td class="td-hover-color">Active</td>
+              <td class="td-hover-color">SOLEDAD</td>
+              <td class="td-hover-color">2011/04/25</td>
+              <td class="text-center">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary button-margin"
+                >
+                  Inactive
+                </button>
+                <button type="button" class="btn btn-outline-primary">
+                  Edit
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>

@@ -1,3 +1,8 @@
+<!-- LOADER -->
+<div class="loader-wrapper">
+  <div class="spinner"></div>
+</div>
+
 <!-- Logout Modal-->
 <div
   class="modal fade"
@@ -55,7 +60,25 @@
 <!-- SWAL-->
 <script src="/javascripts/sweetalert.min.js"></script>
 
+<!-- XLSX -->
+<script src="/javascripts/xlsx.mini.min.js"></script>
+
 <script>
+  hidespinner();
+
+  function showspinner() {
+    console.log("show loader");
+    $(".loader-wrapper").show();
+  }
+
+  function hidespinner() {
+    console.log("hide loader");
+
+    setTimeout(() => {
+      $(".loader-wrapper").hide();
+    }, 2000);
+  }
+
   function success(title, text) {
     swal({
       title: title,
@@ -99,17 +122,17 @@
     });
   });
 
-  const numberInputs = document.querySelectorAll('.number-validator');
+  const numberInputs = document.querySelectorAll(".number-validator");
 
-  numberInputs.forEach(function(input) {
-      input.addEventListener('input', function() {
+  numberInputs.forEach(function (input) {
+    input.addEventListener("input", function () {
       const inputValue = this.value;
 
-      if (inputValue.length === 1 && inputValue === '0') {
-          this.value = '';
+      if (inputValue.length === 1 && inputValue === "0") {
+        this.value = "";
       } else if (!/^\d*$/.test(inputValue)) {
-          this.value = inputValue.replace(/\D/g, '');
+        this.value = inputValue.replace(/\D/g, "");
       }
-      });
+    });
   });
 </script>

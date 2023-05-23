@@ -1,282 +1,316 @@
 <script>
-    $(document).ready(function () {
-        let employeeid = "";
-        let status = "";
+  $(document).ready(function () {
+    let employeeid = "";
+    let status = "";
 
-        LoadTable();
-        LoadList();
+    LoadTable();
+    LoadList();
 
-        $('#governmentID-datatable tbody').on('click', 'tr', function () {
-        var dataRow = [];
-        $(this).closest('tr').find('td').each(function () {
-            dataRow.push($(this).text());
+    $("#governmentID-datatable tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
         });
-        employeeid = dataRow[0];
-        status = dataRow[7];
-        console.log(dataRow);
-        })
+      employeeid = dataRow[0];
+      status = dataRow[7];
+      console.log(dataRow);
+    });
 
-        //Edit get Row Details
-        $(document).on('click', '#editBtn', function(){
-            $('#employeeid').val(employeeid);
-            $('#governmentidModal').modal('show');
-            console.log(employeeid);
-        })
+    //Edit get Row Details
+    $(document).on("click", "#editBtn", function () {
+      $("#employeeid").val(employeeid);
+      $("#governmentidModal").modal("show");
+      console.log(employeeid);
+    });
 
-        $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeelist').val();
-            let sss = $('#sss').val();
-            let ssscontribution = $('#ssscontribution').val();
-            let hdmf = $('#hdmf').val();
-            let hdmfcontribution = $('#hdmfcontribution').val();
-            let philhealth = $('#philhealth').val();
-            let philhealthcontribution = $('#philhealthcontribution').val();
-            let status = $('#status').val();
-            let createdby = $('#createdby').val();
-            let createddate = $('#createddate').val();
-            var message = "";
+    $(document).on("click", "#addBtn", function () {
+      let employeeid = $("#employeelist").val();
+      let sss = $("#sss").val();
+      let ssscontribution = $("#ssscontribution").val();
+      let hdmf = $("#hdmf").val();
+      let hdmfcontribution = $("#hdmfcontribution").val();
+      let philhealth = $("#philhealth").val();
+      let philhealthcontribution = $("#philhealthcontribution").val();
+      let status = $("#status").val();
+      let createdby = $("#createdby").val();
+      let createddate = $("#createddate").val();
+      var message = "";
 
-            if (employeeid == '') { message += 'Employee ID ' }
-            if (sss == '') { message += 'SSS ' }
-            if (ssscontribution == '') { message += 'SSS Contribution ' }
-            if (hdmf == '') { message += 'Home Development Mutaul Fund ' }
-            if (hdmfcontribution == '') { message += 'HDMF Contribution ' }
-            if (philhealth == '') { message += 'Philhealth ' }
-            if (philhealthcontribution == '') { message += 'Phil Health Contribution ' }
+      if (employeeid == "") {
+        message += "Employee ID ";
+      }
+      if (sss == "") {
+        message += "SSS ";
+      }
+      if (ssscontribution == "") {
+        message += "SSS Contribution ";
+      }
+      if (hdmf == "") {
+        message += "Home Development Mutaul Fund ";
+      }
+      if (hdmfcontribution == "") {
+        message += "HDMF Contribution ";
+      }
+      if (philhealth == "") {
+        message += "Philhealth ";
+      }
+      if (philhealthcontribution == "") {
+        message += "Phil Health Contribution ";
+      }
 
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        showspinner();
+        $.ajax({
+          type: "POST",
+          url: "/governmentid/save",
+          data: {
+            employeeid: employeeid,
+            sss: sss,
+            ssscontribution: ssscontribution,
+            hdmf: hdmf,
+            hdmfcontribution: hdmfcontribution,
+            philhealth: philhealth,
+            philhealthcontribution: philhealthcontribution,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/governmentid/save',
-                    data: {
-                        employeeid: employeeid,
-                        sss: sss,
-                        ssscontribution: ssscontribution,
-                        hdmf: hdmf,
-                        hdmfcontribution: hdmfcontribution,
-                        philhealth: philhealth,
-                        philhealthcontribution: philhealthcontribution,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
 
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+            if (result.msg == "exist") {
+              warning("Exist", `${employeeid} already registered!`);
             }
-        })
-
-        $(document).on('click', '#saveBtn', function () {
-            let employeeid = $('#employeeid').val();
-            let sss = $('#sssmodal').val();
-            let ssscontribution = $('#ssscontributionmodal').val();
-            let hdmf = $('#hdmfmodal').val();
-            let hdmfcontribution = $('#hdmfcontributionmodal').val();
-            let philhealth = $('#philhealthmodal').val();
-            let philhealthcontribution = $('#philhealthcontributionmodal').val();
-            var message = "";
-
-            if (employeeid == '') { message += 'Employee ID ' }
-            if (sss == '') { message += 'SSS ' }
-            if (ssscontribution == '') { message += 'SSS Contribution ' }
-            if (hdmf == '') { message += 'Home Development Mutaul Fund ' }
-            if (hdmfcontribution == '') { message += 'HDMF Contribution ' }
-            if (philhealth == '') { message += 'Philhealth ' }
-            if (philhealthcontribution == '') { message += 'Phil Health Contribution ' }
-
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/governmentid/edit',
-                    data: {
-                        employeeid: employeeid,
-                        sss: sss,
-                        ssscontribution: ssscontribution,
-                        hdmf: hdmf,
-                        hdmfcontribution: hdmfcontribution,
-                        philhealth: philhealth,
-                        philhealthcontribution: philhealthcontribution,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/employee/load',
-                success: function (result) {
-                    var data = result.data;
-                    console.log(data);
-                    $.each(data, function (key, item) {
-                        if (item.status == 'ACTIVE'){
-                            var options = new Option(item.employeeid, item.employeeid);
-                            $(options).html(item.employeeid);
-                            $('#employeelist').append(options);
-                        }
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
- 
-        }     
-
-        //Status Update
-        $(document).on('click', '#activeBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/governmentid/status',
-                    data: {
-                        status: status,
-                        employeeid: employeeid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'notexist') {
-                            warning(`${employeeid} does not exist!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+          },
+          error: function (err) {
+            errormsg(err);
+          },
         });
+        hidespinner();
+      }
+    });
 
-        $(document).on('click', '#inactiveBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/governmentid/status',
-                    data: {
-                        status: status,
-                        employeeid: employeeid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
+    $(document).on("click", "#saveBtn", function () {
+      let employeeid = $("#employeeid").val();
+      let sss = $("#sssmodal").val();
+      let ssscontribution = $("#ssscontributionmodal").val();
+      let hdmf = $("#hdmfmodal").val();
+      let hdmfcontribution = $("#hdmfcontributionmodal").val();
+      let philhealth = $("#philhealthmodal").val();
+      let philhealthcontribution = $("#philhealthcontributionmodal").val();
+      var message = "";
 
-                        if (result.msg == 'notexist') {
-                            warning(`${employeeid} does not exist!`);
-                        }
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-        });
-          
-        function LoadTable() {
-                $('#governmentID-datatable').DataTable({
-                    'destroy': true,
-                    'processing': true,
-                    'serverSide': true,
-                    'paging': false,
-                    'searching': false,
-                    'info': false,
-                    'scrollY': 400,
-                    'scrollCollapse': true,
-                    'serverMethod': 'GET',
-                    'ajax': {
-                        'url': '/governmentid/load',
-                        'dataSrc': (json) => {
-                            var finalData = [];
-                            var data = json.data;
-    
-                            console.log(data);
-                            $.each(data, (key, item) => {
-                                var action = '';
-                                var status = item.status;
-    
-                                if (status == 'ACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#governmentidModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
-                                }
-                                if (status == 'INACTIVE') {
-                                    action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#governmentidModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
-                                }
-    
-                                finalData.push({
-                                    employeeid: item.employeeid,
-                                    sss: item.sss,
-                                    ssscontribution: item.ssscontribution,
-                                    hdmf: item.hdmf,
-                                    hdmfcontribution: item.hdmfcontribution,
-                                    philhealth: item.philhealth,
-                                    philhealthcontribution: item.philhealthcontribution,
-                                    status: item.status,
-                                    createdby: item.createdby,
-                                    createddate: item.createddate,
-                                    action: action,
-                                })
-    
-                            })
-    
-                            return finalData;
-                        },
-                    },
-                    'columnDefs': [{
-                        targets: 1,
-                        className: 'td-indent',
-                    }],
-                    'columns': [
-                        { data: 'employeeid' },
-                        { data: 'sss' },
-                        { data: 'ssscontribution' },
-                        { data: 'hdmf' },
-                        { data: 'hdmfcontribution' },
-                        { data: 'philhealth' },
-                        { data: 'philhealthcontribution' },
-                        { data: 'status' },
-                        { data: 'createdby' },
-                        { data: 'createddate' },
-                        { data: 'action' },
-                    ],
-                    initComplete: function () {
-                        console.log('init complete');
-                    }
-                });
+      if (employeeid == "") {
+        message += "Employee ID ";
+      }
+      if (sss == "") {
+        message += "SSS ";
+      }
+      if (ssscontribution == "") {
+        message += "SSS Contribution ";
+      }
+      if (hdmf == "") {
+        message += "Home Development Mutaul Fund ";
+      }
+      if (hdmfcontribution == "") {
+        message += "HDMF Contribution ";
+      }
+      if (philhealth == "") {
+        message += "Philhealth ";
+      }
+      if (philhealthcontribution == "") {
+        message += "Phil Health Contribution ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        showspinner();
+        $.ajax({
+          type: "POST",
+          url: "/governmentid/edit",
+          data: {
+            employeeid: employeeid,
+            sss: sss,
+            ssscontribution: ssscontribution,
+            hdmf: hdmf,
+            hdmfcontribution: hdmfcontribution,
+            philhealth: philhealth,
+            philhealthcontribution: philhealthcontribution,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-        })
 
+            if (result.msg == "exist") {
+              warning("Exist", `${employeeid} already registered!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+      hidespinner();
+    });
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/employee/load",
+        success: function (result) {
+          var data = result.data;
+          console.log(data);
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.employeeid, item.employeeid);
+              $(options).html(
+                `${item.firstname} ${item.middlename} ${item.lastname}`
+              );
+              $("#employeelist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+
+    //Status Update
+    $(document).on("click", "#activeBtn", function () {
+      console.log(employeeid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/governmentid/status",
+        data: {
+          status: status,
+          employeeid: employeeid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${employeeid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#inactiveBtn", function () {
+      console.log(employeeid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/governmentid/status",
+        data: {
+          status: status,
+          employeeid: employeeid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${employeeid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    function LoadTable() {
+      showspinner();
+      $("#governmentID-datatable").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/governmentid/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
+
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#governmentidModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#governmentidModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>';
+              }
+
+              finalData.push({
+                employeeid: item.employeeid,
+                sss: item.sss,
+                ssscontribution: item.ssscontribution,
+                hdmf: item.hdmf,
+                hdmfcontribution: item.hdmfcontribution,
+                philhealth: item.philhealth,
+                philhealthcontribution: item.philhealthcontribution,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "employeeid" },
+          { data: "sss" },
+          { data: "ssscontribution" },
+          { data: "hdmf" },
+          { data: "hdmfcontribution" },
+          { data: "philhealth" },
+          { data: "philhealthcontribution" },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+          hidespinner();
+        },
+      });
+    }
+  });
 </script>

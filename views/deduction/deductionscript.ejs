@@ -1,256 +1,335 @@
 <script>
-    $(document).ready(function () {
-        let employeeid = "";
+  $(document).ready(function () {
+    let employeeid = "";
 
-        LoadTable();
-        LoadList();
+    LoadTable();
+    LoadList();
 
-        $('#deduction-dataTable tbody').on('click', 'tr', function () {
-        var dataRow = [];
-        $(this).closest('tr').find('td').each(function () {
-            dataRow.push($(this).text());
+    $("#deduction-dataTable tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
         });
-        employeeid = dataRow[0];
-        console.log(dataRow);
-        })
+      employeeid = dataRow[0];
+      console.log(dataRow);
+    });
 
-        //Edit get Row Details
-        $(document).on('click', '#editBtn', function(){
-            $('#employeeidmodal').val(employeeid);
-            $('#deductionModal').modal('show');
-            console.log(employeeid);
-        })
-      
-        $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeeid').val();
-            let late = $('#late').val();
-            let absent = $('#absent').val();
-            let sss = $('#sss').val();
-            let hdmf = $('#hdmf').val();
-            let philhealth = $('#philhealth').val();
-            let cashadvance = $('#cashadvance').val();
-            let loan = $('#loan').val();
-            let tax = $('#tax').val();
+    //Edit get Row Details
+    $(document).on("click", "#editBtn", function () {
+      $("#employeeidmodal").val(employeeid);
+      $("#deductionModal").modal("show");
+      console.log(employeeid);
+    });
 
-            var message = "";
+    $(document).on("click", "#addBtn", function () {
+      let employeeid = $("#employeeid").val();
+      let late = $("#late").val();
+      let absent = $("#absent").val();
+      let sss = $("#sss").val();
+      let hdmf = $("#hdmf").val();
+      let philhealth = $("#philhealth").val();
+      let cashadvance = $("#cashadvance").val();
+      let loan = $("#loan").val();
+      let tax = $("#tax").val();
 
-            if (employeeid == '') { message += 'Employeeid ' }
-            if (late == '') { message += 'Late ' }
-            if (absent == '') { message += 'Absent ' }
-            if (sss == '') { message += 'SSS ' }
-            if (hdmf == '') { message += 'HDMF ' }
-            if (philhealth == '') { message += 'Philhealth ' }
-            if (cashadvance == '') { message += 'Cashadvance ' }
-            if (loan == '') { message += 'Loan ' }
-            if (tax == '') { message += 'Tax ' }
+      var message = "";
 
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+      if (employeeid == "") {
+        message += "Employeeid ";
+      }
+      if (late == "") {
+        message += "Late ";
+      }
+      if (absent == "") {
+        message += "Absent ";
+      }
+      if (sss == "") {
+        message += "SSS ";
+      }
+      if (hdmf == "") {
+        message += "HDMF ";
+      }
+      if (philhealth == "") {
+        message += "Philhealth ";
+      }
+      if (cashadvance == "") {
+        message += "Cashadvance ";
+      }
+      if (loan == "") {
+        message += "Loan ";
+      }
+      if (tax == "") {
+        message += "Tax ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/deduction/save",
+          data: {
+            employeeid: employeeid,
+            late: late,
+            absent: absent,
+            sss: sss,
+            hdmf: hdmf,
+            philhealth: philhealth,
+            cashadvance: cashadvance,
+            loan: loan,
+            tax: tax,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/deduction/save',
-                    data: {
-                        employeeid: employeeid,
-                        late: late,
-                        absent: absent,
-                        sss: sss,
-                        hdmf: hdmf,
-                        philhealth: philhealth,
-                        cashadvance: cashadvance,
-                        loan: loan,
-                        tax: tax,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
 
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} already registered!`);
-                        }
+            if (result.msg == "exist") {
+              warning("Exist", `${employeeid} already registered!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
 
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
+    $(document).on("click", "#saveBtn", function () {
+      let employeeid = $("#employeeidmodal").val();
+      let late = $("#latemodal").val();
+      let absent = $("#absentmodal").val();
+      let sss = $("#sssmodal").val();
+      let hdmf = $("#hdmfmodal").val();
+      let philhealth = $("#philhealthmodal").val();
+      let cashadvance = $("#cashadvancemodal").val();
+      let loan = $("#loanmodal").val();
+      let tax = $("#taxmodal").val();
+
+      var message = "";
+
+      if (employeeid == "") {
+        message += "Employeeid ";
+      }
+      if (late == "") {
+        message += "Late ";
+      }
+      if (absent == "") {
+        message += "Absent ";
+      }
+      if (sss == "") {
+        message += "SSS ";
+      }
+      if (hdmf == "") {
+        message += "HDMF ";
+      }
+      if (philhealth == "") {
+        message += "Philhealth ";
+      }
+      if (cashadvance == "") {
+        message += "Cashadvance ";
+      }
+      if (loan == "") {
+        message += "Loan ";
+      }
+      if (tax == "") {
+        message += "Tax ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/deduction/edit",
+          data: {
+            employeeid: employeeid,
+            late: late,
+            absent: absent,
+            sss: sss,
+            hdmf: hdmf,
+            philhealth: philhealth,
+            cashadvance: cashadvance,
+            loan: loan,
+            tax: tax,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning("Exist", `${employeeid} already registered!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/employee/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.employeeid, item.employeeid);
+              $(options).html(
+                `${item.firstname} ${item.middlename} ${item.lastname}`
+              );
+              $("#employeeid").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+
+    function LoadTable() {
+      $("#deduction-dataTable").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/deduction/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+
+              action =
+                '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#deductionModal">EDIT</button>';
+
+              finalData.push({
+                employeeid: item.employeeid,
+                late: item.late,
+                absent: item.absent,
+                sss: item.sss,
+                hdmf: item.hdmf,
+                philhealth: item.philhealth,
+                cashadvance: item.cashadvance,
+                loan: item.loan,
+                tax: item.tax,
+                payrolldate: item.payrolldate,
+                cutoffdate: item.cutoffdate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "employeeid" },
+          { data: "late" },
+          { data: "absent" },
+          {
+            data: "sss",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
                 })
-            }
-        })
-
-        $(document).on('click', '#saveBtn', function () {
-            let employeeid = $('#employeeidmodal').val();
-            let late = $('#latemodal').val();
-            let absent = $('#absentmodal').val();
-            let sss = $('#sssmodal').val();
-            let hdmf = $('#hdmfmodal').val();
-            let philhealth = $('#philhealthmodal').val();
-            let cashadvance = $('#cashadvancemodal').val();
-            let loan = $('#loanmodal').val();
-            let tax = $('#taxmodal').val();
-
-            var message = "";
-
-            if (employeeid == '') { message += 'Employeeid ' }
-            if (late == '') { message += 'Late ' }
-            if (absent == '') { message += 'Absent ' }
-            if (sss == '') { message += 'SSS ' }
-            if (hdmf == '') { message += 'HDMF ' }
-            if (philhealth == '') { message += 'Philhealth ' }
-            if (cashadvance == '') { message += 'Cashadvance ' }
-            if (loan == '') { message += 'Loan ' }
-            if (tax == '') { message += 'Tax ' }
-
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/deduction/edit',
-                    data: {
-                        employeeid: employeeid,
-                        late: late,
-                        absent: absent,
-                        sss: sss,
-                        hdmf: hdmf,
-                        philhealth: philhealth,
-                        cashadvance: cashadvance,
-                        loan: loan,
-                        tax: tax,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
+              );
+            },
+          },
+          {
+            data: "hdmf",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
                 })
-            }
-        })
-
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/employee/load',
-                success: function (result) {
-                    var data = result.data;
-
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.employeeid, item.employeeid);
-                            $(options).html(item.employeeid);
-                            $('#employeeid').append(options);
-                        }
-                    });
-
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-
-        }         
-          
-        function LoadTable() {
-                $('#deduction-dataTable').DataTable({
-                    'destroy': true,
-                    'processing': true,
-                    'serverSide': true,
-                    'paging': false,
-                    'searching': false,
-                    'info': false,
-                    'scrollY': 400,
-                    'scrollCollapse': true,
-                    'serverMethod': 'GET',
-                    'ajax': {
-                        'url': '/deduction/load',
-                        'dataSrc': (json) => {
-                            var finalData = [];
-                            var data = json.data;
-    
-                            console.log(data);
-                            $.each(data, (key, item) => {
-                                var action = '';
-
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#deductionModal">EDIT</button>';
-    
-                                finalData.push({
-                                    employeeid: item.employeeid,
-                                    late: item.late,
-                                    absent: item.absent,
-                                    sss: item.sss,
-                                    hdmf: item.hdmf,
-                                    philhealth: item.philhealth,
-                                    cashadvance: item.cashadvance,
-                                    loan: item.loan,
-                                    tax: item.tax,
-                                    payrolldate: item.payrolldate,
-                                    cutoffdate: item.cutoffdate,
-                                    action: action,
-                                })
-    
-                            })
-    
-                            return finalData;
-                        },
-                    },
-                    'columnDefs': [{
-                        targets: 1,
-                        className: 'td-indent',
-                    }],
-                    'columns': [
-                        { data: 'employeeid' },
-                        { data: 'late' },
-                        { data: 'absent' },
-                        { data: 'sss', 
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'hdmf', 
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'philhealth', 
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'cashadvance', 
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'loan', 
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'tax', 
-                            render: function (data) {
-                                return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                            }
-                        },
-                        { data: 'payrolldate' },
-                        { data: 'cutoffdate' },
-                        { data: 'action' },
-                    ],
-                    initComplete: function () {
-                        console.log('init complete');
-                    }
-                });
-            }
-        })
-    </script>
+              );
+            },
+          },
+          {
+            data: "philhealth",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "cashadvance",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "loan",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "tax",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          { data: "payrolldate" },
+          { data: "cutoffdate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+        },
+      });
+    }
+  });
+</script>

@@ -1,42 +1,85 @@
 <script>
   $(document).ready(function () {
+    document.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        let username = $("#username").val();
+        let password = $("#password").val();
 
-        $(document).on('click', '#loginBtn', function () {
-            let username = $('#username').val();
-            let password = $('#password').val();
-            
-            var message = "";
+        var message = "";
 
-            if (username == '') { message += 'Username ' }
-            if (password == '') { message += 'Password ' }
+        if (username == "") {
+          message += "Username ";
+        }
+        if (password == "") {
+          message += "Password ";
+        }
 
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+        if (message != "") {
+          warning("Required", `Please fill up ${message}`);
+        } else {
+          $.ajax({
+            type: "POST",
+            url: "/login/authentication",
+            data: {
+              username: username,
+              password: password,
+            },
+            success: function (result) {
+              if (result.msg == "success") {
+                success("Logged In", "Successfully");
+                location.replace("/");
+              }
+
+              if (result.msg == "incorrect") {
+                warning("Invalid Credentials.");
+              }
+            },
+            error: function (err) {
+              errormsg(err);
+            },
+          });
+        }
+      }
+    });
+
+    $(document).on("click", "#loginBtn", function () {
+      let username = $("#username").val();
+      let password = $("#password").val();
+
+      var message = "";
+
+      if (username == "") {
+        message += "Username ";
+      }
+      if (password == "") {
+        message += "Password ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/login/authentication",
+          data: {
+            username: username,
+            password: password,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              success("Logged In", "Successfully");
+              location.replace("/");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/login/authentication',
-                    data: {
-                        username: username,
-                        password: password,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            success('Logged In', 'Successfully')
-                            location.replace("/");
-                        }
 
-                        if (result.msg == 'incorrect') {
-                            warning('Invalid Credentials.');
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+            if (result.msg == "incorrect") {
+              warning("Invalid Credentials.");
             }
-        })
-      })
-</script> 
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+  });
+</script>

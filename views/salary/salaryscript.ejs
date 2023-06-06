@@ -1,388 +1,433 @@
 <script>
-    $(document).ready(function () {
-        let employeeid = "";
-        let status = "";
+  $(document).ready(function () {
+    let employeeid = "";
+    let status = "";
 
-        LoadTable();
-        LoadList(); 
-        LoadListModal();
+    LoadTable();
+    LoadList();
+    LoadListModal();
 
-        $('#salary_dataTable tbody').on('click', 'tr', function () {
-        var dataRow = [];
-        $(this).closest('tr').find('td').each(function () {
-            dataRow.push($(this).text());
+    $("#salary_dataTable tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
         });
-        employeeid = dataRow[0];
-        status = dataRow[10];
-        console.log(dataRow);
-        })
+      employeeid = dataRow[0];
+      status = dataRow[10];
+      console.log(dataRow);
+    });
 
-        //Edit get Row Details
-        $(document).on('click', '#editBtn', function(){
-            $('#employeeid').val(employeeid);
-            $('#salaryModal').modal('show');
-            console.log(employeeid);
-        })
+    //Edit get Row Details
+    $(document).on("click", "#editBtn", function () {
+      $("#employeeid").val(employeeid);
+      $("#salaryModal").modal("show");
+      console.log(employeeid);
+    });
 
-        $(document).on('click', '#addBtn', function () {
-            let employeeid = $('#employeelist').val();
-            let firstname = $('#firstname').val();
-            let middlename = $('#middlename').val();
-            let lastname = $('#lastname').val();
-            let departmentlist = $('#departmentlist').val();
-            let positionlist = $('#positionlist').val();
-            let dailyrate = $('#dailyrate').val();
-            let monthlysalary = $('#monthlysalary').val();
-            
-            var message = "";
-            
-            if (employeeid == '') { message += 'Employee ID ' }
-            if (firstname == '') { message += 'First Name ' }
-            if (middlename == '') { message += 'Middle Name ' }
-            if (lastname == '') { message += 'Last Name ' }
-            if (dailyrate == '') { message += 'Daily Rate ' }
-            if (departmentlist == '') { message += 'Department ' }
-            if (positionlist == '') { message += 'Position ' }
-            if (monthlysalary == '') { message += 'Monthly Salary ' }
-            
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
+    $(document).on("click", "#addBtn", function () {
+      let employeeid = $("#employeelist").val();
+      let firstname = $("#firstname").val();
+      let middlename = $("#middlename").val();
+      let lastname = $("#lastname").val();
+      let departmentlist = $("#departmentlist").val();
+      let positionlist = $("#positionlist").val();
+      let dailyrate = $("#dailyrate").val();
+      let monthlysalary = $("#monthlysalary").val();
+
+      var message = "";
+
+      if (employeeid == "") {
+        message += "Employee ID ";
+      }
+      if (firstname == "") {
+        message += "First Name ";
+      }
+      if (middlename == "") {
+        message += "Middle Name ";
+      }
+      if (lastname == "") {
+        message += "Last Name ";
+      }
+      if (dailyrate == "") {
+        message += "Daily Rate ";
+      }
+      if (departmentlist == "") {
+        message += "Department ";
+      }
+      if (positionlist == "") {
+        message += "Position ";
+      }
+      if (monthlysalary == "") {
+        message += "Monthly Salary ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/salary/save",
+          data: {
+            employeeid: employeeid,
+            firstname: firstname,
+            middlename: middlename,
+            lastname: lastname,
+            positionlist: positionlist,
+            departmentlist: departmentlist,
+            dailyrate: dailyrate,
+            monthlysalary: monthlysalary,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
             }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/salary/save',
-                    data: {
-                        employeeid: employeeid,
-                        firstname: firstname,
-                        middlename: middlename,
-                        lastname: lastname,
-                        positionlist: positionlist,
-                        departmentlist: departmentlist,
-                        dailyrate: dailyrate,
-                        monthlysalary: monthlysalary,
-                        
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
 
-                        if (result.msg == 'exist') {
-                            warning('Exist', `${employeeid} already registered!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+            if (result.msg == "exist") {
+              warning("Exist", `${employeeid} already registered!`);
             }
-        })
-
-        $(document).on('click', '#saveBtn', function () {
-            let employeeid = $('#employeeid').val();
-            let firstname = $('#firstnamemodal').val();
-            let middlename = $('#middlenamemodal').val();
-            let lastname = $('#lastnamemodal').val();
-            let dailyrate = $('#dailyratemodal').val();
-            let monthlysalary = $('#monthlysalarymodal').val();
-            let department = $('#departmentlistmodal').val();
-            let position = $('#positionlistmodal').val();
-
-            var message = "";
-            
-            if (employeeid == '') { message += 'Employee ID ' }
-            if (firstname == '') { message += 'First Name ' }
-            if (middlename == '') { message += 'Middle Name ' }
-            if (lastname == '') { message += 'Last Name ' }
-            if (dailyrate == '') { message += 'Daily Rate ' }
-            if (department == '') { message += 'Department ' }
-            if (position == '') { message += 'Position ' }
-            if (monthlysalary == '') { message += 'Monthly Salary ' }
-            
-            if (message != '') {
-                warning('Required', `Please fill up ${message}`);
-            }
-            else {
-                $.ajax({
-                    type: 'POST',
-                    url: '/salary/edit',
-                    data: {
-                        employeeid: employeeid,
-                        firstname: firstname,
-                        middlename: middlename,
-                        lastname: lastname,
-                        position: position,
-                        department: department,
-                        dailyrate: dailyrate,
-                        monthlysalary: monthlysalary,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'notexist') {
-                            warning('Notice!', `${employeeid} is not registered Employee!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
-            }
-        })
-
-        //Status Update
-        $(document).on('click', '#activeBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/salary/status',
-                    data: {
-                        status: status,
-                        employeeid: employeeid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
-
-                        if (result.msg == 'notexist') {
-                            warning(`${employeeid} does not exist!`);
-                        }
-
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+          },
+          error: function (err) {
+            errormsg(err);
+          },
         });
+      }
+    });
 
-        $(document).on('click', '#inactiveBtn', function(){
-            console.log(employeeid);
-            console.log(status);
-            $.ajax({
-                    type: 'POST',
-                    url: '/salary/status',
-                    data: {
-                        status: status,
-                        employeeid: employeeid,
-                    },
-                    success: function (result) {
-                        if (result.msg == 'success') {
-                            LoadTable();
-                            success('Saved', 'Successfully')
-                        }
+    $(document).on("click", "#saveBtn", function () {
+      let employeeid = $("#employeeid").val();
+      let firstname = $("#firstnamemodal").val();
+      let middlename = $("#middlenamemodal").val();
+      let lastname = $("#lastnamemodal").val();
+      let dailyrate = $("#dailyratemodal").val();
+      let monthlysalary = $("#monthlysalarymodal").val();
+      let department = $("#departmentlistmodal").val();
+      let position = $("#positionlistmodal").val();
 
-                        if (result.msg == 'notexist') {
-                            warning(`${employeeid} does not exist!`);
-                        }
-                    },
-                    error: function (err) {
-                        errormsg(err);
-                    }
-                })
+      var message = "";
+
+      if (employeeid == "") {
+        message += "Employee ID ";
+      }
+      if (firstname == "") {
+        message += "First Name ";
+      }
+      if (middlename == "") {
+        message += "Middle Name ";
+      }
+      if (lastname == "") {
+        message += "Last Name ";
+      }
+      if (dailyrate == "") {
+        message += "Daily Rate ";
+      }
+      if (department == "") {
+        message += "Department ";
+      }
+      if (position == "") {
+        message += "Position ";
+      }
+      if (monthlysalary == "") {
+        message += "Monthly Salary ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/salary/edit",
+          data: {
+            employeeid: employeeid,
+            firstname: firstname,
+            middlename: middlename,
+            lastname: lastname,
+            position: position,
+            department: department,
+            dailyrate: dailyrate,
+            monthlysalary: monthlysalary,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "notexist") {
+              warning("Notice!", `${employeeid} is not registered Employee!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
         });
+      }
+    });
 
-        function LoadList() {
-            $.ajax({
-                type: 'GET',
-                url: '/department/load',
-                success: function (result) {
-                    var data = result.data;
+    //Status Update
+    $(document).on("click", "#activeBtn", function () {
+      console.log(employeeid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/salary/status",
+        data: {
+          status: status,
+          employeeid: employeeid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
 
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.departmentname, item.departmentname);
-                            $(options).html(item.departmentname);
-                            $('#departmentlist').append(options);
-                        }
-                    });
+          if (result.msg == "notexist") {
+            warning(`${employeeid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+    $(document).on("click", "#inactiveBtn", function () {
+      console.log(employeeid);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/salary/status",
+        data: {
+          status: status,
+          employeeid: employeeid,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
 
-            $.ajax({
-                type: 'GET',
-                url: '/position/load',
-                success: function (result) {
-                    var data = result.data;
+          if (result.msg == "notexist") {
+            warning(`${employeeid} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
 
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.positionname, item.positionname);
-                            $(options).html(item.positionname);
-                            $('#positionlist').append(options);
-                        }
-                    });
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/department/load",
+        success: function (result) {
+          var data = result.data;
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(
+                item.departmentname,
+                item.departmentname
+              );
+              $(options).html(item.departmentname);
+              $("#departmentlist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
 
-            $.ajax({
-                type: 'GET',
-                url: '/employee/load',
-                success: function (result) {
-                    var data = result.data;
+      $.ajax({
+        type: "GET",
+        url: "/position/load",
+        success: function (result) {
+          var data = result.data;
 
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.employeeid, item.employeeid);
-                            $(options).html(`${item.firstname} ${item.middlename} ${item.lastname}`);
-                            $('#employeelist').append(options);
-                        }
-                    });
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.positionname, item.positionname);
+              $(options).html(item.positionname);
+              $("#positionlist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        } 
+      $.ajax({
+          type: 'GET',
+          url: '/employee/load',
+          success: function (result) {
+              var data = result.data;
 
-        function LoadListModal() {
-            $.ajax({
-                type: 'GET',
-                url: '/department/load',
-                success: function (result) {
-                    var data = result.data;
+              $.each(data, function (key, item) {
+                  if (item.status == "ACTIVE"){
+                      var options = new Option(item.employeeid, item.employeeid);
+                      $(options).html(`${item.firstname} ${item.middlename} ${item.lastname}`);
+                      $('#employeelist').append(options);
+                  }
+              });
 
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.departmentname, item.departmentname);
-                            $(options).html(item.departmentname);
-                            $('#departmentlistmodal').append(options);
-                        }
-                    });
+          },
+          error: function (err) {
+              errormsg(err);
+          }
+      })
+    }
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
+    function LoadListModal() {
+      $.ajax({
+        type: "GET",
+        url: "/department/load",
+        success: function (result) {
+          var data = result.data;
 
-            $.ajax({
-                type: 'GET',
-                url: '/position/load',
-                success: function (result) {
-                    var data = result.data;
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(
+                item.departmentname,
+                item.departmentname
+              );
+              $(options).html(item.departmentname);
+              $("#departmentlistmodal").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
 
-                    $.each(data, function (key, item) {
-                        if (item.status == "ACTIVE"){
-                            var options = new Option(item.positionname, item.positionname);
-                            $(options).html(item.positionname);
-                            $('#positionlistmodal').append(options);
-                        }
-                    });
+      $.ajax({
+        type: "GET",
+        url: "/position/load",
+        success: function (result) {
+          var data = result.data;
 
-                },
-                error: function (err) {
-                    errormsg(err);
-                }
-            })
-        } 
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(item.positionname, item.positionname);
+              $(options).html(item.positionname);
+              $("#positionlistmodal").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
 
-        function LoadTable() {
-            showspinner();
-            $('#salary_dataTable').DataTable({
-                'destroy': true,
-                'processing': true,
-                'serverSide': true,
-                'paging': false,
-                'searching': false,
-                'info': false,
-                'scrollY': 400,
-                'scrollCollapse': true,
-                'serverMethod': 'GET',
-                'ajax': {
-                    'url': '/salary/load',
-                    'dataSrc': (json) => {
-                        var finalData = [];
-                        var data = json.data;
+    function LoadTable() {
+      showspinner();
+      $("#salary_dataTable").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/salary/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
 
-                        console.log(data);
-                        $.each(data, (key, item) => {
-                            var action = '';
-                            var status = item.status;
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
 
-                            if (status == 'ACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#salaryModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>'
-                            }
-                            if (status == 'INACTIVE') {
-                                action = '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#salaryModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>'
-                            }
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#salaryModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#salaryModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>';
+              }
 
-                            finalData.push({
-                                employeeid: item.employeeid,
-                                firstname: item.firstname,
-                                middlename: item.middlename,
-                                lastname: item.lastname,
-                                department: item.department,
-                                position: item.position,
-                                dailyrate: item.dailyrate,
-                                monthlysalary: item.monthlysalary,
-                                updateby: item.updateby,
-                                updateddate: item.updateddate,
-                                status: item.status,
-                                createdby: item.createdby,
-                                createddate: item.createddate,
-                                action: action,
-                            })
-
-                        })
- 
-                        return finalData;
-                    },
-                },
-                'columnDefs': [{
-                    targets: 1,
-                    className: 'td-indent',
-                }],
-                'columns': [
-                    { data: 'employeeid' },
-                    { data: 'firstname' },
-                    { data: 'middlename' },
-                    { data: 'lastname' },
-                    { data: 'department' },
-                    { data: 'position' },
-                    { 
-                        data: 'dailyrate',
-                        render: function (data) {
-                            return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        }
-                    },
-                    { 
-                        data: 'monthlysalary',
-                        render: function (data) {
-                            return '₱ ' + Number(data).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                        }
-                    },
-                    { data: 'updateby' },
-                    { data: 'updateddate' },
-                    { data: 'status' },
-                    { data: 'createdby' },
-                    { data: 'createddate' },
-                    { data: 'action' },
-                ],
-                initComplete: function () {
-                    console.log('init complete');
-                    hidespinner();
-                }
+              finalData.push({
+                employeeid: item.employeeid,
+                firstname: item.firstname,
+                middlename: item.middlename,
+                lastname: item.lastname,
+                department: item.department,
+                position: item.position,
+                dailyrate: item.dailyrate,
+                monthlysalary: item.monthlysalary,
+                updateby: item.updateby,
+                updateddate: item.updateddate,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
             });
-        }
-    })
 
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "employeeid" },
+          { data: "firstname" },
+          { data: "middlename" },
+          { data: "lastname" },
+          { data: "department" },
+          { data: "position" },
+          {
+            data: "dailyrate",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          {
+            data: "monthlysalary",
+            render: function (data) {
+              return (
+                "₱ " +
+                Number(data).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              );
+            },
+          },
+          { data: "updateby" },
+          { data: "updateddate" },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+          hidespinner();
+        },
+      });
+    }
+  });
 </script>

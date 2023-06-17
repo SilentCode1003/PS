@@ -119,6 +119,10 @@ exports.Select = (sql, table, callback) => {
       if (table == "PayrollDetail") {
         callback(null, model.PayrollDetail(results));
       }
+
+      if (table == "TileLogs") {
+        callback(null, model.TileLogs(results));
+      }
     });
   } catch (error) {
     console.log(error);
@@ -441,6 +445,22 @@ exports.InsertTable = (tablename, data, callback) => {
             pd_status,
             pd_createdby,
             pd_createddate) VALUES ?`;
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "time_logs") {
+    let sql = `INSERT INTO time_logs(
+                tl_employeeid,
+                tl_type,
+                tl_date,
+                tl_time,
+                tl_latitude,
+                tl_longitude) VALUES ?`;
     this.Insert(sql, data, (err, result) => {
       if (err) {
         callback(err, null);

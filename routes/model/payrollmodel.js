@@ -237,3 +237,21 @@ exports.PayrollDetail = (data) => {
 
   return dataResult;
 };
+
+exports.TileLogs = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      logid: key.tl_logid,
+      employeeid: key.tl_employeeid,
+      type: key.tl_type,
+      date: key.tl_date,
+      time: key.tl_time,
+      latitude: key.tl_latitude,
+      longitude: key.tl_longitude,
+    });
+  });
+
+  return dataResult;
+};

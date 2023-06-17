@@ -53,13 +53,24 @@ router.post("/timelog", (req, res) => {
   try {
     let employeeid = req.body.employeeid;
     let time = helper.GetCurrentTime();
+    let date = helper.GetCurrentDate();
     let type = req.body.type;
-    let location = req.body.location;
+    let latitude = req.body.latitude;
+    let longitude = req.body.longitude;
+    let time_logs = [];
 
-    console.log(`${employeeid} ${time} ${type} ${location}`);
+    console.log(`${employeeid} ${time} ${type} ${latitude} ${longitude}`);
 
-    res.json({
-      msg: "success",
+    time_logs.push([employeeid, type, date, time, latitude, longitude]);
+
+    mysql.InsertTable("time_logs", time_logs, (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+      });
     });
   } catch (error) {
     res.json({

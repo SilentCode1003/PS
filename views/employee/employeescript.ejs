@@ -16,7 +16,7 @@
           dataRow.push($(this).text());
         });
       systemid = dataRow[0];
-      status = dataRow[9];
+      status = dataRow[11];
       console.log(dataRow);
     });
 
@@ -364,6 +364,8 @@
                 firstname: item.firstname,
                 middlename: item.middlename,
                 lastname: item.lastname,
+                username: item.username,
+                password: item.password,
                 position: item.position,
                 department: item.department,
                 contactnumber: item.contactnumber,
@@ -390,6 +392,8 @@
           { data: "firstname" },
           { data: "middlename" },
           { data: "lastname" },
+          { data: "username" },
+          { data: "password" },
           { data: "position" },
           { data: "department" },
           { data: "contactnumber" },
@@ -521,7 +525,10 @@
         success: function (result) {
           LoadTable();
           if (result.msg != "success") {
-            warning("Duplicate", `Some data already exist on the database`);
+            warning(
+              "Duplicate",
+              `Some data already exist on the database. ID[${result.data}]`
+            );
           } else {
             success("Saved!", "Data saved!");
           }

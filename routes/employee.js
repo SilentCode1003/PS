@@ -4,6 +4,7 @@ var router = express.Router();
 const mysql = require("./repository/payrolldb");
 const helper = require("./repository/customhelper");
 const dictionary = require("./repository/dictionary");
+const crypto = require("./repository/cryptography");
 
 /* GET home page. */
 router.get("/", isAuthAdmin, function (req, res, next) {
@@ -65,7 +66,7 @@ router.post("/save", (req, res) => {
     let data = [];
 
     let sql_check = `select * from master_employee where me_employeeid='${employeeid}'`;
-    mysql.Select(sql_check, "MasterDepartment", (err, result) => {
+    mysql.Select(sql_check, "MasterEmployee", (err, result) => {
       if (err) console.error("Error: ", err);
 
       if (result.length != 0) {
@@ -73,26 +74,35 @@ router.post("/save", (req, res) => {
           msg: "exist",
         });
       } else {
-        data.push([
-          employeeid,
-          firstname,
-          middlename,
-          lastname,
-          position,
-          department,
-          contactnumber,
-          email,
-          status,
-          createdby,
-          createdate,
-        ]);
-        mysql.InsertTable("master_employee", data, (err, result) => {
+        let username = employeeid;
+        let password = `${firstname[0]}${lastname}`;
+
+        crypto.Encrypter(password, (err, encrypted) => {
           if (err) console.error("Error: ", err);
 
-          console.log(result);
+          data.push([
+            employeeid,
+            firstname,
+            middlename,
+            lastname,
+            username,
+            encrypted,
+            position,
+            department,
+            contactnumber,
+            email,
+            status,
+            createdby,
+            createdate,
+          ]);
+          mysql.InsertTable("master_employee", data, (err, result) => {
+            if (err) console.error("Error: ", err);
 
-          res.json({
-            msg: "success",
+            console.log(result);
+
+            res.json({
+              msg: "success",
+            });
           });
         });
       }
@@ -187,6 +197,7 @@ router.post("/status", (req, res) => {
     mysql.UpdateMultiple(sql_Update, data, (err, result) => {
       if (err) console.error("Error: ", err);
 
+      console.log(result);
       res.json({
         msg: "success",
       });
@@ -204,41 +215,95 @@ router.post("/excelsave", (req, res) => {
     let status = dictionary.GetValue(dictionary.ACT());
     let createdby = req.session.fullname;
     let createddate = helper.GetCurrentDatetime();
+    let master_employee = [];
+    let count = 0;
+    let dup_data = "";
+    let isDuplicate = false;
+
     data = JSON.parse(data);
-    master_employee = [];
+    let data_length = data.length;
+    console.log(data_length);
 
     data.forEach((key, item) => {
-      master_employee.push([
-        key.employeeid,
-        key.firstname,
-        key.middlename,
-        key.lastname,
-        key.position,
-        key.department,
-        key.contactno == "" ? "N/A" : key.contactno,
-        key.email == "" ? "N/A" : key.email,
-        status,
-        createdby,
-        createddate,
-      ]);
-    });
+      let username = key.employeeid;
+      let password = `${key.firstname[0]}${key.lastname}`;
 
-    mysql.InsertTable("master_employee", master_employee, (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.json({
-          msg: "error",
-          error: err,
-        });
-      } else {
-        console.log(result);
+      console.log(password);
+      crypto.Encrypter(password, (err, encrypted) => {
+        if (err) console.error("Error: ", err);
 
-        res.json({
-          msg: "success",
+        let sql_check = `select * from master_employee where me_employeeid='${username}'`;
+        mysql.isSingleDataExist(sql_check, "MasterEmployee", (err, result) => {
+          if (err) console.error("Error: ", err);
+
+          if (result) {
+            dup_data += `${username} `;
+            isDuplicate = true;
+          } else {
+            master_employee.push([
+              key.employeeid,
+              key.firstname,
+              key.middlename,
+              key.lastname,
+              username,
+              encrypted,
+              key.position,
+              key.department,
+              key.contactno == "" ? "N/A" : key.contactno,
+              key.email == "" ? "N/A" : key.email,
+              status,
+              createdby,
+              createddate,
+            ]);
+          }
+
+          count += 1;
+
+          if (data_length == count) {
+            console.log(master_employee);
+
+            if (isDuplicate) {
+              if (master_employee.length != 0) {
+                //insert data
+
+                mysql.InsertTable(
+                  "master_employee",
+                  master_employee,
+                  (err, result) => {
+                    if (err) console.error("Error: ", err);
+                    console.log(result);
+                    return res.json({
+                      msg: "exist",
+                      data: dup_data,
+                    });
+                  }
+                );
+              }
+
+              return res.json({
+                msg: "exist",
+                data: dup_data,
+              });
+            }
+
+            mysql.InsertTable(
+              "master_employee",
+              master_employee,
+              (err, result) => {
+                if (err) console.error("Error: ", err);
+
+                console.log(result);
+                return res.json({
+                  msg: "success",
+                });
+              }
+            );
+          }
         });
-      }
+      });
     });
   } catch (error) {
+    console.log(error);
     res.json({
       msg: error,
     });

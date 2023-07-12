@@ -78,3 +78,33 @@ router.post("/timelog", (req, res) => {
     });
   }
 });
+
+router.post("/getlogstatus", (req, res) => {
+  try {
+    let employeeid = req.body.employeeid;
+    let currentdate = helper.GetCurrentDate();
+    let sql = `select tl_type as type from time_logs where tl_employeeid='${employeeid}' and tl_date='${currentdate}'`;
+    console.log(sql);
+
+    mysql.SelectResult(sql, (err, result) => {
+      if (err) console.error(err);
+
+      console.log(result);
+
+      if (result.length != 0) {
+        res.json({
+          msg: "success",
+          data: result,
+        });
+      } else {
+        res.json({
+          msg: "nologs",
+        });
+      }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});

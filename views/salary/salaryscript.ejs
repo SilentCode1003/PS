@@ -29,9 +29,6 @@
 
     $(document).on("click", "#addBtn", function () {
       let employeeid = $("#employeelist").val();
-      let firstname = $("#firstname").val();
-      let middlename = $("#middlename").val();
-      let lastname = $("#lastname").val();
       let departmentlist = $("#departmentlist").val();
       let positionlist = $("#positionlist").val();
       let dailyrate = $("#dailyrate").val();
@@ -41,15 +38,6 @@
 
       if (employeeid == "") {
         message += "Employee ID ";
-      }
-      if (firstname == "") {
-        message += "First Name ";
-      }
-      if (middlename == "") {
-        message += "Middle Name ";
-      }
-      if (lastname == "") {
-        message += "Last Name ";
       }
       if (dailyrate == "") {
         message += "Daily Rate ";
@@ -72,9 +60,6 @@
           url: "/salary/save",
           data: {
             employeeid: employeeid,
-            firstname: firstname,
-            middlename: middlename,
-            lastname: lastname,
             positionlist: positionlist,
             departmentlist: departmentlist,
             dailyrate: dailyrate,

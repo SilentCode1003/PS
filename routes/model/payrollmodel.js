@@ -114,7 +114,7 @@ exports.TimeRecord = (data) => {
     dataResult.push({
       employeeid: key.tr_employeeid,
       date: key.tr_date,
-      startime: key.tr_starttime,
+      starttime: key.tr_starttime,
       starttimelocation: key.tr_starttimelocation,
       endtime: key.tr_endtime,
       endtimelocation: key.tr_endtimelocation,

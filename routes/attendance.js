@@ -77,8 +77,6 @@ router.post("/timelog", (req, res) => {
             },
           });
         }
-        time_logs.push([employeeid, type, date, time, latitude, longitude]);
-
         if (type != "OUT") {
           time_record.push([
             employeeid,
@@ -125,6 +123,9 @@ router.post("/timelog", (req, res) => {
         });
       });
 
+
+
+    time_logs.push([employeeid, type, date, time, latitude, longitude]);
     mysql.InsertTable("time_logs", time_logs, (err, result) => {
       if (err) console.error("Error: ", err);
 

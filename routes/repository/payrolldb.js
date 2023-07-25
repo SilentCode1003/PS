@@ -120,8 +120,8 @@ exports.Select = (sql, table, callback) => {
         callback(null, model.PayrollDetail(results));
       }
 
-      if (table == "TileLogs") {
-        callback(null, model.TileLogs(results));
+      if (table == "TimeLogs") {
+        callback(null, model.TimeLogs(results));
       }
     });
   } catch (error) {

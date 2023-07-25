@@ -238,7 +238,7 @@ exports.PayrollDetail = (data) => {
   return dataResult;
 };
 
-exports.TileLogs = (data) => {
+exports.TimeLogs = (data) => {
   let dataResult = [];
 
   data.forEach((key, item) => {

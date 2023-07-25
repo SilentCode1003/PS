@@ -123,8 +123,6 @@ router.post("/timelog", (req, res) => {
         });
       });
 
-
-
     time_logs.push([employeeid, type, date, time, latitude, longitude]);
     mysql.InsertTable("time_logs", time_logs, (err, result) => {
       if (err) console.error("Error: ", err);
@@ -164,6 +162,35 @@ router.post("/getlogstatus", (req, res) => {
           msg: "nologs",
         });
       }
+    });
+  } catch (error) {
+    res.json({
+      msg: error,
+    });
+  }
+});
+
+router.post("/gettimelogs", (req, res) => {
+  try {
+    let employeeid = req.body.employeeid;
+    let currentyear = helper.GetCurrentYear();
+    let currentmonth = helper.GetCurrentMonth();
+    let currentday = helper.GetCurrentDay();
+    let previousday = parseInt(currentday) - 1;
+    let datefrom = `${currentyear}-${currentmonth}-${previousday}`;
+    let dateto = `${currentyear}-${currentmonth}-${currentday}`;
+    let sql = `select * from time_logs where tl_employeeid='${employeeid}' and tl_date between '${datefrom}' and '${dateto}'`;
+
+    console.log(sql);
+    mysql.Select(sql,"TimeLogs", (err, result) => {
+      if (err) console.error("Error: ", err);
+
+      console.log(result);
+
+      res.json({
+        msg: "success",
+        data: result,
+      });
     });
   } catch (error) {
     res.json({

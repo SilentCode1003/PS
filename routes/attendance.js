@@ -177,12 +177,14 @@ router.post("/gettimelogs", (req, res) => {
     let currentmonth = helper.GetCurrentMonth();
     let currentday = helper.GetCurrentDay();
     let previousday = parseInt(currentday) - 1;
-    let datefrom = `${currentyear}-${currentmonth}-${previousday}`;
+    let datefrom = `${currentyear}-${currentmonth}-${helper.TwoDigitNumber(
+      previousday
+    )}`;
     let dateto = `${currentyear}-${currentmonth}-${currentday}`;
     let sql = `select * from time_logs where tl_employeeid='${employeeid}' and tl_date between '${datefrom}' and '${dateto}'`;
 
     console.log(sql);
-    mysql.Select(sql,"TimeLogs", (err, result) => {
+    mysql.Select(sql, "TimeLogs", (err, result) => {
       if (err) console.error("Error: ", err);
 
       console.log(result);

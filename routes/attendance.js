@@ -101,7 +101,8 @@ router.post("/timelog", (req, res) => {
         tr_endtimelocation=?,
         tr_endtimedevice=?,
         tr_status=?
-        where tr_employeeid=?`;
+        where tr_employeeid=?
+        and tr_date=?`;
 
           time_record = [
             time,
@@ -109,6 +110,7 @@ router.post("/timelog", (req, res) => {
             "MOBILE",
             status,
             employeeid,
+            date,
           ];
           mysql.UpdateMultiple(sql_update, time_record, (err, result) => {
             if (err) console.error("Error: ", err);

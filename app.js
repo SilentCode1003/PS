@@ -18,6 +18,7 @@ var allowanceRouter = require('./routes/allowance');
 var payrollRouter = require('./routes/payroll');
 var salaryRouter = require('./routes/salary');
 var loginRouter = require('./routes/login');
+var geofenceRouter = require('./routes/geofence');
 
 var app = express();
 
@@ -75,6 +76,7 @@ app.use('/allowance', allowanceRouter);
 app.use('/payroll', payrollRouter);
 app.use('/salary', salaryRouter);
 app.use('/login', loginRouter);
+app.use('/geofence', geofenceRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

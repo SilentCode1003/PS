@@ -255,3 +255,23 @@ exports.TimeLogs = (data) => {
 
   return dataResult;
 };
+
+exports.Geofence = (data) => {
+  let dataResult = [];
+
+  data.forEach((key, item) => {
+    dataResult.push({
+      id: key.g_id,
+      departmentcode: key.g_departmentcode,
+      locationname: key.g_locationname,
+      longitude: key.g_longitude,
+      latitude: key.g_latitude,
+      radius: key.g_radius,
+      status: key.g_status,
+      createdby: key.g_createdby,
+      createddate: key.g_createddate,
+    });
+  });
+
+  return dataResult;
+};

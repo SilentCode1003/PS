@@ -1,0 +1,296 @@
+<script>
+  $(document).ready(function () {
+    let geofencecode = "";
+    let status = "";
+
+    LoadTable();
+    LoadList();
+
+    $("#geofence-table tbody").on("click", "tr", function () {
+      var dataRow = [];
+      $(this)
+        .closest("tr")
+        .find("td")
+        .each(function () {
+          dataRow.push($(this).text());
+        });
+      console.log(dataRow);
+      geofencecode = dataRow[0];
+      status = dataRow[8];
+    });
+
+    $(document).on("click", "#editBtn", function () {
+      $("#geofencecode").val(geofencecode);
+      $("#geofenceModal").modal("show");
+      console.log(geofencecode);
+    });
+
+    $(document).on("click", "#addBtn", function () {
+      let locationname = $("#locationname").val();
+      let longitude = $("#longitude").val();
+      let latitude = $("#latitude").val();
+      let radius = $("#radius").val();
+      let departmentcode = $("#departmentlist").val();
+
+      var message = "";
+
+      if (locationname == "") {
+        message += "Location Name ";
+      }
+
+      if (longitude == "") {
+        message += "Longitude ";
+      }
+
+      if (latitude == "") {
+        message += "Latitude ";
+      }
+
+      if (radius == "") {
+        message += "Radius ";
+      }
+
+      if (departmentcode == "") {
+        message += "Department ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/geofence/save",
+          data: {
+            departmentcode: departmentcode,
+            locationname: locationname,
+            longitude: longitude,
+            latitude: latitude,
+            radius: radius,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning("Exist", `${geofencenamemodal} already exist!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    //Edit Update
+    $(document).on("click", "#saveBtn", function () {
+      let locationname = $("#locationname").val();
+      let longitude = $("#longitude").val();
+      let latitude = $("#latitude").val();
+      let radius = $("#radius").val();
+      let departmentcode = $("#departmentlist").val();
+
+      var message = "";
+
+      if (locationname == "") {
+        message += "Location Name ";
+      }
+
+      if (longitude == "") {
+        message += "Longitude ";
+      }
+
+      if (latitude == "") {
+        message += "Latitude ";
+      }
+
+      if (radius == "") {
+        message += "Radius ";
+      }
+
+      if (departmentcode == "") {
+        message += "Department ";
+      }
+
+      if (message != "") {
+        warning("Required", `Please fill up ${message}`);
+      } else {
+        $.ajax({
+          type: "POST",
+          url: "/geofence/edit",
+          data: {
+            departmentcode: departmentcode,
+            locationname: locationname,
+            longitude: longitude,
+            latitude: latitude,
+            radius: radius,
+          },
+          success: function (result) {
+            if (result.msg == "success") {
+              LoadTable();
+              success("Saved", "Successfully");
+            }
+
+            if (result.msg == "exist") {
+              warning("Exist", `${geofencenamemodal} already exist!`);
+            }
+          },
+          error: function (err) {
+            errormsg(err);
+          },
+        });
+      }
+    });
+
+    //Status Update
+    $(document).on("click", "#activeBtn", function () {
+      console.log(geofencecode);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/geofence/status",
+        data: {
+          status: status,
+          geofencecode: geofencecode,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${geofencecode} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    $(document).on("click", "#inactiveBtn", function () {
+      console.log(geofencecode);
+      console.log(status);
+      $.ajax({
+        type: "POST",
+        url: "/geofence/status",
+        data: {
+          status: status,
+          geofencecode: geofencecode,
+        },
+        success: function (result) {
+          if (result.msg == "success") {
+            LoadTable();
+            success("Saved", "Successfully");
+          }
+
+          if (result.msg == "notexist") {
+            warning(`${geofencecode} does not exist!`);
+          }
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    });
+
+    function LoadTable() {
+      $("#geofence-table").DataTable({
+        destroy: true,
+        processing: true,
+        serverSide: true,
+        paging: false,
+        searching: false,
+        info: false,
+        scrollY: 400,
+        scrollCollapse: true,
+        serverMethod: "GET",
+        ajax: {
+          url: "/geofence/load",
+          dataSrc: (json) => {
+            var finalData = [];
+            var data = json.data;
+
+            console.log(data);
+            $.each(data, (key, item) => {
+              var action = "";
+              var status = item.status;
+
+              if (status == "ACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#geofenceModal">EDIT</button> <button id="inactiveBtn" class="btn btn-outline-primary" name="inactiveBtn">INACTIVE</button>';
+              }
+              if (status == "INACTIVE") {
+                action =
+                  '<button id="editBtn" class="btn btn-outline-primary" name="editBtn" data-toggle="modal" data-target="#geofenceModal">EDIT</button> <button id="activeBtn" class="btn btn-outline-primary" name="activeBtn">ACTIVE</button>';
+              }
+
+              finalData.push({
+                id: item.id,
+                departmentcode: item.departmentcode,
+                locationname: item.locationname,
+                longitude: item.longitude,
+                latitude: item.latitude,
+                radius: item.radius,
+                status: item.status,
+                createdby: item.createdby,
+                createddate: item.createddate,
+                action: action,
+              });
+            });
+
+            return finalData;
+          },
+        },
+        columnDefs: [
+          {
+            targets: 1,
+            className: "td-indent",
+          },
+        ],
+        columns: [
+          { data: "id" },
+          { data: "departmentcode" },
+          { data: "locationname" },
+          { data: "longitude" },
+          { data: "latitude" },
+          { data: "radius" },
+          { data: "status" },
+          { data: "createdby" },
+          { data: "createddate" },
+          { data: "action" },
+        ],
+        initComplete: function () {
+          console.log("init complete");
+        },
+      });
+    }
+
+    function LoadList() {
+      $.ajax({
+        type: "GET",
+        url: "/department/load",
+        success: function (result) {
+          var data = result.data;
+
+          $.each(data, function (key, item) {
+            if (item.status == "ACTIVE") {
+              var options = new Option(
+                item.departmentcode,
+                item.departmentcode
+              );
+              $(options).html(item.departmentname);
+              $("#departmentlist").append(options);
+            }
+          });
+        },
+        error: function (err) {
+          errormsg(err);
+        },
+      });
+    }
+  });
+</script>

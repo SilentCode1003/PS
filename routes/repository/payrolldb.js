@@ -123,6 +123,10 @@ exports.Select = (sql, table, callback) => {
       if (table == "TimeLogs") {
         callback(null, model.TimeLogs(results));
       }
+
+      if (table == "Geofence") {
+        callback(null, model.Geofence(results));
+      }
     });
   } catch (error) {
     console.log(error);
@@ -461,6 +465,25 @@ exports.InsertTable = (tablename, data, callback) => {
                 tl_time,
                 tl_latitude,
                 tl_longitude) VALUES ?`;
+    this.Insert(sql, data, (err, result) => {
+      if (err) {
+        callback(err, null);
+      }
+      callback(null, result);
+    });
+  }
+
+  if (tablename == "geofence") {
+    let sql = `INSERT INTO geofence(
+              g_departmentcode,
+              g_locationname,
+              g_longitude,
+              g_latitude,
+              g_radius,
+              g_status,
+              g_createdby,
+              g_createddate
+              ) VALUES ?`;
     this.Insert(sql, data, (err, result) => {
       if (err) {
         callback(err, null);
